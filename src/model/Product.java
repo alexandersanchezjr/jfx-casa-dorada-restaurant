@@ -6,7 +6,6 @@ import java.util.ArrayList;
 public class Product implements Serializable {
 	
 	private static final long serialVersionUID = 1;
-	private final String[] TYPES = {"Principal", "Adicional", "Bebida", "Otro"};
 	private String name;
 	private ArrayList<Ingredient> ingredients;
 	private int[] pricesBySize;
@@ -21,7 +20,7 @@ public class Product implements Serializable {
 		this.name = name;
 		ingredients = new ArrayList<Ingredient>();
 		this.availability = availability;
-		
+		setType(Type.valueOf(selectedType));
 	}
 	public String getName() {
 		return name;
@@ -46,5 +45,17 @@ public class Product implements Serializable {
 	}
 	public void setAvailability(boolean availability) {
 		this.availability = availability;
+	}
+	/**
+	 * @return the type
+	 */
+	public Type getType() {
+		return type;
+	}
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(Type type) {
+		this.type = type;
 	}
 }
