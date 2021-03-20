@@ -16,11 +16,11 @@ public class Product implements Serializable {
 	 * @param name
 	 * @param availability
 	 */
-	public Product(String name, boolean availability, String selectedType) {  //selectedType = getValue del choiceBox
+	public Product(String name, boolean availability, String selectedType, boolean availabilityType) {  //selectedType = getValue del choiceBox
 		this.name = name;
 		ingredients = new ArrayList<Ingredient>();
 		this.availability = availability;
-		setType(Type.valueOf(selectedType));
+		type = new Type(selectedType, availabilityType);
 	}
 	public String getName() {
 		return name;
