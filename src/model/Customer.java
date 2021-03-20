@@ -4,7 +4,6 @@ public class Customer {
 	
 	private String name;
 	private String surname;
-	private String id;
 	private String address;
 	private String phoneNumber;
 	private String comments;
@@ -20,7 +19,6 @@ public class Customer {
 		super();
 		this.name = name;
 		this.surname = surname;
-		this.id = "UNKNOWN";
 		this.address = address;
 		this.phoneNumber = phoneNumber;
 	}
@@ -51,20 +49,6 @@ public class Customer {
 	 */
 	public void setSurname(String surname) {
 		this.surname = surname;
-	}
-
-	/**
-	 * @return the id
-	 */
-	public String getId() {
-		return id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	/**

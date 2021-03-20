@@ -9,6 +9,7 @@ public class Order implements Serializable {
 	private static final long serialVersionUID = 1;
 	private int id;
 	private Date date;
+	private Status status;
 	private ArrayList<Product> products;
 	private Employee employee;
 	private Customer customer;
@@ -18,11 +19,14 @@ public class Order implements Serializable {
 	 * @param id
 	 * @param date
 	 */
-	public Order(int id, Date date) {
-		super();
+	public Order(int id, Date date, String selectedStatus, String employeeName, String employeeSurname, String employeeId, String customerName, String customerSurname, String customerAddress, String customerPhoneNumber, String comments) {
 		this.id = id;
 		this.date = date;
+		status = (Status.valueOf(selectedStatus));
 		products = new ArrayList<Product>();
+		employee = new Employee(employeeName, employeeSurname, employeeId);
+		customer = new Customer(customerName, customerSurname, customerAddress, customerPhoneNumber);
+		this.comments = comments;
 	}
 	
 	/**
@@ -91,6 +95,20 @@ public class Order implements Serializable {
 
 	public void setComments(String comments) {
 		this.comments = comments;
+	}
+
+	/**
+	 * @return the status
+	 */
+	public Status getStatus() {
+		return status;
+	}
+
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 	
 }
