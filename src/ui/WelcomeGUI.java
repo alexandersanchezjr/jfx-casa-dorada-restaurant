@@ -4,25 +4,40 @@ import java.io.IOException;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.layout.GridPane;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.RadioButton;
+import javafx.scene.image.ImageView;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.AnchorPane;
 import model.Restaurant;
 
 public class WelcomeGUI {
 	
 	@FXML
-    private AnchorPane mainAnchorPane;
+    private GridPane mainGridPane;
+	
+	@FXML
+    private ImageView imgRestaurant;
+	
+	@FXML
+    private ToggleGroup user;
 
     @FXML
-    private TextField usernameTxt;
+    private RadioButton rdBtOperator;
 
     @FXML
-    private PasswordField userPasswordTxt;
+    private RadioButton rdBtAdmin;
+
+    @FXML
+    private TextField adminUserTxt;
+
+    @FXML
+    private PasswordField adminPasswordTxt;
 
     
 	private Restaurant restaurant;
@@ -40,8 +55,8 @@ public class WelcomeGUI {
     }
 
     @FXML
-    public void showAdminWindow(ActionEvent event) throws IOException {
-    	/*boolean logged = false;
+    void logIn(ActionEvent event) {
+/*boolean logged = false;
 		
 		if(restaurant.getEmployees().size() == 0) {
     		Alert alert = new Alert(AlertType.ERROR);
@@ -78,11 +93,6 @@ public class WelcomeGUI {
 			mainAnchorPane.getChildren().clear();
 			mainAnchorPane.getChildren().addAll(EmployeeWindow);
 		}*/
-    }	
-
-    @FXML
-    public void showEmployeeWindow(ActionEvent event) throws IOException {
-		
-    } 
+    }
     
 }
