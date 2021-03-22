@@ -8,14 +8,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="mainAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fitHeight="93.0" fitWidth="592.0" layoutX="4.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="294.5364990234375" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="14.0">
          <image>
             <Image url="@../../img/casa-dorada-logo.jpg" />
          </image>
       </ImageView>
-      <AnchorPane fx:id="adminPane" layoutX="200.0" layoutY="185.0" prefHeight="145.0" prefWidth="200.0" style="-fx-background-color: white;" visible="false" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="185.0">
+      <AnchorPane fx:id="adminPane" layoutX="200.0" layoutY="185.0" prefHeight="145.0" prefWidth="200.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="185.0">
          <children>
             <TextField fx:id="adminUserTxt" focusTraversable="false" layoutX="26.0" layoutY="14.0" promptText="Usuario" AnchorPane.leftAnchor="26.0" AnchorPane.rightAnchor="25.0" />
             <PasswordField fx:id="adminPasswordTxt" focusTraversable="false" layoutX="26.0" layoutY="60.0" promptText="Contraseña" AnchorPane.leftAnchor="26.0" AnchorPane.rightAnchor="25.0" />
@@ -28,12 +28,5 @@
             <Button alignment="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#enableAdminPane" prefHeight="25.0" prefWidth="100.0" text="Administrador" />
          </children>
       </HBox>
-      <AnchorPane fx:id="employeePane" layoutX="200.0" layoutY="185.0" prefHeight="145.0" prefWidth="200.0" style="-fx-background-color: white;" visible="false">
-         <children>
-            <TextField fx:id="employeeUserTxt" focusTraversable="false" layoutX="25.0" layoutY="14.0" promptText="Usuario" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="26.0" />
-            <Button layoutX="76.0" layoutY="106.0" mnemonicParsing="false" onAction="#showEmployeeWindow" text="Entrar" />
-            <TextField fx:id="employeeIdTxt" focusTraversable="false" layoutX="26.0" layoutY="60.0" promptText="Identificación" />
-         </children>
-      </AnchorPane>
    </children>
 </AnchorPane>
