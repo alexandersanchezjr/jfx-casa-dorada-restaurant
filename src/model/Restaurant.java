@@ -6,6 +6,7 @@ public class Restaurant {
 	private ArrayList<Employee> employees;
 	private ArrayList<Product> products;
 	private ArrayList<Customer> customers;
+	private ArrayList<User> admins;
 	private User loggedUser;
 	private long identifier;
 	
@@ -81,6 +82,7 @@ public class Restaurant {
 	
 	public boolean updateProduct() {
 		boolean added = false;
+		
 		return added;
 	}
 	
@@ -125,6 +127,13 @@ public class Restaurant {
 	public boolean updateUser() {
 		boolean added = false;
 		return added;
+	}
+
+	/**
+	 * @return the admins
+	 */
+	public ArrayList<User> getAdmins() {
+		return admins;
 	}
 	
 }
