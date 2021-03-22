@@ -9,7 +9,7 @@ public class Product implements Serializable {
 	private String name;
 	private long id;
 	private ArrayList<Ingredient> ingredients;
-	private String[] priceBySize;
+	private ArrayList<PriceBySize> pricesBySizes;
 	private boolean availability;
 	private Type type;
 	private User creator;
@@ -19,28 +19,43 @@ public class Product implements Serializable {
 	 * @param name
 	 * @param availability
 	 */
-	public Product(String name, long id, boolean availability, String selectedType, String size, String price, User creator) {  //selectedType = getValue del choiceBox
+	public Product(String name, long id, ArrayList<Ingredient> ingredients, ArrayList<PriceBySize> pricesBySizes, boolean availability, String selectedType, String size, String price, User creator) {  //selectedType = getValue del choiceBox
 		this.name = name;
 		this.id = id;
-		ingredients = new ArrayList<Ingredient>();
-		priceBySize = new String[]{size, price};
+		this.ingredients = ingredients;
+		pricesBySizes = new ArrayList<PriceBySize>();
 		this.availability = availability;
 		type = new Type(selectedType);
 		this.creator = creator;
-		setModifier(creator);
+		modifier = creator;
 	}
+	
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 	public ArrayList<Ingredient> getIngredients() {
 		return ingredients;
 	}
 	public void setIngredients(ArrayList<Ingredient> ingredients) {
 		this.ingredients = ingredients;
 	}
+	
+	public boolean addIngredient(Ingredient i) {
+		boolean added = false;
+		added = ingredients.add(i);
+		return added;
+	}
+	
+	public boolean deleteIngredient(Ingredient i) {
+		boolean deleted = false;
+		deleted = ingredients.remove(i);
+		return deleted;
+	}
+	
 	public boolean isAvailability() {
 		return availability;
 	}
@@ -56,18 +71,8 @@ public class Product implements Serializable {
 	/**
 	 * @param type the type to set
 	 */
-	public void setType(Type type) {
-		this.type = type;
-	}
-	/**
-	 * @return the priceBySize
-	 */
-	public String[] getPriceBySize() {
-		return priceBySize;
-	}
-	public void setPriceBySize(String size, String price) {
-		priceBySize[0] = size;
-		priceBySize[1] = price;
+	public void setType(String newType) {
+		type.setName(newType);
 	}
 	/**
 	 * @return the creator
@@ -92,5 +97,24 @@ public class Product implements Serializable {
 	 */
 	public long getId() {
 		return id;
+	}
+
+	/**
+	 * @return the pricesBySizes
+	 */
+	public ArrayList<PriceBySize> getPricesBySizes() {
+		return pricesBySizes;
+	}
+	
+	public boolean addPriceBySize(PriceBySize pbs) {
+		boolean added = false;
+		added = pricesBySizes.add(pbs);
+		return added;
+	}
+	
+	public boolean deleteIngredient(PriceBySize pbs) {
+		boolean deleted = false;
+		deleted = pricesBySizes.remove(pbs);
+		return deleted;
 	}
 }

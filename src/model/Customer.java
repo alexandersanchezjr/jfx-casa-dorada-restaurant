@@ -4,6 +4,7 @@ public class Customer {
 	
 	private String name;
 	private String surname;
+	private String id;
 	private String address;
 	private String phoneNumber;
 	private String comments;
@@ -15,10 +16,11 @@ public class Customer {
 	 * @param address
 	 * @param phoneNumber
 	 */
-	public Customer(String name, String surname, String address, String phoneNumber) {
+	public Customer(String name, String surname, String id, String address, String phoneNumber) {
 		super();
 		this.name = name;
 		this.surname = surname;
+		this.setId(id);
 		this.address = address;
 		this.phoneNumber = phoneNumber;
 	}
@@ -85,6 +87,20 @@ public class Customer {
 
 	public void setComments(String comments) {
 		this.comments = comments;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 }

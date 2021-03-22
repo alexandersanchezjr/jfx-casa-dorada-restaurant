@@ -7,7 +7,7 @@ import java.util.Date;
 public class Order implements Serializable {
 	
 	private static final long serialVersionUID = 1;
-	private int id;
+	private long id;
 	private Date date;
 	private Status status;
 	private ArrayList<Product> products;
@@ -19,26 +19,26 @@ public class Order implements Serializable {
 	 * @param id
 	 * @param date
 	 */
-	public Order(int id, Date date, String selectedStatus, String employeeName, String employeeSurname, String employeeId, String customerName, String customerSurname, String customerAddress, String customerPhoneNumber, String comments) {
+	public Order(long id, Date date, String selectedStatus, String employeeName, String employeeSurname, String employeeId, String customerName, String customerSurname, String customerId, String customerAddress, String customerPhoneNumber, String comments) {
 		this.id = id;
 		this.date = date;
 		status = (Status.valueOf(selectedStatus));
 		products = new ArrayList<Product>();
 		employee = new Employee(employeeName, employeeSurname, employeeId);
-		customer = new Customer(customerName, customerSurname, customerAddress, customerPhoneNumber);
+		customer = new Customer(customerName, customerSurname, customerId, customerAddress, customerPhoneNumber);
 		this.comments = comments;
 	}
 	
 	/**
 	 * @return the id
 	 */
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	/**

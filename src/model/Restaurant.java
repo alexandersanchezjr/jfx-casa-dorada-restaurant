@@ -5,6 +5,8 @@ import java.util.ArrayList;
 public class Restaurant {
 	private ArrayList<Employee> employees;
 	private ArrayList<Product> products;
+	private ArrayList<Ingredient> ingredients;
+	private ArrayList<Type> types;
 	private ArrayList<Customer> customers;
 	private ArrayList<User> admins;
 	private User loggedUser;
@@ -74,25 +76,28 @@ public class Restaurant {
 		this.loggedUser = loggedUser;
 	}
 	
-	public boolean addProduct(String name, boolean availability, String selectedType, String size, String price, User creator) {
+	public boolean addProduct(String name, ArrayList<Ingredient> ingredients, ArrayList<PriceBySize> pricesBySizes, boolean availability, String selectedType, String size, String price, User creator) {
 		boolean added = false;
-		added = products.add(new Product(name,(identifier++), availability, selectedType, size, price, creator));
+		added = products.add(new Product(name,(identifier++), ingredients, pricesBySizes, availability, selectedType, size, price, creator));
 		return added;
 	}
 	
-	public boolean updateProduct() {
-		boolean added = false;
-		
-		return added;
+	public void updateProduct(Product p, String name, boolean availability, String selectedType, String size, String price) {
+		p.setName(name);
+		p.setAvailability(availability);
+		p.setType(selectedType);
+		p.setModifier(loggedUser);
 	}
 	
-	public boolean deleteProduct() {
-		boolean added = false;
-		return added;
+	public boolean deleteProduct(Product p) {
+		boolean deleted = false;
+		deleted = products.remove(p);
+		return deleted;
 	}
 	
-	public boolean disableProduct() {
+	public boolean disableProduct(Product p) {
 		boolean added = false;
+		p.setAvailability(false);
 		return added;
 	}
 	
@@ -134,6 +139,34 @@ public class Restaurant {
 	 */
 	public ArrayList<User> getAdmins() {
 		return admins;
+	}
+
+	/**
+	 * @return the ingredients
+	 */
+	public ArrayList<Ingredient> getIngredients() {
+		return ingredients;
+	}
+
+	/**
+	 * @param ingredients the ingredients to set
+	 */
+	public void setIngredients(ArrayList<Ingredient> ingredients) {
+		this.ingredients = ingredients;
+	}
+
+	/**
+	 * @return the types
+	 */
+	public ArrayList<Type> getTypes() {
+		return types;
+	}
+
+	/**
+	 * @param types the types to set
+	 */
+	public void setTypes(ArrayList<Type> types) {
+		this.types = types;
 	}
 	
 }
