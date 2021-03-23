@@ -112,7 +112,7 @@ public class Product implements Serializable {
 		return added;
 	}
 	
-	public boolean deleteIngredient(PriceBySize pbs) {
+	public boolean deletePriceBySize(PriceBySize pbs) {
 		boolean deleted = false;
 		deleted = pricesBySizes.remove(pbs);
 		return deleted;

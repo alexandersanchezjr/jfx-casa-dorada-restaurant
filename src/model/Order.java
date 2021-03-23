@@ -19,12 +19,12 @@ public class Order implements Serializable {
 	 * @param id
 	 * @param date
 	 */
-	public Order(long id, Date date, String selectedStatus, String employeeName, String employeeSurname, String employeeId, String customerName, String customerSurname, String customerId, String customerAddress, String customerPhoneNumber, String comments) {
+	public Order(long id, Date date, String selectedStatus, String employeeName, String employeeSurname, String employeeId, User employeeCreator, String customerName, String customerSurname, String customerId, String customerAddress, String customerPhoneNumber, String comments) {
 		this.id = id;
 		this.date = date;
 		status = (Status.valueOf(selectedStatus));
 		products = new ArrayList<Product>();
-		employee = new Employee(employeeName, employeeSurname, employeeId);
+		employee = new Employee(employeeName, employeeSurname, employeeId, employeeCreator);
 		customer = new Customer(customerName, customerSurname, customerId, customerAddress, customerPhoneNumber);
 		this.comments = comments;
 	}

@@ -3,8 +3,10 @@ package model;
 public class User extends Employee {
 	
 	private static final long serialVersionUID = 1;
-	private String user;
+	private String username;
 	private String password;
+	private User creator;
+	private User modifier;
 	
 	/**
 	 * @param name
@@ -13,24 +15,26 @@ public class User extends Employee {
 	 * @param user
 	 * @param password
 	 */
-	public User(String name, String surname, String id, String user, String password) {
-		super(name, surname, id);
-		this.user = user;
-		this.password = password;	
+	public User(String name, String surname, String id, User employeeCreator, String username, String password, User creator) {
+		super(name, surname, id, employeeCreator);
+		this.username = username;
+		this.password = password;
+		this.creator = creator;
+		modifier = creator;
 	}
 
 	/**
 	 * @return the user
 	 */
-	public String getUser() {
-		return user;
+	public String getUsername() {
+		return username;
 	}
 
 	/**
 	 * @param user the user to set
 	 */
-	public void setUser(String user) {
-		this.user = user;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	/**
@@ -45,6 +49,34 @@ public class User extends Employee {
 	 */
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	/**
+	 * @return the creator
+	 */
+	public User getCreator() {
+		return creator;
+	}
+
+	/**
+	 * @param creator the creator to set
+	 */
+	public void setCreator(User creator) {
+		this.creator = creator;
+	}
+
+	/**
+	 * @return the modifier
+	 */
+	public User getModifier() {
+		return modifier;
+	}
+
+	/**
+	 * @param modifier the modifier to set
+	 */
+	public void setModifier(User modifier) {
+		this.modifier = modifier;
 	}
 
 }
