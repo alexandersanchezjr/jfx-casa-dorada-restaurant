@@ -11,22 +11,26 @@ public class Order implements Serializable {
 	private Date date;
 	private Status status;
 	private ArrayList<Product> products;
-	private Employee employee;
+	private Employee employee; //Employee delivering the order 
 	private Customer customer;
 	private String comments;
+	private User creator;
+	private User modifier;
 	
 	/**
 	 * @param id
 	 * @param date
 	 */
-	public Order(long id, Date date, String selectedStatus, String employeeName, String employeeSurname, String employeeId, User employeeCreator, String customerName, String customerSurname, String customerId, String customerAddress, String customerPhoneNumber, String comments) {
+	public Order(long id, Date date, String selectedStatus, Employee e, String customerName, String customerSurname, String customerId, String customerAddress, String customerPhoneNumber, String comments, User customerCreator, String customerComments, User creator) {
 		this.id = id;
 		this.date = date;
 		status = (Status.valueOf(selectedStatus));
 		products = new ArrayList<Product>();
-		employee = new Employee(employeeName, employeeSurname, employeeId, employeeCreator);
-		customer = new Customer(customerName, customerSurname, customerId, customerAddress, customerPhoneNumber);
+		employee = e;
+		customer = new Customer(customerName, customerSurname, customerId, customerAddress, customerPhoneNumber, customerComments, customerCreator);
 		this.comments = comments;
+		this.creator = creator;
+		modifier = creator;
 	}
 	
 	/**
@@ -109,6 +113,34 @@ public class Order implements Serializable {
 	 */
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+
+	/**
+	 * @return the creator
+	 */
+	public User getCreator() {
+		return creator;
+	}
+
+	/**
+	 * @param creator the creator to set
+	 */
+	public void setCreator(User creator) {
+		this.creator = creator;
+	}
+
+	/**
+	 * @return the modifier
+	 */
+	public User getModifier() {
+		return modifier;
+	}
+
+	/**
+	 * @param modifier the modifier to set
+	 */
+	public void setModifier(User modifier) {
+		this.modifier = modifier;
 	}
 	
 }
