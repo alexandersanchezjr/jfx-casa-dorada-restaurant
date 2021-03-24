@@ -8,6 +8,9 @@ public class Customer {
 	private String address;
 	private String phoneNumber;
 	private String comments;
+	private boolean availability;
+	private User creator;
+	private User modifier;
 	
 	/**
 	 * @param name
@@ -16,13 +19,17 @@ public class Customer {
 	 * @param address
 	 * @param phoneNumber
 	 */
-	public Customer(String name, String surname, String id, String address, String phoneNumber) {
+	public Customer(String name, String surname, String id, String address, String phoneNumber, String comments, User creator) {
 		super();
 		this.name = name;
 		this.surname = surname;
 		this.setId(id);
 		this.address = address;
 		this.phoneNumber = phoneNumber;
+		this.comments = comments;
+		setAvailability(true);
+		this.creator = creator;
+		modifier = creator;
 	}
 
 	/**
@@ -101,6 +108,48 @@ public class Customer {
 	 */
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	/**
+	 * @return the creator
+	 */
+	public User getCreator() {
+		return creator;
+	}
+
+	/**
+	 * @param creator the creator to set
+	 */
+	public void setCreator(User creator) {
+		this.creator = creator;
+	}
+
+	/**
+	 * @return the modifier
+	 */
+	public User getModifier() {
+		return modifier;
+	}
+
+	/**
+	 * @param modifier the modifier to set
+	 */
+	public void setModifier(User modifier) {
+		this.modifier = modifier;
+	}
+
+	/**
+	 * @return the availability
+	 */
+	public boolean isAvailability() {
+		return availability;
+	}
+
+	/**
+	 * @param availability the availability to set
+	 */
+	public void setAvailability(boolean availability) {
+		this.availability = availability;
 	}
 	
 }
