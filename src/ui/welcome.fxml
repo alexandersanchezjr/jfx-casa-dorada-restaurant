@@ -32,6 +32,7 @@
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="250.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="250.0" />
+            <ColumnConstraints />
          </columnConstraints>
          <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
@@ -78,9 +79,14 @@
                   <Insets />
                </GridPane.margin>
             </PasswordField>
-            <Button mnemonicParsing="false" onAction="#logIn" style="-fx-background-color: #ffd54f; -fx-background-radius: 10; -fx-border-color: #ffb300; -fx-border-radius: 10; -fx-border-width: 2px;" text="Entrar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+            <Button fx:id="logInButton" mnemonicParsing="false" onAction="#logIn" style="-fx-background-color: #ffd54f; -fx-background-radius: 10; -fx-border-color: #ffb300; -fx-border-radius: 10; -fx-border-width: 2px;" text="Entrar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3">
                <font>
                   <Font name="Gill Sans MT" size="24.0" />
+               </font>
+            </Button>
+            <Button fx:id="firstRegisterButton" mnemonicParsing="false" onAction="#registerFirstUser" style="-fx-background-color: transparent;" text="Crear primer administrador" textFill="#ffb300" GridPane.rowIndex="3">
+               <font>
+                  <Font name="Gill Sans MT" size="14.0" />
                </font>
             </Button>
          </children>
