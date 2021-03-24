@@ -2,12 +2,14 @@ package model;
 
 public class Ingredient {
 	private String name;
+	private boolean availability;
 	private long id;
 	private User creator;
 	private User modifier;
 	
-	public Ingredient(String name, long id, User creator) {
+	public Ingredient(String name, boolean availability, long id, User creator) {
 		this.setName(name);
+		this.setAvailability(availability);
 		this.setId(id);
 		this.creator = creator;
 		setModifier(creator);
@@ -19,6 +21,20 @@ public class Ingredient {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * @return the availability
+	 */
+	public boolean isAvailability() {
+		return availability;
+	}
+
+	/**
+	 * @param availability the availability to set
+	 */
+	public void setAvailability(boolean availability) {
+		this.availability = availability;
 	}
 
 	/**

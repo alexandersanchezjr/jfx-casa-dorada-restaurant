@@ -4,18 +4,25 @@ import java.util.ArrayList;
 
 public class Restaurant {
 	private ArrayList<Employee> employees;
+	private ArrayList<User> operatorsUsers;
+	private ArrayList<User> admins;
 	private ArrayList<Product> products;
 	private ArrayList<Ingredient> ingredients;
 	private ArrayList<Type> types;
 	private ArrayList<Customer> customers;
-	private ArrayList<User> admins;
+	private ArrayList<Order> orders;
 	private User loggedUser;
 	private long identifier;
 	
 	public Restaurant() {
 		employees = new ArrayList<Employee>();
+		setOperatorsUsers(new ArrayList<User>());
+		admins = new ArrayList<User>();
 		products = new ArrayList<Product>();
+		ingredients = new ArrayList<Ingredient>();
+		types = new ArrayList<Type>();
 		customers = new ArrayList<Customer>();
+		orders = new ArrayList<Order>();
 		setLoggedUser(null);
 		identifier = 0;
 	}
@@ -70,6 +77,20 @@ public class Restaurant {
 	}
 
 	/**
+	 * @return the operatorsUsers
+	 */
+	public ArrayList<User> getOperatorsUsers() {
+		return operatorsUsers;
+	}
+
+	/**
+	 * @param operatorsUsers the operatorsUsers to set
+	 */
+	public void setOperatorsUsers(ArrayList<User> operatorsUsers) {
+		this.operatorsUsers = operatorsUsers;
+	}
+
+	/**
 	 * @return the ingredients
 	 */
 	public ArrayList<Ingredient> getIngredients() {
@@ -113,9 +134,9 @@ public class Restaurant {
 	
 	//Product MANAGEMENT
 
-	public boolean addProduct(String name, ArrayList<Ingredient> ingredients, ArrayList<PriceBySize> pricesBySizes, boolean availability, String selectedType, String size, String price) {
+	public boolean addProduct(String name, ArrayList<Ingredient> ingredients, ArrayList<PriceBySize> pricesBySizes, boolean availability, String selectedType, boolean typeAvailability, User typeCreator, String size, String price) {
 		boolean added = false;
-		added = products.add(new Product(name,(identifier++), ingredients, pricesBySizes, availability, selectedType, size, price, loggedUser));
+		added = products.add(new Product(name,(identifier++), ingredients, pricesBySizes, availability, selectedType, typeAvailability, typeCreator, size, price, loggedUser));
 		return added;
 	}
 	
@@ -129,7 +150,11 @@ public class Restaurant {
 	
 	public boolean deleteProduct(Product p) {
 		boolean deleted = false;
-		deleted = products.remove(p);
+		for(int i = 0; i<orders.size(); i++) {
+			if(!orders.get(i).getProducts().contains(p)) {
+				deleted = products.remove(p);
+			}
+		}
 		return deleted;
 	}
 	
@@ -197,9 +222,9 @@ public class Restaurant {
 	
 	public boolean addUser(String name, String surname, String id, User employeeCreator, String username, String password, User creator) {
 		boolean added = false;
-		Employee thisUser = new User(name, surname, id, employeeCreator, username, password, loggedUser);
-		if(!employees.contains(thisUser)) { // If contains() generate error, change with a normal search with a for loop
-			added = employees.add(thisUser);
+		User thisUser = new User(name, surname, id, employeeCreator, username, password, loggedUser);
+		if(!operatorsUsers.contains(thisUser)) { // If contains() generate error, change with a normal search with a for loop
+			added = operatorsUsers.add(thisUser);
 		}
 		return added;
 	}
@@ -212,7 +237,7 @@ public class Restaurant {
 	
 	public boolean deleteUser(User u) {
 		boolean deleted = false;
-		deleted = employees.remove(u);
+		deleted = operatorsUsers.remove(u);
 		return deleted;
 	}
 	
@@ -239,7 +264,7 @@ public class Restaurant {
 	public boolean addAdminUser(String name, String surname, String id, User employeeCreator, String username, String password, User creator) {
 		boolean added = false;
 		User thisAdmin = new User(name, surname, id, employeeCreator, username, password, loggedUser);
-		if(!employees.contains(thisAdmin)) { // If contains() generate error, change with a normal search with a for loop
+		if(!admins.contains(thisAdmin)) { // If contains() generate error, change with a normal search with a for loop
 			added = admins.add(thisAdmin);
 		}
 		return added;
@@ -253,14 +278,50 @@ public class Restaurant {
 	
 	//Ingredients MANAGEMENT
 	
-	public boolean addIngredient(String name) {
+	public boolean addIngredient(String name, boolean availability) {
 		boolean added = false;
-		Ingredient thisIngredient = new Ingredient(name, (identifier++), loggedUser);
+		Ingredient thisIngredient = new Ingredient(name, availability, (identifier++), loggedUser);
 		if(!ingredients.contains(thisIngredient)) {	
 			added = ingredients.add(thisIngredient);
 		}
 		return added;
 	}
+	
+	public boolean deleteIngredient(Ingredient ingredient) {
+		boolean deleted = false;
+		for(int i = 0; i<products.size(); i++) {
+			if(!products.get(i).getIngredients().contains(ingredient)) {
+				deleted = ingredients.remove(ingredient);
+			}
+		}
+		return deleted;
+	}
+	
+	public void updateIngredient(Ingredient i, String name) {
+		i.setName(name);
+		i.setModifier(loggedUser);
+	}
+	
+	public boolean enableIngredient(Ingredient ingredient) {
+		boolean enabled = false;
+		if(!ingredient.isAvailability()) {
+			ingredient.setAvailability(true);
+			enabled = true;
+		}
+		return enabled;
+	}
+	
+	public boolean disableIngredient(Ingredient ingredient) {
+		boolean disabled = false;
+		if(ingredient.isAvailability()) {
+			ingredient.setAvailability(false);
+			disabled = true;
+		}
+		return disabled;
+	}
+	
+	//Order MANAGEMENT
+	
 	
 	
 }
