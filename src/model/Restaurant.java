@@ -322,6 +322,47 @@ public class Restaurant {
 	
 	//Order MANAGEMENT
 	
+	//Customer MANAGEMENT
+	public boolean addCustomer(String name, String surname, String id, String address, String phoneNumber, String comments) {
+		boolean added = false;
+		Customer thisCustomer = new Customer(name, surname, id, address, phoneNumber, comments, loggedUser);
+		if(!customers.contains(thisCustomer)) {
+			added = customers.add(thisCustomer);
+		}
+		return added;
+	}
 	
+	public boolean deleteCustomer(Customer c) {
+		boolean deleted = false;
+		deleted = customers.remove(c);
+		return deleted;
+	}
 	
+	public void updateCustomer(Customer c, String name, String surname, String id, String address, String phoneNumber, String comments) {
+		c.setName(name);
+		c.setSurname(surname);
+		c.setId(id);
+		c.setAddress(address);
+		c.setPhoneNumber(phoneNumber);
+		c.setComments(comments);
+		c.setModifier(loggedUser);
+	}
+	
+	public boolean enableCustomer(Customer c) {
+		boolean enabled = false;
+		if(!c.isAvailability()) {
+			c.setAvailability(true);
+			enabled = true;
+		}
+		return enabled;
+	}
+	
+	public boolean disableCustomer(Customer c) {
+		boolean disabled = false;
+		if(c.isAvailability()) {
+			c.setAvailability(false);
+			disabled = true;
+		}
+		return disabled;
+	}
 }
