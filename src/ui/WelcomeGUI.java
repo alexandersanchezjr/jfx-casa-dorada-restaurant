@@ -49,6 +49,26 @@ public class WelcomeGUI {
     
     @FXML
     private Button firstRegisterButton;
+    
+    //Attributes of First Admin's Register (first_register_pane.fxml)
+    
+    @FXML
+    private TextField registerNameTxt;
+
+    @FXML
+    private TextField registerSurnameTxt;
+
+    @FXML
+    private TextField registerIdTxt;
+
+    @FXML
+    private TextField registerUsernameTxt;
+
+    @FXML
+    private TextField registerPasswordTxt;
+
+    @FXML
+    private TextField registerConfirmPasswordTxt;
 
 	private Restaurant restaurant;
 	private EmployeeGUI employeeGUI;
@@ -183,5 +203,10 @@ public class WelcomeGUI {
     	
 		mainGridPane.getChildren().clear();
 		mainGridPane.getChildren().addAll(FirstAdminRegister);
+    }
+    
+    @FXML
+    public void registerFirstAdmin(ActionEvent event) {
+
     }
 }
