@@ -5,6 +5,7 @@ import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -21,6 +22,9 @@ public class WelcomeGUI {
 	
 	@FXML
     private GridPane mainGridPane;
+	
+	@FXML
+    private AnchorPane imagePane;
 	
 	@FXML
     private ImageView imgRestaurant;
@@ -59,6 +63,23 @@ public class WelcomeGUI {
 	public void initialize() {
     	//the method (initialize) is called several times by different fxml files loads 
     }
+	
+	public void resizeImageView() {
+		imgRestaurant.fitWidthProperty().bind(imagePane.widthProperty());
+		imgRestaurant.fitHeightProperty().bind(imagePane.heightProperty());
+	}
+	
+	public void firstAdmin() {
+		if(restaurant.getAdmins().isEmpty()) {
+			logInButton.setDisable(false);
+			rdBtOperator.setDisable(false);
+			rdBtAdmin.setDisable(false);
+		}
+		else {
+			firstRegisterButton.setVisible(false);
+			firstRegisterButton.setDisable(false);
+		}
+	}
 	
 	//Verification login of an administrator
 	public boolean verificationAdminLogin() {
