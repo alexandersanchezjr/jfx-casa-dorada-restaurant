@@ -104,7 +104,7 @@ public class WelcomeGUI {
 	}
 	
 	//Verification login of an administrator
-	public boolean verificationAdminLogin() {
+	private boolean verificationAdminLogin() {
 		boolean logged = false;
 		for(int i=0; i<restaurant.getAdmins().size() && !logged; i++) {
 	        if(restaurant.getAdmins().get(i) != null) {	
@@ -126,7 +126,7 @@ public class WelcomeGUI {
 	}
 	
 	//Verification login of an operator user
-	public boolean verificationOperatorLogin() {
+	private boolean verificationOperatorLogin() {
 		boolean logged = false;
 		if(restaurant.getOperatorsUsers().size() == 0) {
     		Alert alert = new Alert(AlertType.ERROR);
@@ -198,7 +198,7 @@ public class WelcomeGUI {
     public void registerFirstUser(ActionEvent event) throws IOException {
     	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("first_register_pane.fxml"));
 		
-		fxmlLoader.setController(adminGUI);
+		fxmlLoader.setController(this);
 		Parent FirstAdminRegister = fxmlLoader.load();
     	
 		mainGridPane.getChildren().clear();
@@ -206,7 +206,7 @@ public class WelcomeGUI {
     }
     
     @FXML
-    public void registerFirstAdmin(ActionEvent event) {
+    public void registerFirstAdmin(ActionEvent event) throws IOException {
 
     }
 }
