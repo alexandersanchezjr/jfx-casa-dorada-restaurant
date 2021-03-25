@@ -136,7 +136,10 @@ public class Restaurant {
 
 	public boolean addProduct(String name, ArrayList<Ingredient> ingredients, ArrayList<PriceBySize> pricesBySizes, boolean availability, String selectedType, boolean typeAvailability, User typeCreator, String size, String price) {
 		boolean added = false;
-		added = products.add(new Product(name,(identifier++), ingredients, pricesBySizes, availability, selectedType, typeAvailability, typeCreator, size, price, loggedUser));
+		Product newProduct = new Product(name,(identifier++), ingredients, pricesBySizes, availability, selectedType, typeAvailability, typeCreator, size, price, loggedUser);
+		if(!products.contains(newProduct)) {	
+			added = products.add(newProduct);
+		}
 		return added;
 	}
 	
@@ -196,7 +199,15 @@ public class Restaurant {
 	
 	public boolean deleteEmployee(Employee e) {
 		boolean deleted = false;
-		deleted = employees.remove(e);
+		boolean found = false;
+		for(int i = 0; i<orders.size() && !found; i++) {
+			if(orders.get(i).getEmployee().equals(e)) {
+				found = true;
+			}
+		}
+		if(found == false) {
+			deleted = employees.remove(e);
+		}
 		return deleted;
 	}
 	
@@ -334,7 +345,11 @@ public class Restaurant {
 	
 	public boolean deleteCustomer(Customer c) {
 		boolean deleted = false;
-		deleted = customers.remove(c);
+		for(int i = 0; i<orders.size(); i++) {
+			if((!orders.get(i).getStatus().equalsIgnoreCase("CANCELADO")) && (!orders.get(i).getCustomer().equals(c))) {
+				deleted = customers.remove(c);
+			}
+		}
 		return deleted;
 	}
 	
