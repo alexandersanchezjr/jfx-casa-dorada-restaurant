@@ -17,6 +17,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import model.Restaurant;
+import model.User;
 
 public class WelcomeGUI {
 	
@@ -207,6 +208,38 @@ public class WelcomeGUI {
     
     @FXML
     public void registerFirstAdmin(ActionEvent event) throws IOException {
-
+    	if(registerNameTxt.getText().isEmpty() || registerSurnameTxt.getText().isEmpty() || registerIdTxt.getText().isEmpty() || registerUsernameTxt.getText().isEmpty() || registerPasswordTxt.getText().isEmpty() || registerConfirmPasswordTxt.getText().isEmpty()) {
+    		Alert alert = new Alert(AlertType.ERROR);
+	    	alert.setTitle("Error Validación");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("¡Ups! debes llenar todos los campos en el registro");
+	    	alert.showAndWait();
+    	}
+    	else if(!registerPasswordTxt.getText().equals(registerConfirmPasswordTxt.getText())) {
+    		Alert alert = new Alert(AlertType.ERROR);
+	    	alert.setTitle("Error Validación");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("¡Ups! La contraseña que ingresaste no coincide con la confirmación");
+	    	alert.showAndWait();
+    	}
+    	else {
+    		String name = registerNameTxt.getText();
+    		String surname = registerSurnameTxt.getText();
+    		String id = registerIdTxt.getText();
+    		String username = registerUsernameTxt.getText();
+    		String password = registerPasswordTxt.getText();
+    		if(restaurant.addAdminUser(name, surname, id, null, username, password, null)) {
+    			Alert alert = new Alert(AlertType.INFORMATION);
+		    	alert.setTitle("Administrador creado");
+		    	alert.setHeaderText(null);
+		    	alert.setContentText("El primer administrador ha sido registrado exitosamente");
+		    	alert.showAndWait();
+		    	
+		    	User firstAdmin = restaurant.getAdmins().get(0);
+		    	restaurant.getAdmins().get(0).setCreator(firstAdmin);
+		    	restaurant.getAdmins().get(0).setModifier(firstAdmin);
+		    	restaurant.setLoggedUser(firstAdmin);
+    		}
+    	}
     }
 }
