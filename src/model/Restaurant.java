@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Restaurant {
 	private ArrayList<Employee> employees;
@@ -153,10 +154,14 @@ public class Restaurant {
 	
 	public boolean deleteProduct(Product p) {
 		boolean deleted = false;
-		for(int i = 0; i<orders.size(); i++) {
-			if(!orders.get(i).getProducts().contains(p)) {
-				deleted = products.remove(p);
+		boolean found = false;
+		for(int i = 0; i<orders.size() && !found; i++) {
+			if(orders.get(i).getProducts().contains(p)) {
+				found = true;
 			}
+		}
+		if(found == false) {
+			deleted = products.remove(p);
 		}
 		return deleted;
 	}
@@ -174,6 +179,49 @@ public class Restaurant {
 		boolean disabled = false;
 		if(!p.isAvailability()) {
 			p.setAvailability(true);
+			disabled = true;
+		}
+		return disabled;
+	}
+	
+	//Type of product MANAGEMENT
+	
+	public boolean addTypeProduct(String name, boolean availability) {
+		boolean added = false;
+		Type thisType = new Type(name, availability, loggedUser);
+		if(!types.contains(thisType)) {
+			added = types.add(thisType);
+		}
+		return added;
+	}
+	
+	public boolean deleteTypeProduct(Type t) {
+		boolean deleted = false;
+		boolean found = false;
+		for(int i = 0; i<products.size() && !found; i++ ) {
+			if(products.get(i).getType().equals(t)) {
+				found = true;
+			}
+		}
+		if(found == false) {
+			deleted = types.remove(t);
+		}
+		return deleted;
+	}
+	
+	public boolean disableType(Type t) {
+		boolean disabled = false;
+		if(t.isAvailability()) {
+			t.setAvailability(false);
+			disabled = true;
+		}
+		return disabled;
+	}
+	
+	public boolean enableType(Type t) {
+		boolean disabled = false;
+		if(!t.isAvailability()) {
+			t.setAvailability(true);
 			disabled = true;
 		}
 		return disabled;
@@ -248,7 +296,20 @@ public class Restaurant {
 	
 	public boolean deleteUser(User u) {
 		boolean deleted = false;
-		deleted = operatorsUsers.remove(u);
+		boolean found = false;
+		for(int i = 0; i<orders.size() && !found; i++) { //If the user to delete is CREATOR or MODIFIER of an ORDER
+			if(orders.get(i).getCreator().equals(u) || orders.get(i).getModifier().equals(u)) {
+				found = true;
+			}
+		}
+		for(int i = 0; i<customers.size() && !found; i++) { //If the user to delete is CREATOR or MODIFIER of a CUSTOMER
+			if(customers.get(i).getCreator().equals(u) || customers.get(i).getModifier().equals(u)) {
+				found = true;
+			}
+		}
+		if(found == false) {
+			deleted = operatorsUsers.remove(u);
+		}
 		return deleted;
 	}
 	
@@ -283,7 +344,22 @@ public class Restaurant {
 	
 	public boolean deletedAdminUser(User u) {
 		boolean deleted = false;
-		deleted = admins.remove(u);
+		boolean found = false;
+		for(int i = 0; i<products.size() && !found; i++) { //If the user to delete is CREATOR or MODIFIER of a PRODUCT, INGREDIENT OR TYPE OF PRODUCT
+			if((products.get(i).getCreator().equals(u) || products.get(i).getModifier().equals(u)) || (ingredients.get(i).getCreator().equals(u) || ingredients.get(i).getModifier().equals(u)) || (types.get(i).getCreator().equals(u) || types.get(i).getModifier().equals(u))) {
+				found = true;
+			}
+			
+		}
+		for( int i = 0; i<employees.size() && !found; i++) { //If the user to delete is CREATOR or MODIFIER of an EMPLOYEE, OPERATOR USER OR ADMIN
+			if((employees.get(i).getCreator().equals(u) || employees.get(i).getModifier().equals(u)) || (operatorsUsers.get(i).getCreator().equals(u) || operatorsUsers.get(i).getModifier().equals(u)) || (admins.get(i).getCreator().equals(u) || admins.get(i).getModifier().equals(u))) {
+				found = true;
+			}
+		}
+		
+		if(found == false) {
+			deleted = admins.remove(u);
+		}
 		return deleted;
 	}
 	
@@ -332,6 +408,27 @@ public class Restaurant {
 	}
 	
 	//Order MANAGEMENT
+	
+	public boolean addOrder(Date date, String selectedStatus, Employee e, String customerName, String customerSurname, String customerId, String customerAddress, String customerPhoneNumber, String comments, User customerCreator, String customerComments) {
+		boolean added = false;
+		Order newOrder = new Order((identifier++), date, selectedStatus, e, customerName, customerSurname, customerId, customerAddress, customerPhoneNumber, comments, customerCreator, customerComments, loggedUser);
+		if(!orders.contains(newOrder)) {
+			added = orders.add(newOrder);
+		}
+		return added;
+	}
+	
+	public boolean deleteOrder(Order o) {
+		boolean deleted = false;
+		if(o.getStatus().equalsIgnoreCase("CANCELADO")) {
+			deleted = orders.remove(o);
+		}
+		return deleted;
+	}
+	
+	public void updateOrder(Order o) {
+		
+	}
 	
 	//Customer MANAGEMENT
 	public boolean addCustomer(String name, String surname, String id, String address, String phoneNumber, String comments) {
