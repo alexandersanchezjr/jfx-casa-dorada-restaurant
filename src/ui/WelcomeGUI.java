@@ -70,14 +70,16 @@ public class WelcomeGUI {
 	}
 	
 	public void firstAdmin() {
-		if(restaurant.getAdmins().isEmpty()) {
-			logInButton.setDisable(false);
-			rdBtOperator.setDisable(false);
-			rdBtAdmin.setDisable(false);
+		if(restaurant.getAdmins().size() == 0) {
+			logInButton.setDisable(true);
+			rdBtOperator.setDisable(true);
+			rdBtAdmin.setDisable(true);
+			adminUserTxt.setDisable(true);
+			adminPasswordTxt.setDisable(true);
 		}
 		else {
 			firstRegisterButton.setVisible(false);
-			firstRegisterButton.setDisable(false);
+			firstRegisterButton.setDisable(true);
 		}
 	}
 	
@@ -173,7 +175,13 @@ public class WelcomeGUI {
 	}
     
     @FXML
-    public void registerFirstUser(ActionEvent event) {
+    public void registerFirstUser(ActionEvent event) throws IOException {
+    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("first_register_pane.fxml"));
+		
+		fxmlLoader.setController(adminGUI);
+		Parent FirstAdminRegister = fxmlLoader.load();
     	
+		mainGridPane.getChildren().clear();
+		mainGridPane.getChildren().addAll(FirstAdminRegister);
     }
 }
