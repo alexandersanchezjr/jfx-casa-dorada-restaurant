@@ -5,6 +5,7 @@ import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -21,6 +22,9 @@ public class WelcomeGUI {
 	
 	@FXML
     private GridPane mainGridPane;
+	
+	@FXML
+    private AnchorPane imagePane;
 	
 	@FXML
     private ImageView imgRestaurant;
@@ -59,6 +63,25 @@ public class WelcomeGUI {
 	public void initialize() {
     	//the method (initialize) is called several times by different fxml files loads 
     }
+	
+	public void resizeImageView() {
+		imgRestaurant.fitWidthProperty().bind(imagePane.widthProperty());
+		imgRestaurant.fitHeightProperty().bind(imagePane.heightProperty());
+	}
+	
+	public void firstAdmin() {
+		if(restaurant.getAdmins().size() == 0) {
+			logInButton.setDisable(true);
+			rdBtOperator.setDisable(true);
+			rdBtAdmin.setDisable(true);
+			adminUserTxt.setDisable(true);
+			adminPasswordTxt.setDisable(true);
+		}
+		else {
+			firstRegisterButton.setVisible(false);
+			firstRegisterButton.setDisable(true);
+		}
+	}
 	
 	//Verification login of an administrator
 	public boolean verificationAdminLogin() {
@@ -152,7 +175,13 @@ public class WelcomeGUI {
 	}
     
     @FXML
-    public void registerFirstUser(ActionEvent event) {
+    public void registerFirstUser(ActionEvent event) throws IOException {
+    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("first_register_pane.fxml"));
+		
+		fxmlLoader.setController(adminGUI);
+		Parent FirstAdminRegister = fxmlLoader.load();
     	
+		mainGridPane.getChildren().clear();
+		mainGridPane.getChildren().addAll(FirstAdminRegister);
     }
 }

@@ -104,15 +104,15 @@ public class Order implements Serializable {
 	/**
 	 * @return the status
 	 */
-	public Status getStatus() {
-		return status;
+	public String getStatus() {
+		return status.toString();
 	}
 
 	/**
 	 * @param status the status to set
 	 */
-	public void setStatus(Status status) {
-		this.status = status;
+	public void setStatus(String status) {
+		this.status = Status.valueOf(status);
 	}
 
 	/**
