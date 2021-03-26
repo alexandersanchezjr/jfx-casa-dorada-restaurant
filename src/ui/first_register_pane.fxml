@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
@@ -11,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="mainFirstRegisterPane" maxWidth="-Infinity" prefHeight="265.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="mainFirstRegisterPane" maxWidth="-Infinity" prefHeight="600.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane alignment="CENTER" hgap="10.0" layoutX="75.0" layoutY="75.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="700.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
         <columnConstraints>
@@ -47,7 +46,7 @@
                </font></TextField>
             <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Registro de Administrador" GridPane.columnSpan="3">
                <font>
-                  <Font name="Gill Sans MT Bold" size="40.0" />
+                  <Font name="Gill Sans MT Bold" size="64.0" />
                </font>
             </Label>
             <Label text="Información Personal" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
@@ -62,13 +61,10 @@
                <font>
                   <Font name="Gill Sans MT" size="24.0" />
                </font></TextField>
-            <Button mnemonicParsing="false" onAction="#registerFirstAdmin" prefWidth="120.0" text="Registrarme" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="6">
+            <Button mnemonicParsing="false" onAction="#registerFirstAdmin" prefWidth="150.0" text="Registrarme" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="6">
                <font>
                   <Font name="Gill Sans MT" size="24.0" />
-               </font>
-               <GridPane.margin>
-                  <Insets left="25.0" />
-               </GridPane.margin></Button>
+               </font></Button>
             <Separator orientation="VERTICAL" prefHeight="200.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.rowSpan="4" GridPane.valignment="CENTER" />
             <Separator prefWidth="200.0" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
             <TextField fx:id="registerConfirmPasswordTxt" focusTraversable="false" layoutX="233.0" layoutY="125.0" maxWidth="-Infinity" promptText="Confirmar contraseña" GridPane.columnIndex="2" GridPane.rowIndex="5">
@@ -76,13 +72,10 @@
                   <Font name="Gill Sans MT" size="24.0" />
                </font>
             </TextField>
-            <Button layoutX="397.0" layoutY="278.0" mnemonicParsing="false" onAction="#goBackFromRegister" prefWidth="120.0" text="Atrás" GridPane.halignment="CENTER" GridPane.rowIndex="6">
+            <Button layoutX="397.0" layoutY="278.0" mnemonicParsing="false" onAction="#goBackFromRegister" prefWidth="150.0" text="Atrás" GridPane.halignment="CENTER" GridPane.rowIndex="6">
                <font>
                   <Font name="Gill Sans MT" size="24.0" />
                </font>
-               <GridPane.margin>
-                  <Insets right="25.0" />
-               </GridPane.margin>
             </Button>
          </children>
       </GridPane>
