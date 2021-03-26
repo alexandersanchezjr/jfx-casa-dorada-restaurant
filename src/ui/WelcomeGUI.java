@@ -203,6 +203,7 @@ public class WelcomeGUI {
 		Parent FirstAdminRegister = fxmlLoader.load();
     	
 		mainGridPane.getChildren().clear();
+		mainGridPane.setStyle("-fx-background-color:white; -fx-opacity:1;");
 		mainGridPane.getChildren().addAll(FirstAdminRegister);
     }
     
