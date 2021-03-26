@@ -17,6 +17,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import model.Restaurant;
+import model.User;
 
 public class WelcomeGUI {
 	
@@ -49,6 +50,26 @@ public class WelcomeGUI {
     
     @FXML
     private Button firstRegisterButton;
+    
+    //Attributes of First Admin's Register (first_register_pane.fxml)
+    
+    @FXML
+    private TextField registerNameTxt;
+
+    @FXML
+    private TextField registerSurnameTxt;
+
+    @FXML
+    private TextField registerIdTxt;
+
+    @FXML
+    private TextField registerUsernameTxt;
+
+    @FXML
+    private TextField registerPasswordTxt;
+
+    @FXML
+    private TextField registerConfirmPasswordTxt;
 
 	private Restaurant restaurant;
 	private EmployeeGUI employeeGUI;
@@ -84,7 +105,7 @@ public class WelcomeGUI {
 	}
 	
 	//Verification login of an administrator
-	public boolean verificationAdminLogin() {
+	private boolean verificationAdminLogin() {
 		boolean logged = false;
 		for(int i=0; i<restaurant.getAdmins().size() && !logged; i++) {
 	        if(restaurant.getAdmins().get(i) != null) {	
@@ -106,7 +127,7 @@ public class WelcomeGUI {
 	}
 	
 	//Verification login of an operator user
-	public boolean verificationOperatorLogin() {
+	private boolean verificationOperatorLogin() {
 		boolean logged = false;
 		if(restaurant.getOperatorsUsers().size() == 0) {
     		Alert alert = new Alert(AlertType.ERROR);
@@ -178,10 +199,47 @@ public class WelcomeGUI {
     public void registerFirstUser(ActionEvent event) throws IOException {
     	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("first_register_pane.fxml"));
 		
-		fxmlLoader.setController(adminGUI);
+		fxmlLoader.setController(this);
 		Parent FirstAdminRegister = fxmlLoader.load();
     	
 		mainGridPane.getChildren().clear();
 		mainGridPane.getChildren().addAll(FirstAdminRegister);
+    }
+    
+    @FXML
+    public void registerFirstAdmin(ActionEvent event) throws IOException {
+    	if(registerNameTxt.getText().isEmpty() || registerSurnameTxt.getText().isEmpty() || registerIdTxt.getText().isEmpty() || registerUsernameTxt.getText().isEmpty() || registerPasswordTxt.getText().isEmpty() || registerConfirmPasswordTxt.getText().isEmpty()) {
+    		Alert alert = new Alert(AlertType.ERROR);
+	    	alert.setTitle("Error Validación");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("¡Ups! debes llenar todos los campos en el registro");
+	    	alert.showAndWait();
+    	}
+    	else if(!registerPasswordTxt.getText().equals(registerConfirmPasswordTxt.getText())) {
+    		Alert alert = new Alert(AlertType.ERROR);
+	    	alert.setTitle("Error Validación");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("¡Ups! La contraseña que ingresaste no coincide con la confirmación");
+	    	alert.showAndWait();
+    	}
+    	else {
+    		String name = registerNameTxt.getText();
+    		String surname = registerSurnameTxt.getText();
+    		String id = registerIdTxt.getText();
+    		String username = registerUsernameTxt.getText();
+    		String password = registerPasswordTxt.getText();
+    		if(restaurant.addAdminUser(name, surname, id, null, username, password, null)) {
+    			Alert alert = new Alert(AlertType.INFORMATION);
+		    	alert.setTitle("Administrador creado");
+		    	alert.setHeaderText(null);
+		    	alert.setContentText("El primer administrador ha sido registrado exitosamente");
+		    	alert.showAndWait();
+		    	
+		    	User firstAdmin = restaurant.getAdmins().get(0);
+		    	restaurant.getAdmins().get(0).setCreator(firstAdmin);
+		    	restaurant.getAdmins().get(0).setModifier(firstAdmin);
+		    	restaurant.setLoggedUser(firstAdmin);
+    		}
+    	}
     }
 }
