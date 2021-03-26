@@ -8,6 +8,7 @@ public class Employee implements Serializable {
 	private String name;
 	private String surname;
 	private String id;
+	private int ordersCont;
 	private boolean availability;
 	private User creator;
 	private User modifier;
@@ -47,6 +48,22 @@ public class Employee implements Serializable {
 	}
 	public void setId(String id) {
 		this.id = id;
+	}
+
+
+	/**
+	 * @return the ordersCont
+	 */
+	public int getOrdersCont() {
+		return ordersCont;
+	}
+
+
+	/**
+	 * @param ordersCont the ordersCont to set
+	 */
+	public void addOrder() {
+		ordersCont++;
 	}
 
 

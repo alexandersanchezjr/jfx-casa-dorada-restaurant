@@ -156,8 +156,10 @@ public class Restaurant {
 		boolean deleted = false;
 		boolean found = false;
 		for(int i = 0; i<orders.size() && !found; i++) {
-			if(orders.get(i).getProducts().contains(p)) {
-				found = true;
+			for(int j = 0; j<orders.get(i).getProducts().size() && !found; j++) {
+				if(orders.get(i).getProducts().get(j).getProduct().equals(p)) {
+					found = true;
+				}
 			}
 		}
 		if(found == false) {
@@ -409,11 +411,12 @@ public class Restaurant {
 	
 	//Order MANAGEMENT
 	
-	public boolean addOrder(Date date, String selectedStatus, Employee e, String customerName, String customerSurname, String customerId, String customerAddress, String customerPhoneNumber, String comments, User customerCreator, String customerComments) {
+	public boolean addOrder(Date date, String selectedStatus, ArrayList<DetailProduct> products, Employee e, String customerName, String customerSurname, String customerId, String customerAddress, String customerPhoneNumber, String comments, User customerCreator, String customerComments) {
 		boolean added = false;
-		Order newOrder = new Order((identifier++), date, selectedStatus, e, customerName, customerSurname, customerId, customerAddress, customerPhoneNumber, comments, customerCreator, customerComments, loggedUser);
+		Order newOrder = new Order((identifier++), date, selectedStatus, products,  e, customerName, customerSurname, customerId, customerAddress, customerPhoneNumber, comments, customerCreator, customerComments, loggedUser);
 		if(!orders.contains(newOrder)) {
 			added = orders.add(newOrder);
+			orders.get(orders.indexOf(newOrder)).getEmployee().addOrder();
 		}
 		return added;
 	}
@@ -426,8 +429,12 @@ public class Restaurant {
 		return deleted;
 	}
 	
-	public void updateOrder(Order o) {
-		
+	public void updateOrder(Order o, String status, ArrayList<DetailProduct> products, Employee e, String comments) {
+		o.setStatus(status);
+		o.setProducts(products);
+		o.setEmployee(e);
+		o.setComments(comments);
+		o.setModifier(loggedUser);
 	}
 	
 	//Customer MANAGEMENT
