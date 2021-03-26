@@ -171,7 +171,7 @@
                      </font>
                   </TextArea>
                   <Button mnemonicParsing="false" text="Actualizar" />
-                  <Button minWidth="68.0" mnemonicParsing="false" onAction="#goBack" prefHeight="25.0" prefWidth="162.0" text="Atrás">
+                  <Button minWidth="68.0" mnemonicParsing="false" onAction="#goBackFromEmployee" prefHeight="25.0" prefWidth="162.0" text="Atrás">
                      <font>
                         <Font name="Gill Sans MT" size="12.0" />
                      </font>
