@@ -54,6 +54,9 @@ public class WelcomeGUI {
     //Attributes of First Admin's Register (first_register_pane.fxml)
     
     @FXML
+    private AnchorPane mainFirstRegisterPane;
+    
+    @FXML
     private TextField registerNameTxt;
 
     @FXML
@@ -84,6 +87,8 @@ public class WelcomeGUI {
 	public void initialize() {
     	//the method (initialize) is called several times by different fxml files loads 
     }
+	
+	//Methods of welcome.fxml
 	
 	public void resizeImageView() {
 		imgRestaurant.fitWidthProperty().bind(imagePane.widthProperty());
@@ -207,6 +212,8 @@ public class WelcomeGUI {
 		mainGridPane.getChildren().addAll(FirstAdminRegister);
     }
     
+    //Methods of first_register_pane.fxml
+    
     @FXML
     public void registerFirstAdmin(ActionEvent event) throws IOException {
     	if(registerNameTxt.getText().isEmpty() || registerSurnameTxt.getText().isEmpty() || registerIdTxt.getText().isEmpty() || registerUsernameTxt.getText().isEmpty() || registerPasswordTxt.getText().isEmpty() || registerConfirmPasswordTxt.getText().isEmpty()) {
@@ -242,5 +249,17 @@ public class WelcomeGUI {
 		    	restaurant.setLoggedUser(firstAdmin);
     		}
     	}
+    }
+    
+    @FXML
+    public void goBack(ActionEvent event) throws IOException {
+    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("welcome.fxml"));
+		
+		fxmlLoader.setController(this);
+		Parent WelcomeWindow = fxmlLoader.load();
+    	
+		mainFirstRegisterPane.getChildren().clear();
+		mainFirstRegisterPane.setStyle("-fx-background-color:black; -fx-opacity:1;");
+		mainFirstRegisterPane.getChildren().addAll(WelcomeWindow);
     }
 }
