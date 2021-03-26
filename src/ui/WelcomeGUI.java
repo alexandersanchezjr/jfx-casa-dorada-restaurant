@@ -252,7 +252,7 @@ public class WelcomeGUI {
     }
     
     @FXML
-    public void goBack(ActionEvent event) throws IOException {
+    public void goBackFromRegister(ActionEvent event) throws IOException {
     	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("welcome.fxml"));
 		
 		fxmlLoader.setController(this);

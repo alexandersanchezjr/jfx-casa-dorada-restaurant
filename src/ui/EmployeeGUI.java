@@ -1,7 +1,11 @@
 package ui;
 
+import java.io.IOException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -14,6 +18,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import model.Product;
+import model.Restaurant;
 
 public class EmployeeGUI {
 	@FXML
@@ -123,6 +128,14 @@ public class EmployeeGUI {
 
     @FXML
     private Label labTime;
+    
+    //private WelcomeGUI welcomeGUI;
+    private Restaurant restaurant;
+    
+    public EmployeeGUI() {
+    	//welcomeGUI = new WelcomeGUI(restaurant);
+    	restaurant = new Restaurant();
+    }
 
     @FXML
     public void addProductToList(ActionEvent event) {
@@ -164,10 +177,17 @@ public class EmployeeGUI {
 
     }
 
-    @FXML
-    public void goBack(ActionEvent event) {
-
-    }
+    /*@FXML
+    public void goBack(ActionEvent event) throws IOException {
+    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("welcome.fxml"));
+		
+		fxmlLoader.setController(this);
+		Parent WelcomeWindow = fxmlLoader.load();
+    	
+		menuAndOrderPane.getChildren().clear();
+		menuAndOrderPane.setStyle("-fx-background-color:black; -fx-opacity:1;");
+		menuAndOrderPane.getChildren().addAll(WelcomeWindow);
+    }*/
 
     @FXML
     public void showMenuPane(ActionEvent event) {
