@@ -10,7 +10,7 @@ public class Order implements Serializable {
 	private long id;
 	private Date date;
 	private Status status;
-	private ArrayList<Product> products;
+	private ArrayList<DetailProduct> products;
 	private Employee employee; //Employee delivering the order 
 	private Customer customer;
 	private String comments;
@@ -21,11 +21,11 @@ public class Order implements Serializable {
 	 * @param id
 	 * @param date
 	 */
-	public Order(long id, Date date, String selectedStatus, Employee e, String customerName, String customerSurname, String customerId, String customerAddress, String customerPhoneNumber, String comments, User customerCreator, String customerComments, User creator) {
+	public Order(long id, Date date, String selectedStatus, ArrayList<DetailProduct> products, Employee e, String customerName, String customerSurname, String customerId, String customerAddress, String customerPhoneNumber, String comments, User customerCreator, String customerComments, User creator) {
 		this.id = id;
 		this.date = date;
 		status = (Status.valueOf(selectedStatus));
-		products = new ArrayList<Product>();
+		this.products = products;
 		employee = e;
 		customer = new Customer(customerName, customerSurname, customerId, customerAddress, customerPhoneNumber, customerComments, customerCreator);
 		this.comments = comments;
@@ -61,8 +61,15 @@ public class Order implements Serializable {
 	/**
 	 * @return products
 	 */
-	public ArrayList<Product> getProducts() {
+	public ArrayList<DetailProduct> getProducts() {
 		return products;
+	}
+	
+	/**
+	 * @param products the products to set
+	 */
+	public void setProducts(ArrayList<DetailProduct> products) {
+		this.products = products;
 	}
 
 	/**
@@ -141,6 +148,12 @@ public class Order implements Serializable {
 	 */
 	public void setModifier(User modifier) {
 		this.modifier = modifier;
+	}
+	
+	public int getTotal() {
+		int total = 0;
+		
+		return total;
 	}
 	
 }
