@@ -14,89 +14,98 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="mainGridPane" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
-   <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="700.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="700.0" />
-   </columnConstraints>
-   <rowConstraints>
-      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-   </rowConstraints>
+
+<AnchorPane fx:id="mainWelcomePane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <AnchorPane fx:id="imagePane" style="-fx-background-color: red;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
-         <children>
-            <ImageView fx:id="imgRestaurant" fitHeight="700.0" fitWidth="700.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <image>
-                  <Image url="@../../img/image2.jpg" />
-               </image>
-            </ImageView>
-         </children>
-      </AnchorPane>
-      <GridPane alignment="CENTER" prefHeight="200.0" prefWidth="460.0" style="-fx-background-color: #fff59d; -fx-background-radius: 15;" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+      <GridPane layoutX="137.0" layoutY="50.0" style="-fx-background-color: blue;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="250.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="250.0" />
-            <ColumnConstraints />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
          </columnConstraints>
          <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="5.0" prefHeight="10.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="5.0" prefHeight="10.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="600.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <RadioButton fx:id="rdBtOperator" focusTraversable="false" minHeight="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="228.0" style="-fx-border-color: #ffc107; -fx-border-width: 0px 0px 0px 2px;" text="Operario" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
-               <font>
-                  <Font name="Gill Sans MT" size="24.0" />
-               </font>
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
-               <toggleGroup>
-                  <ToggleGroup fx:id="user" />
-               </toggleGroup>
-               <padding>
-                  <Insets left="10.0" />
-               </padding>
-            </RadioButton>
-            <RadioButton fx:id="rdBtAdmin" focusTraversable="false" mnemonicParsing="false" prefHeight="40.0" prefWidth="244.0" style="-fx-border-color: #ffc107; -fx-border-width: 0px 0px 0px 2px;" text="Administrador" toggleGroup="$user" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
-               <font>
-                  <Font name="Gill Sans MT" size="24.0" />
-               </font>
-               <padding>
-                  <Insets left="10.0" />
-               </padding>
-            </RadioButton>
-            <TextField fx:id="adminUserTxt" focusTraversable="false" prefHeight="27.0" prefWidth="285.0" promptText="Usuario" style="-fx-background-color: transparent; -fx-border-color: #ffc107; -fx-border-width: 0px 0px 2px 0px;" GridPane.columnSpan="3" GridPane.rowIndex="1">
-               <font>
-                  <Font name="Gill Sans MT" size="24.0" />
-               </font>
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
-            </TextField>
-            <PasswordField fx:id="adminPasswordTxt" focusTraversable="false" prefHeight="27.0" prefWidth="285.0" promptText="Contraseña" style="-fx-background-color: transparent; -fx-border-color: #ffc107; -fx-border-width: 0px 0px 2px 0px;" GridPane.columnSpan="3" GridPane.rowIndex="2">
-               <font>
-                  <Font name="Gill Sans MT" size="24.0" />
-               </font>
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
-            </PasswordField>
-            <Button fx:id="logInButton" mnemonicParsing="false" onAction="#logIn" style="-fx-background-color: #ffd54f; -fx-background-radius: 10; -fx-border-color: #ffb300; -fx-border-radius: 10; -fx-border-width: 2px;" text="Entrar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3">
-               <font>
-                  <Font name="Gill Sans MT" size="24.0" />
-               </font>
-            </Button>
-            <Button fx:id="firstRegisterButton" mnemonicParsing="false" onAction="#registerFirstUser" style="-fx-background-color: transparent;" text="Crear primer administrador" textFill="#ffb300" GridPane.rowIndex="3">
-               <font>
-                  <Font name="Gill Sans MT" size="14.0" />
-               </font>
-            </Button>
+            <AnchorPane fx:id="imagePane" prefHeight="600.0" prefWidth="425.0" style="-fx-background-color: red;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+               <children>
+                  <ImageView fx:id="imgRestaurant" fitHeight="464.0" fitWidth="401.0" layoutX="12.0" layoutY="112.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="100.0">
+                     <image>
+                        <Image url="@../../img/image2.jpg" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="600.0" prefWidth="425.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+               <children>
+                  <GridPane alignment="CENTER" layoutX="69.0" prefHeight="373.0" prefWidth="391.0" style="-fx-background-color: #fff59d; -fx-background-radius: 15;" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="100.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="250.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="250.0" />
+                        <ColumnConstraints />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="5.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="5.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <RadioButton fx:id="rdBtOperator" focusTraversable="false" minHeight="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="228.0" style="-fx-border-color: #ffc107; -fx-border-width: 0px 0px 0px 2px;" text="Operario" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
+                           <font>
+                              <Font name="Gill Sans MT" size="18.0" />
+                           </font>
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                           <toggleGroup>
+                              <ToggleGroup fx:id="user" />
+                           </toggleGroup>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </RadioButton>
+                        <RadioButton fx:id="rdBtAdmin" focusTraversable="false" mnemonicParsing="false" prefHeight="40.0" prefWidth="244.0" style="-fx-border-color: #ffc107; -fx-border-width: 0px 0px 0px 2px;" text="Administrador" toggleGroup="$user" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
+                           <font>
+                              <Font name="Gill Sans MT" size="18.0" />
+                           </font>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </RadioButton>
+                        <TextField fx:id="adminUserTxt" focusTraversable="false" prefHeight="27.0" prefWidth="285.0" promptText="Usuario" style="-fx-background-color: transparent; -fx-border-color: #ffc107; -fx-border-width: 0px 0px 2px 0px;" GridPane.columnSpan="3" GridPane.rowIndex="1">
+                           <font>
+                              <Font name="Gill Sans MT" size="18.0" />
+                           </font>
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                        </TextField>
+                        <PasswordField fx:id="adminPasswordTxt" focusTraversable="false" prefHeight="27.0" prefWidth="285.0" promptText="Contraseña" style="-fx-background-color: transparent; -fx-border-color: #ffc107; -fx-border-width: 0px 0px 2px 0px;" GridPane.columnSpan="3" GridPane.rowIndex="2">
+                           <font>
+                              <Font name="Gill Sans MT" size="18.0" />
+                           </font>
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                        </PasswordField>
+                        <Button fx:id="logInButton" mnemonicParsing="false" onAction="#logIn" style="-fx-background-color: #ffd54f; -fx-background-radius: 10; -fx-border-color: #ffb300; -fx-border-radius: 10; -fx-border-width: 2px;" text="Entrar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+                           <font>
+                              <Font name="Gill Sans MT" size="18.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="firstRegisterButton" mnemonicParsing="false" onAction="#registerFirstUser" style="-fx-background-color: transparent;" text="Crear primer administrador" textFill="#ffb300" underline="true" wrapText="true" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                           <font>
+                              <Font name="Gill Sans MT" size="18.0" />
+                           </font>
+                        </Button>
+                     </children>
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </GridPane>
+               </children>
+            </AnchorPane>
          </children>
-         <GridPane.margin>
-            <Insets bottom="100.0" left="50.0" right="50.0" top="100.0" />
-         </GridPane.margin>
       </GridPane>
    </children>
-</GridPane>
+</AnchorPane>
