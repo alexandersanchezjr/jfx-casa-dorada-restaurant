@@ -186,10 +186,10 @@ public class EmployeeGUI {
 		
 		fxmlLoader.setController(welcomeGUI);
 		Parent WelcomeWindow = fxmlLoader.load();
-    	
-		menuAndOrderPane.getChildren().clear();
+
 		menuAndOrderPane.setStyle("-fx-background-color:black; -fx-opacity:1;");
-		menuAndOrderPane.getChildren().addAll(WelcomeWindow);
+		menuAndOrderPane.getChildren().setAll(WelcomeWindow);
+		welcomeGUI.firstAdmin();
     }
 
     @FXML

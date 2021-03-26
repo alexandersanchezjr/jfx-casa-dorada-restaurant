@@ -60,6 +60,9 @@ public class WelcomeGUI {
     private AnchorPane mainFirstRegisterPane;
     
     @FXML
+    private GridPane mainRegisterGridPane;
+    
+    @FXML
     private TextField registerNameTxt;
 
     @FXML
@@ -179,9 +182,8 @@ public class WelcomeGUI {
 				
 				fxmlLoader.setController(employeeGUI);
 				Parent EmployeeWindow = fxmlLoader.load();
-		    	
-				mainWelcomePane.getChildren().clear();
-				mainWelcomePane.getChildren().addAll(EmployeeWindow);
+
+				mainWelcomePane.getChildren().setAll(EmployeeWindow);
     		}       
         }
     	else if(rdBtAdmin.isSelected()) {
@@ -190,9 +192,8 @@ public class WelcomeGUI {
 				
 				fxmlLoader.setController(adminGUI);
 				Parent AdminWindow = fxmlLoader.load();
-		    	
-				mainWelcomePane.getChildren().clear();
-				mainWelcomePane.getChildren().addAll(AdminWindow);
+
+				mainWelcomePane.getChildren().setAll(AdminWindow);
     		}
     	}
     	else {
@@ -212,10 +213,10 @@ public class WelcomeGUI {
 		
 		fxmlLoader.setController(this);
 		Parent FirstAdminRegister = fxmlLoader.load();
-    	
-		mainWelcomePane.getChildren().clear();
+
 		mainWelcomePane.setStyle("-fx-background-color:white; -fx-opacity:1;");
-		mainWelcomePane.getChildren().addAll(FirstAdminRegister);
+		mainWelcomePane.getChildren().setAll(FirstAdminRegister);
+		
     }
     
     //Methods of first_register_pane.fxml
@@ -263,9 +264,8 @@ public class WelcomeGUI {
 		
 		fxmlLoader.setController(this);
 		Parent WelcomeWindow = fxmlLoader.load();
-    	
-		mainFirstRegisterPane.getChildren().clear();
-		mainFirstRegisterPane.setStyle("-fx-background-color:black; -fx-opacity:1;");
-		mainFirstRegisterPane.getChildren().addAll(WelcomeWindow);
+
+		mainFirstRegisterPane.getChildren().setAll(WelcomeWindow);
+		firstAdmin();
     }
 }
