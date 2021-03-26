@@ -28,19 +28,19 @@ public class EmployeeGUI {
     private AnchorPane menuPane;
 
     @FXML
-    private Spinner<?> amountChooser;
+    private Spinner<Integer> amountChooser;
 
     @FXML
     private TextArea orderCommentTxt;
 
     @FXML
-    private ComboBox<?> typeChooser;
+    private ComboBox<String> typeChooser;
 
     @FXML
-    private ComboBox<?> productChooser;
+    private ComboBox<Product> productChooser;
 
     @FXML
-    private ComboBox<?> sizeChooser;
+    private ComboBox<String> sizeChooser;
 
     @FXML
     private TableView<Product> tvMenuProductsList;
@@ -76,7 +76,7 @@ public class EmployeeGUI {
     private TextArea clientCommentTxt;
 
     @FXML
-    private AnchorPane orderPaner;
+    private AnchorPane orderPane;
 
     @FXML
     private ListView<?> lvOrders;
@@ -133,10 +133,10 @@ public class EmployeeGUI {
     private Restaurant restaurant;
     
     public EmployeeGUI() {
-    	restaurant = new Restaurant();
+    	injectWelcomeGUI(welcomeGUI, restaurant);
     }
     
-    public void injectWelcomeGUI(WelcomeGUI welcomeGUI) {
+    public void injectWelcomeGUI(WelcomeGUI welcomeGUI, Restaurant restaurant) {
     	this.welcomeGUI = welcomeGUI;
     }
 

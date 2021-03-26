@@ -5,7 +5,6 @@ import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.GridPane;
 import model.Restaurant;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
@@ -14,7 +13,7 @@ import javafx.scene.layout.AnchorPane;
 public class AdminGUI {
 	
 	@FXML
-    private GridPane adminGridPane;
+    private AnchorPane mainAdminPane;
 	
 	@FXML
     private Label labTime;
@@ -26,11 +25,12 @@ public class AdminGUI {
     private WelcomeGUI welcomeGUI;
     
     public AdminGUI() {
-    	restaurant = new Restaurant();
+    	injectWelcomeGUI(welcomeGUI, restaurant);
     }
     
-    public void injectWelcomeGUI(WelcomeGUI welcomeGUI) {
+    public void injectWelcomeGUI(WelcomeGUI welcomeGUI, Restaurant restaurant) {
     	this.welcomeGUI = welcomeGUI;
+    	this.restaurant = restaurant;
     }
     
     @FXML
@@ -40,8 +40,8 @@ public class AdminGUI {
 		fxmlLoader.setController(welcomeGUI);
 		Parent WelcomeWindow = fxmlLoader.load();
     	
-		adminGridPane.getChildren().clear();
-		adminGridPane.getChildren().addAll(WelcomeWindow);
+		mainAdminPane.getChildren().clear();
+		mainAdminPane.getChildren().addAll(WelcomeWindow);
     }
 
     @FXML
