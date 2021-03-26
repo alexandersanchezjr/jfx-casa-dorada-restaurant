@@ -129,12 +129,15 @@ public class EmployeeGUI {
     @FXML
     private Label labTime;
     
-    //private WelcomeGUI welcomeGUI;
+    private WelcomeGUI welcomeGUI;
     private Restaurant restaurant;
     
     public EmployeeGUI() {
-    	//welcomeGUI = new WelcomeGUI(restaurant);
     	restaurant = new Restaurant();
+    }
+    
+    public void injectWelcomeGUI(WelcomeGUI welcomeGUI) {
+    	this.welcomeGUI = welcomeGUI;
     }
 
     @FXML
@@ -177,17 +180,17 @@ public class EmployeeGUI {
 
     }
 
-    /*@FXML
-    public void goBack(ActionEvent event) throws IOException {
+    @FXML
+    public void goBackFromEmployee(ActionEvent event) throws IOException {
     	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("welcome.fxml"));
 		
-		fxmlLoader.setController(this);
+		fxmlLoader.setController(welcomeGUI);
 		Parent WelcomeWindow = fxmlLoader.load();
     	
 		menuAndOrderPane.getChildren().clear();
 		menuAndOrderPane.setStyle("-fx-background-color:black; -fx-opacity:1;");
 		menuAndOrderPane.getChildren().addAll(WelcomeWindow);
-    }*/
+    }
 
     @FXML
     public void showMenuPane(ActionEvent event) {

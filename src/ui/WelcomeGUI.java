@@ -82,10 +82,13 @@ public class WelcomeGUI {
     	this.restaurant = restaurant;
     	employeeGUI = new EmployeeGUI();
     	adminGUI = new AdminGUI();
+    	initialize();
     }
   
 	public void initialize() {
-    	//the method (initialize) is called several times by different fxml files loads 
+    	//the method (initialize) is called several times by different fxml files loads
+		employeeGUI.injectWelcomeGUI(this);
+		adminGUI.injectWelcomeGUI(this);
     }
 	
 	//Methods of welcome.fxml
@@ -167,7 +170,7 @@ public class WelcomeGUI {
     @FXML
     public void logIn(ActionEvent event) throws IOException {
     	
-    	if(rdBtOperator.isArmed()) {
+    	if(rdBtOperator.isSelected()) {
     		if(verificationOperatorLogin()) {
 	    		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("employee.fxml"));
 				
@@ -178,7 +181,7 @@ public class WelcomeGUI {
 				mainGridPane.getChildren().addAll(EmployeeWindow);
     		}       
         }
-    	else if(rdBtAdmin.isArmed()) {
+    	else if(rdBtAdmin.isSelected()) {
     		if(verificationAdminLogin()) {
 				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("admin.fxml"));
 				

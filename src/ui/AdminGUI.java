@@ -26,19 +26,22 @@ public class AdminGUI {
     private WelcomeGUI welcomeGUI;
     
     public AdminGUI() {
-    	welcomeGUI = new WelcomeGUI(restaurant);
     	restaurant = new Restaurant();
+    }
+    
+    public void injectWelcomeGUI(WelcomeGUI welcomeGUI) {
+    	this.welcomeGUI = welcomeGUI;
     }
     
     @FXML
     public void logOut(ActionEvent event) throws IOException {
-    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("employee.fxml"));
+    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("welcome.fxml"));
 		
 		fxmlLoader.setController(welcomeGUI);
-		Parent EmployeeWindow = fxmlLoader.load();
+		Parent WelcomeWindow = fxmlLoader.load();
     	
 		adminGridPane.getChildren().clear();
-		adminGridPane.getChildren().addAll(EmployeeWindow);
+		adminGridPane.getChildren().addAll(WelcomeWindow);
     }
 
     @FXML
