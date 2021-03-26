@@ -76,7 +76,7 @@
                   <Font name="Gill Sans MT" size="24.0" />
                </font>
             </TextField>
-            <Button layoutX="397.0" layoutY="278.0" mnemonicParsing="false" onAction="#goBack" prefWidth="120.0" text="Atrás" GridPane.halignment="CENTER" GridPane.rowIndex="6">
+            <Button layoutX="397.0" layoutY="278.0" mnemonicParsing="false" onAction="#goBackFromRegister" prefWidth="120.0" text="Atrás" GridPane.halignment="CENTER" GridPane.rowIndex="6">
                <font>
                   <Font name="Gill Sans MT" size="24.0" />
                </font>
