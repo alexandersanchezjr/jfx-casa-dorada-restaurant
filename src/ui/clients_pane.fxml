@@ -9,6 +9,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -22,7 +23,7 @@
 
 <AnchorPane fx:id="orderPaner" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox layoutX="139.0" layoutY="45.0" prefHeight="540.0" prefWidth="561.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="139.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="45.0">
+      <VBox layoutX="179.0" layoutY="45.0" prefHeight="540.0" prefWidth="521.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="179.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="45.0">
          <children>
             <TableView fx:id="tvProducts" prefHeight="383.0" prefWidth="561.0">
                <columns>
@@ -94,11 +95,26 @@
       <TextField layoutX="576.0" layoutY="15.0" prefHeight="25.0" prefWidth="124.0" promptText="Buscar Cliente" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="15.0" />
       <Button layoutX="510.0" layoutY="15.0" mnemonicParsing="false" text="Buscar" AnchorPane.rightAnchor="139.0" AnchorPane.topAnchor="15.0" />
       <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="350.0" layoutY="15.0" prefHeight="25.0" prefWidth="125.0" text="Tardó 0.001 segundos" AnchorPane.rightAnchor="225.0" AnchorPane.topAnchor="15.0" />
-      <VBox layoutY="45.0" prefHeight="95.0" prefWidth="125.0" spacing="10.0">
+      <VBox layoutY="45.0" prefHeight="95.0" prefWidth="162.0" spacing="10.0">
          <children>
-            <DatePicker fx:id="datePicker" editable="false" maxWidth="1.7976931348623157E308" prefHeight="25.0" VBox.vgrow="ALWAYS" />
-            <ChoiceBox fx:id="timePicker" maxWidth="1.7976931348623157E308" prefHeight="25.0" VBox.vgrow="ALWAYS" />
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#filterOrders" prefHeight="25.0" text="Filtrar" VBox.vgrow="ALWAYS" />
+            <DatePicker fx:id="clientsDatePicker" editable="false" maxWidth="1.7976931348623157E308" prefHeight="25.0" VBox.vgrow="ALWAYS" />
+            <ChoiceBox fx:id="clientsTimePicker" maxWidth="1.7976931348623157E308" prefHeight="25.0" VBox.vgrow="ALWAYS" />
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#filter" prefHeight="25.0" text="Filtrar" VBox.vgrow="ALWAYS" />
+         </children>
+      </VBox>
+      <VBox layoutY="497.0" spacing="10.0">
+         <children>
+            <Separator prefHeight="0.0" prefWidth="162.0" />
+            <Button layoutX="10.0" layoutY="13.0" maxWidth="-Infinity" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#importClientList" prefHeight="25.0" prefWidth="162.0" text="Importar Lista">
+               <graphic>
+                  <TextField fx:id="importSeparatorTxt" alignment="CENTER" maxWidth="30.0" nodeOrientation="LEFT_TO_RIGHT" text=";" />
+               </graphic>
+            </Button>
+            <Button layoutX="10.0" layoutY="13.0" maxWidth="-Infinity" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#exportClientList" prefHeight="25.0" prefWidth="162.0" text="Exportar Lista">
+               <graphic>
+                  <TextField fx:id="exportSeparatorTxt" alignment="CENTER" maxWidth="30.0" nodeOrientation="LEFT_TO_RIGHT" text=";" />
+               </graphic>
+            </Button>
          </children>
       </VBox>
    </children>

@@ -9,7 +9,6 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -22,9 +21,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="menuAndOrderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="menuAndOrderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <AnchorPane fx:id="menuPane" layoutY="53.0" prefHeight="347.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="53.0">
+      <AnchorPane fx:id="menuPane" layoutY="53.0" prefHeight="347.0" prefWidth="600.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="53.0">
          <children>
           <Button layoutX="14.0" layoutY="307.0" minWidth="68.0" mnemonicParsing="false" onAction="#goBack" prefHeight="25.0" prefWidth="222.0" text="Atrás" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="14.0" />
             <Spinner fx:id="amountChooser" disable="true" layoutX="26.0" layoutY="124.0" prefHeight="25.0" prefWidth="100.0" AnchorPane.leftAnchor="12.0" />
@@ -85,9 +84,8 @@
             </GridPane>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="orderPaner" layoutX="16.0" layoutY="53.0" prefHeight="312.0" prefWidth="568.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="53.0">
+      <AnchorPane fx:id="orderPaner" layoutX="16.0" layoutY="53.0" prefHeight="312.0" prefWidth="568.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="53.0">
          <children>
-            <Button layoutY="308.0" minWidth="68.0" mnemonicParsing="false" onAction="#goBack" prefHeight="25.0" prefWidth="162.0" text="Atrás" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="0.0" />
             <ListView fx:id="lvOrders" layoutY="43.0" prefHeight="115.0" prefWidth="162.0" />
             <TableView fx:id="tvProducts" layoutX="195.0" layoutY="164.0" prefHeight="134.0" prefWidth="373.0" AnchorPane.bottomAnchor="49.0" AnchorPane.leftAnchor="195.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="164.0">
               <columns>
@@ -112,64 +110,103 @@
                 <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label fx:id="labOrderId" maxWidth="1.7976931348623157E308" text="#107373" />
+                  <Label fx:id="labOrderId" maxWidth="1.7976931348623157E308" text="#107373">
+                     <font>
+                        <Font name="Gill Sans MT" size="12.0" />
+                     </font></Label>
                   <Label fx:id="labOrderTotalPrice" maxWidth="1.7976931348623157E308" text="\$813.000" GridPane.columnIndex="2" GridPane.halignment="CENTER">
                      <font>
-                        <Font name="Tw Cen MT Condensed Extra Bold" size="20.0" />
+                        <Font name="Gill Sans MT" size="12.0" />
                      </font>
                   </Label>
-                  <Label fx:id="labOrderStatus" alignment="CENTER" maxWidth="1.7976931348623157E308" text="SOLICITADO" GridPane.columnIndex="1" GridPane.valignment="CENTER" />
-                  <Label maxWidth="1.7976931348623157E308" text="Lo solicita:" GridPane.rowIndex="1" />
-                  <Label maxWidth="1.7976931348623157E308" text="Lo toma:" GridPane.rowIndex="2" />
-                  <Label fx:id="labOrderClientName" maxWidth="1.7976931348623157E308" text="Alexander Sánchez" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label fx:id="labOrderEmployeeName" maxWidth="1.7976931348623157E308" text="Santiago Arévalo" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label fx:id="labOrderStatus" alignment="CENTER" maxWidth="1.7976931348623157E308" text="SOLICITADO" GridPane.columnIndex="1" GridPane.valignment="CENTER">
+                     <font>
+                        <Font name="Gill Sans MT" size="12.0" />
+                     </font></Label>
+                  <Label maxWidth="1.7976931348623157E308" text="Lo solicita:" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="Gill Sans MT" size="12.0" />
+                     </font></Label>
+                  <Label maxWidth="1.7976931348623157E308" text="Lo toma:" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="Gill Sans MT" size="12.0" />
+                     </font></Label>
+                  <Label fx:id="labOrderClientName" maxWidth="1.7976931348623157E308" text="Alexander Sánchez" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="Gill Sans MT" size="12.0" />
+                     </font></Label>
+                  <ComboBox fx:id="cbOrderEmployeeName" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
                <cursor>
                   <Cursor fx:constant="DEFAULT" />
                </cursor>
             </GridPane>
-            <VBox layoutY="164.0" prefHeight="134.0" prefWidth="162.0" AnchorPane.bottomAnchor="49.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="164.0">
+            <VBox layoutY="164.0" prefHeight="378.0" prefWidth="162.0" spacing="10.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="164.0">
                <children>
                   <Label text="Observaciones del pedido:">
                      <VBox.margin>
                         <Insets bottom="2.0" top="2.0" />
                      </VBox.margin>
+                     <font>
+                        <Font name="Gill Sans MT" size="12.0" />
+                     </font>
                   </Label>
-                  <ScrollPane maxHeight="1.7976931348623157E308" prefHeight="5000.0" prefWidth="162.0">
-                     <content>
-                        <Label fx:id="labOrderComments" prefWidth="147.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam dapibus velit sagittis, gravida dui semper, fermentum sapien. Morbi venenatis velit sit amet diam aliquet, in bibendum justo sagittis. Aenean blandit, lorem id ornare varius, felis velit facilisis leo, maximus placerat velit nibh sit amet tortor. Nulla facilisi. Suspendisse ut mattis enim. Curabitur eget euismod turpis. Quisque aliquam posuere est et pellentesque. Fusce gravida risus quis ex efficitur posuere. Pellentesque pulvinar lorem nunc, quis facilisis ipsum pellentesque eget. Sed ut blandit ipsum. Vestibulum at interdum massa. Etiam eleifend pretium neque, nec porttitor nulla malesuada ac. Sed porta tellus sit amet semper finibus. Nullam faucibus dolor vitae magna auctor auctor." wrapText="true" />
-                     </content>
-                     <VBox.margin>
-                        <Insets bottom="2.0" top="2.0" />
-                     </VBox.margin>
-                  </ScrollPane>
+                  <TextArea prefWidth="200.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam dapibus velit sagittis, gravida dui semper, fermentum sapien. Morbi venenatis velit sit amet diam aliquet, in bibendum justo sagittis. Aenean blandit, lorem id ornare varius, felis velit facilisis leo, maximus placerat velit nibh sit amet tortor. Nulla facilisi. Suspendisse ut mattis enim. Curabitur eget euismod turpis. Quisque aliquam posuere est et pellentesque. Fusce gravida risus quis ex efficitur posuere. Pellentesque pulvinar lorem nunc, quis facilisis ipsum pellentesque eget. Sed ut blandit ipsum. Vestibulum at interdum massa. Etiam eleifend pretium neque, nec porttitor nulla malesuada ac. Sed porta tellus sit amet semper finibus. Nullam faucibus dolor vitae magna auctor auctor." wrapText="true">
+                     <font>
+                        <Font name="Gill Sans MT" size="12.0" />
+                     </font>
+                  </TextArea>
+                  <Button mnemonicParsing="false" text="Actualizar" />
                   <Label layoutX="10.0" layoutY="10.0" text="Comentarios del cliente">
                      <VBox.margin>
                         <Insets bottom="2.0" top="2.0" />
                      </VBox.margin>
+                     <font>
+                        <Font name="Gill Sans MT" size="12.0" />
+                     </font>
                   </Label>
-                  <ScrollPane maxHeight="1.7976931348623157E308" prefHeight="5000.0" prefWidth="162.0">
-                     <content>
-                        <Label fx:id="labClientComments" prefWidth="147.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam dapibus velit sagittis, gravida dui semper, fermentum sapien. Morbi venenatis velit sit amet diam aliquet, in bibendum justo sagittis. Aenean blandit, lorem id ornare varius, felis velit facilisis leo, maximus placerat velit nibh sit amet tortor. Nulla facilisi. Suspendisse ut mattis enim. Curabitur eget euismod turpis. Quisque aliquam posuere est et pellentesque. Fusce gravida risus quis ex efficitur posuere. Pellentesque pulvinar lorem nunc, quis facilisis ipsum pellentesque eget. Sed ut blandit ipsum. Vestibulum at interdum massa. Etiam eleifend pretium neque, nec porttitor nulla malesuada ac. Sed porta tellus sit amet semper finibus. Nullam faucibus dolor vitae magna auctor auctor." wrapText="true" />
-                     </content>
-                     <VBox.margin>
-                        <Insets bottom="2.0" top="2.0" />
-                     </VBox.margin>
-                  </ScrollPane>
+                  <TextArea prefWidth="200.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam dapibus velit sagittis, gravida dui semper, fermentum sapien. Morbi venenatis velit sit amet diam aliquet, in bibendum justo sagittis. Aenean blandit, lorem id ornare varius, felis velit facilisis leo, maximus placerat velit nibh sit amet tortor. Nulla facilisi. Suspendisse ut mattis enim. Curabitur eget euismod turpis. Quisque aliquam posuere est et pellentesque. Fusce gravida risus quis ex efficitur posuere. Pellentesque pulvinar lorem nunc, quis facilisis ipsum pellentesque eget. Sed ut blandit ipsum. Vestibulum at interdum massa. Etiam eleifend pretium neque, nec porttitor nulla malesuada ac. Sed porta tellus sit amet semper finibus. Nullam faucibus dolor vitae magna auctor auctor." wrapText="true">
+                     <font>
+                        <Font name="Gill Sans MT" size="12.0" />
+                     </font>
+                  </TextArea>
+                  <Button mnemonicParsing="false" text="Actualizar" />
+                  <Button minWidth="68.0" mnemonicParsing="false" onAction="#goBack" prefHeight="25.0" prefWidth="162.0" text="Atrás">
+                     <font>
+                        <Font name="Gill Sans MT" size="12.0" />
+                     </font>
+                  </Button>
                </children>
             </VBox>
             <DatePicker fx:id="datePicker" layoutY="10.0" prefHeight="25.0" prefWidth="162.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="10.0" />
             <ButtonBar layoutX="195.0" layoutY="43.0" prefHeight="25.0" prefWidth="373.0" AnchorPane.leftAnchor="195.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="43.0">
               <buttons>
-                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#changeStatusToInProcess" prefWidth="5000.0" text="EN PROCESO" />
-                  <Button layoutX="308.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#changeStatusToSent" prefWidth="5000.0" text="ENVIADO" />
-                  <Button layoutX="223.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#changeStatusToDelivered" prefWidth="5000.0" text="ENTREGADO" />
+                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#changeStatusToInProcess" prefWidth="5000.0" text="EN PROCESO">
+                     <font>
+                        <Font name="Gill Sans MT" size="12.0" />
+                     </font></Button>
+                  <Button layoutX="308.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#changeStatusToSent" prefWidth="5000.0" text="ENVIADO">
+                     <font>
+                        <Font name="Gill Sans MT" size="12.0" />
+                     </font></Button>
+                  <Button layoutX="223.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#changeStatusToDelivered" prefWidth="5000.0" text="ENTREGADO">
+                     <font>
+                        <Font name="Gill Sans MT" size="12.0" />
+                     </font></Button>
+                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#changeStatusToDelivered" prefWidth="5000.0" text="CANCELADO">
+                     <font>
+                        <Font name="Gill Sans MT" size="12.0" />
+                     </font>
+                  </Button>
               </buttons>
                <padding>
                   <Insets left="-20.0" />
                </padding>
             </ButtonBar>
-            <Button layoutX="382.0" layoutY="10.0" mnemonicParsing="false" onAction="#filterOrders" prefHeight="25.0" prefWidth="178.0" text="Filtrar" AnchorPane.leftAnchor="382.0" AnchorPane.topAnchor="10.0" />
+            <Button layoutX="382.0" layoutY="10.0" mnemonicParsing="false" onAction="#filterOrders" prefHeight="25.0" prefWidth="178.0" text="Filtrar" AnchorPane.leftAnchor="382.0" AnchorPane.topAnchor="10.0">
+               <font>
+                  <Font name="Gill Sans MT" size="12.0" />
+               </font></Button>
             <ChoiceBox fx:id="timePicker" layoutX="195.0" layoutY="10.0" prefWidth="150.0" AnchorPane.leftAnchor="195.0" AnchorPane.topAnchor="10.0" />
          </children>
       </AnchorPane>
@@ -187,12 +224,24 @@
                <GridPane.margin>
                   <Insets right="5.0" />
                </GridPane.margin>
+               <font>
+                  <Font name="Gill Sans MT" size="12.0" />
+               </font>
             </Button>
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showOrdersPane" text="Pedidos" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showOrdersPane" text="Pedidos" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <font>
+                  <Font name="Gill Sans MT" size="12.0" />
+               </font></Button>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2">
                <children>
-                  <Label fx:id="labDate" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Fecha" />
-                  <Label fx:id="labTime" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Hora" />
+                  <Label fx:id="labDate" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Fecha">
+                     <font>
+                        <Font name="Gill Sans MT" size="12.0" />
+                     </font></Label>
+                  <Label fx:id="labTime" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Hora">
+                     <font>
+                        <Font name="Gill Sans MT" size="12.0" />
+                     </font></Label>
                </children>
             </VBox>
          </children>
