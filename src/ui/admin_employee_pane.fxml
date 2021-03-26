@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="orderPaner" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox layoutX="174.0" layoutY="45.0" prefHeight="540.0" prefWidth="526.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="174.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="45.0">
+         <children>
+            <TableView fx:id="tvAdminEmployees" prefHeight="132.0" prefWidth="526.0" VBox.vgrow="ALWAYS">
+               <columns>
+                  <TableColumn fx:id="tcAdminEmployeesName" prefWidth="75.0" text="Nombre" />
+                  <TableColumn fx:id="tcAdminEmployeesSurname" prefWidth="75.0" text="Apellido" />
+                  <TableColumn fx:id="tcAdminEmployeesId" prefWidth="75.0" text="Identificación" />
+                  <TableColumn fx:id="tcAdminsNumberOfEmployeeOrders" prefWidth="75.0" text="Nº de Pedidos" />
+                  <TableColumn fx:id="tcAdminEmployeesTotalValue" prefWidth="75.0" text="Valor Total" />
+               </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+               <contextMenu>
+                  <ContextMenu>
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="Borrar " />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Limpiar lista" />
+                    </items>
+                  </ContextMenu>
+               </contextMenu>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </TableView>
+            <GridPane hgap="10.0" prefHeight="60.0" prefWidth="526.0" vgap="10.0" VBox.vgrow="ALWAYS">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Label fx:id="labEmployeeId" maxWidth="1.7976931348623157E308" text="#107373">
+                     <font>
+                        <Font name="Gill Sans MT" size="20.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="employeeNameTxt" promptText="Nombre" text="Alexander " GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                     <font>
+                        <Font name="Gill Sans MT" size="16.0" />
+                     </font></TextField>
+                  <TextField fx:id="employeeSurnameTxt" promptText="Apellido" text="Sánchez" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                     <font>
+                        <Font name="Gill Sans MT" size="16.0" />
+                     </font></TextField>
+                  <TextField fx:id="employeeIdTxt" layoutX="10.0" layoutY="33.0" promptText="Identificación" text="1006307963" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                     <font>
+                        <Font name="Gill Sans MT" size="16.0" />
+                     </font></TextField>
+                  <Button mnemonicParsing="false" onAction="#updateEmployeeBasicInfo" text="Actualizar" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                     <font>
+                        <Font name="Gill Sans MT" size="16.0" />
+                     </font></Button>
+                  <ToggleButton fx:id="tbEmployeeAvailability" mnemonicParsing="false" onAction="#changeEmployeeAvailability" text="Habilitado" GridPane.columnIndex="1">
+                     <font>
+                        <Font name="Gill Sans MT" size="16.0" />
+                     </font>
+                  </ToggleButton>
+               </children>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+            </GridPane>
+            <GridPane hgap="10.0" layoutX="10.0" layoutY="269.0" prefHeight="95.0" prefWidth="526.0" style="-fx-border-color: Black; -fx-border-radius: 7px 0px 0px 0px; -fx-border-width: 2px 0px 0px 2px;" vgap="10.0" VBox.vgrow="ALWAYS">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Label fx:id="labEmployeeId1" maxWidth="1.7976931348623157E308" prefHeight="24.0" prefWidth="125.0" text="Crea un nuevo empleado:">
+                     <font>
+                        <Font name="Gill Sans MT Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="newEmployeeNameTxt" promptText="Nombre" text="Alexander " GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                     <font>
+                        <Font name="Gill Sans MT" size="16.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="newEmployeeSurnameTxt" promptText="Apellido" text="Sánchez" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                     <font>
+                        <Font name="Gill Sans MT" size="16.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="newEmployeeIdTxt" layoutX="10.0" layoutY="33.0" promptText="Identificación" text="1006307963" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                     <font>
+                        <Font name="Gill Sans MT" size="16.0" />
+                     </font>
+                  </TextField>
+                  <Button mnemonicParsing="false" onAction="#createEmployee" text="Crear" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                     <font>
+                        <Font name="Gill Sans MT" size="16.0" />
+                     </font>
+                  </Button>
+               </children>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets left="5.0" top="5.0" />
+               </padding>
+            </GridPane>
+         </children>
+      </VBox>
+      <Label layoutY="10.0" prefHeight="35.0" prefWidth="162.0" text="Empleados">
+         <font>
+            <Font name="Gill Sans MT Bold" size="30.0" />
+         </font>
+      </Label>
+      <VBox layoutY="45.0" prefHeight="95.0" prefWidth="162.0" spacing="10.0">
+         <children>
+            <DatePicker fx:id="employeeDatePicker" editable="false" maxWidth="1.7976931348623157E308" prefHeight="25.0" VBox.vgrow="ALWAYS" />
+            <ChoiceBox fx:id="employeeTimePicker" maxWidth="1.7976931348623157E308" prefHeight="25.0" VBox.vgrow="ALWAYS" />
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#filterOrders" prefHeight="25.0" text="Filtrar" VBox.vgrow="ALWAYS" />
+         </children>
+      </VBox>
+      <VBox layoutY="485.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+         <children>
+            <Separator prefHeight="0.0" prefWidth="162.0" />
+            <Label text="Escribe tu separador:">
+               <font>
+                  <Font name="Gill Sans MT Bold" size="14.0" />
+               </font>
+            </Label>
+            <Button layoutX="10.0" layoutY="13.0" maxWidth="-Infinity" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#importEmployeesList" prefHeight="25.0" prefWidth="162.0" text="Importar Lista">
+               <graphic>
+                  <TextField fx:id="employeeImportSeparatorTxt" alignment="CENTER" maxWidth="30.0" nodeOrientation="LEFT_TO_RIGHT" text=";" />
+               </graphic>
+            </Button>
+            <Button layoutX="10.0" layoutY="13.0" maxWidth="-Infinity" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#exportEmployeesList" prefHeight="25.0" prefWidth="162.0" text="Exportar Lista">
+               <graphic>
+                  <TextField fx:id="employeeExportSeparatorTxt" alignment="CENTER" maxWidth="30.0" nodeOrientation="LEFT_TO_RIGHT" text=";" />
+               </graphic>
+            </Button>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
