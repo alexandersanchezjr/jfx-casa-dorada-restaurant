@@ -1,5 +1,7 @@
 package model;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -483,5 +485,18 @@ public class Restaurant {
 			disabled = true;
 		}
 		return disabled;
+	}
+	
+	//EXPORT EMPLOYEES
+	
+	public void exportEmployees(String fileName, String separator) throws FileNotFoundException{
+	    PrintWriter pw = new PrintWriter(fileName);
+
+	    for(int i=0;i<employees.size();i++){
+	      Employee thisEmployee = employees.get(i);
+	      pw.println(thisEmployee.getName()+"separator"+thisEmployee.getSurname()+"separator"+thisEmployee.getId()+"separator"+thisEmployee.getOrdersCont());
+	    }
+
+	    pw.close();
 	}
 }
