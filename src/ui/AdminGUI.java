@@ -32,9 +32,14 @@ public class AdminGUI {
     private UsersGUI usersGUI;
     
     public AdminGUI() {
-    	injectWelcomeGUI(welcomeGUI, restaurant);
     	inventoryGUI = new InventoryGUI();
     	usersGUI = new UsersGUI();
+    	initialize();
+    }
+    
+    public void initialize() {
+    	usersGUI.injectAdminGUI(restaurant);
+    	inventoryGUI.injectAdminGUI(restaurant);
     }
     
     public void injectWelcomeGUI(WelcomeGUI welcomeGUI, Restaurant restaurant) {

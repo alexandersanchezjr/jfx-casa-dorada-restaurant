@@ -15,6 +15,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
+import model.Restaurant;
 
 public class InventoryGUI {
 
@@ -163,7 +164,7 @@ public class InventoryGUI {
     @FXML
     private TextField productsExportSeparatorTxt;
     
-    //type_of_products_pnae.fxml attributes
+    //type_of_products_pane.fxml attributes
     
     @FXML
     private AnchorPane typePane;
@@ -191,9 +192,15 @@ public class InventoryGUI {
 
     @FXML
     private TextField typeExportSeparator;
+
+	private Restaurant restaurant;
     
     public InventoryGUI() {
-    	
+ 
+    }
+    
+    public void injectAdminGUI(Restaurant restaurant) {
+    	this.restaurant = restaurant;
     }
     
     //Orders Pane ActionEvent methods
