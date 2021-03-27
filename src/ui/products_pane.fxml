@@ -12,7 +12,6 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
-<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -21,7 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="orderPaner" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="productsPane" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ListView fx:id="lvProducts" layoutY="45.0" prefHeight="336.0" prefWidth="162.0" AnchorPane.bottomAnchor="244.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="45.0">
          <contextMenu>
@@ -61,7 +60,7 @@
                   </Button>
                   <TableView fx:id="tvIngredients" prefWidth="247.0">
                      <columns>
-                        <TableColumn fx:id="tcOrderProductName" prefWidth="75.0" text="Ingredientes">
+                        <TableColumn prefWidth="75.0" text="Ingredientes">
                            <columns>
                               <TableColumn fx:id="tcProductIngredientName" prefWidth="75.0" text="Nombre" />
                               <TableColumn fx:id="tcProductIngredientCode" minWidth="-1.0" prefWidth="-1.0" text="Código" />
@@ -238,9 +237,6 @@
                   <Font name="Gill Sans MT" size="16.0" />
                </font></TextField>
             <ToggleButton fx:id="tbAvailability" mnemonicParsing="false" onAction="#changeAvailability" text="Habilitado" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
-               <toggleGroup>
-                  <ToggleGroup fx:id="availability" />
-               </toggleGroup>
                <font>
                   <Font name="Gill Sans MT" size="16.0" />
                </font>
