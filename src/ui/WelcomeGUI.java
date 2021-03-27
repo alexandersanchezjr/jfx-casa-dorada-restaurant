@@ -1,10 +1,10 @@
 package ui;
 
 import java.io.IOException;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -99,10 +99,10 @@ public class WelcomeGUI {
 	
 	//Methods of welcome.fxml
 	
-	public void resizeImageView() {
+	/*public void resizeImageView() {
 		imgRestaurant.fitWidthProperty().bind(imagePane.widthProperty());
 		imgRestaurant.fitHeightProperty().bind(imagePane.heightProperty());
-	}
+	}*/
 	
 	public void firstAdmin() {
 		if(restaurant.getAdmins().size() == 0) {
@@ -147,7 +147,7 @@ public class WelcomeGUI {
     		Alert alert = new Alert(AlertType.ERROR);
 	    	alert.setTitle("Log In incorrect");
 	    	alert.setHeaderText(null);
-	    	alert.setContentText("Aún no hay usuarios registrados en el sistema");
+	    	alert.setContentText("Aún no hay operarios registrados en el sistema");
 	    	alert.showAndWait();
 	    	adminUserTxt.setText(""); 
 	    	adminPasswordTxt.setText("");
@@ -155,7 +155,7 @@ public class WelcomeGUI {
 		else {
 			for(int i=0; i<restaurant.getOperatorsUsers().size() && !logged; i++) {
     	        if(restaurant.getOperatorsUsers().get(i) != null) {	
-        			if(adminUserTxt.getText().equals(restaurant.getOperatorsUsers().get(i).getUsername()) && adminPasswordTxt.getText().equals(restaurant.getOperatorsUsers().get(i).getPassword())) {
+        			if(adminUserTxt.getText().trim().equals(restaurant.getOperatorsUsers().get(i).getUsername()) && adminPasswordTxt.getText().trim().equals(restaurant.getOperatorsUsers().get(i).getPassword())) {
     	        		logged = true;
         			}
     	        	else {
@@ -182,8 +182,9 @@ public class WelcomeGUI {
 				
 				fxmlLoader.setController(employeeGUI);
 				Parent EmployeeWindow = fxmlLoader.load();
-
 				mainWelcomePane.getChildren().setAll(EmployeeWindow);
+				@SuppressWarnings("unused")
+				Stage st = (Stage)EmployeeWindow.getScene().getWindow();
     		}       
         }
     	else if(rdBtAdmin.isSelected()) {
@@ -192,8 +193,9 @@ public class WelcomeGUI {
 				
 				fxmlLoader.setController(adminGUI);
 				Parent AdminWindow = fxmlLoader.load();
-
 				mainWelcomePane.getChildren().setAll(AdminWindow);
+				Stage st = (Stage)AdminWindow.getScene().getWindow();
+				adminGUI.timer();
     		}
     	}
     	else {
@@ -216,7 +218,7 @@ public class WelcomeGUI {
 
 		mainWelcomePane.setStyle("-fx-background-color:white; -fx-opacity:1;");
 		mainWelcomePane.getChildren().setAll(FirstAdminRegister);
-		
+		Stage st = (Stage)FirstAdminRegister.getScene().getWindow();
     }
     
     //Methods of first_register_pane.fxml
@@ -230,7 +232,7 @@ public class WelcomeGUI {
 	    	alert.setContentText("¡Ups! debes llenar todos los campos en el registro");
 	    	alert.showAndWait();
     	}
-    	else if(!registerPasswordTxt.getText().equals(registerConfirmPasswordTxt.getText())) {
+    	else if(!registerPasswordTxt.getText().trim().equals(registerConfirmPasswordTxt.getText().trim())) {
     		Alert alert = new Alert(AlertType.ERROR);
 	    	alert.setTitle("Error Validación");
 	    	alert.setHeaderText(null);
@@ -238,11 +240,11 @@ public class WelcomeGUI {
 	    	alert.showAndWait();
     	}
     	else {
-    		String name = registerNameTxt.getText();
-    		String surname = registerSurnameTxt.getText();
-    		String id = registerIdTxt.getText();
-    		String username = registerUsernameTxt.getText();
-    		String password = registerPasswordTxt.getText();
+    		String name = registerNameTxt.getText().trim();
+    		String surname = registerSurnameTxt.getText().trim();
+    		String id = registerIdTxt.getText().trim();
+    		String username = registerUsernameTxt.getText().trim();
+    		String password = registerPasswordTxt.getText().trim();
     		if(restaurant.addAdminUser(name, surname, id, null, username, password, null)) {
     			Alert alert = new Alert(AlertType.INFORMATION);
 		    	alert.setTitle("Administrador creado");
@@ -264,8 +266,10 @@ public class WelcomeGUI {
 		
 		fxmlLoader.setController(this);
 		Parent WelcomeWindow = fxmlLoader.load();
-
 		mainFirstRegisterPane.getChildren().setAll(WelcomeWindow);
+		Stage st = (Stage)WelcomeWindow.getScene().getWindow();
+		st.setHeight(600);
+		st.setWidth(850);
 		firstAdmin();
     }
 }

@@ -1,7 +1,11 @@
 package ui;
 
 import java.io.IOException;
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +21,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import model.Product;
 import model.Restaurant;
 
@@ -139,6 +144,18 @@ public class EmployeeGUI {
     public void injectWelcomeGUI(WelcomeGUI welcomeGUI, Restaurant restaurant) {
     	this.welcomeGUI = welcomeGUI;
     }
+    
+    public void timer() {
+    	Timer timer = new Timer();
+    	timer.schedule(new TimerTask() {
+    	  @Override
+    	  public void run() {
+    	   Date date = new Date ();
+    	   SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+    	   Platform.runLater(() -> labTime.setText(sdf.format(date)));
+    	  }
+    	}, 0, 1000);
+    }
 
     @FXML
     public void addProductToList(ActionEvent event) {
@@ -186,9 +203,10 @@ public class EmployeeGUI {
 		
 		fxmlLoader.setController(welcomeGUI);
 		Parent WelcomeWindow = fxmlLoader.load();
-
-		menuAndOrderPane.setStyle("-fx-background-color:black; -fx-opacity:1;");
 		menuAndOrderPane.getChildren().setAll(WelcomeWindow);
+		Stage st = (Stage)WelcomeWindow.getScene().getWindow();
+		st.setHeight(600);
+		st.setWidth(850);
 		welcomeGUI.firstAdmin();
     }
 
