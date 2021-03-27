@@ -29,10 +29,12 @@ public class AdminGUI {
     private Restaurant restaurant;
     private WelcomeGUI welcomeGUI;
     private InventoryGUI inventoryGUI;
+    private UsersGUI usersGUI;
     
     public AdminGUI() {
     	injectWelcomeGUI(welcomeGUI, restaurant);
     	inventoryGUI = new InventoryGUI();
+    	usersGUI = new UsersGUI();
     }
     
     public void injectWelcomeGUI(WelcomeGUI welcomeGUI, Restaurant restaurant) {
@@ -69,7 +71,7 @@ public class AdminGUI {
     public void showAdminPane(ActionEvent event) throws IOException {
     	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("admins_pane.fxml"));
 		
-		fxmlLoader.setController(this);
+		fxmlLoader.setController(usersGUI);
 		Parent AdminsPane = fxmlLoader.load();
 		mainPane.getChildren().setAll(AdminsPane);
 		Stage st = (Stage)AdminsPane.getScene().getWindow();
