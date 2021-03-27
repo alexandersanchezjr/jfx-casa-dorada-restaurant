@@ -97,7 +97,7 @@ public class AdminGUI {
 
     @FXML
     public void showOrdersPane(ActionEvent event) throws IOException {
-    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("admins_orders_pane.fxml"));
+    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("admin_orders_pane.fxml"));
 		
 		fxmlLoader.setController(inventoryGUI);
 		Parent OrdersPane = fxmlLoader.load();
