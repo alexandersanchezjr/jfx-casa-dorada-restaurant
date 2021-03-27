@@ -9,7 +9,6 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
-<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -17,9 +16,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="orderPaner" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="typePane" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ListView fx:id="lvProducts" layoutY="45.0" prefHeight="394.0" prefWidth="162.0" AnchorPane.bottomAnchor="161.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="45.0">
+      <ListView fx:id="lvTypes" layoutY="45.0" prefHeight="394.0" prefWidth="162.0" AnchorPane.bottomAnchor="161.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="45.0">
          <contextMenu>
             <ContextMenu>
               <items>
@@ -39,18 +38,14 @@
             <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="5000.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Label fx:id="labOrderId" text="#107373">
+            <Label fx:id="labTypeId" text="#107373">
                <font>
                   <Font name="Gill Sans MT" size="18.0" />
                </font>
             </Label>
-            <TextField editable="false" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="169.0" text="Entradas" GridPane.rowIndex="1" />
-            <ToggleButton maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Habilitado" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
-               <toggleGroup>
-                  <ToggleGroup fx:id="availability" />
-               </toggleGroup>
-            </ToggleButton>
-            <Button mnemonicParsing="false" text="Actualizar" GridPane.rowIndex="2" />
+            <TextField fx:id="typeNameTxt" editable="false" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="169.0" text="Entradas" GridPane.rowIndex="1" />
+            <ToggleButton fx:id="tbTypeAvailability" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#changeTypeAvailability" text="Habilitado" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+            <Button mnemonicParsing="false" onAction="#updateType" text="Actualizar" GridPane.rowIndex="2" />
          </children>
          <padding>
             <Insets bottom="10.0" />
@@ -79,13 +74,9 @@
                   <Font name="Gill Sans MT Bold" size="18.0" />
                </font>
             </Label>
-            <TextField promptText="Nombre" GridPane.rowIndex="1" />
-            <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="25.0" prefWidth="0.0" text="Crear" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <ToggleButton maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Habilitado" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <toggleGroup>
-                  <ToggleGroup fx:id="availability1" />
-               </toggleGroup>
-            </ToggleButton>
+            <TextField fx:id="newTypeNameTxt" promptText="Nombre" GridPane.rowIndex="1" />
+            <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#createNewType" prefHeight="25.0" prefWidth="0.0" text="Crear" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <ToggleButton fx:id="tbNewTypeAvailability" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#changeNewTypeAvailability" text="Habilitado" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
          <padding>
             <Insets left="10.0" top="10.0" />
@@ -94,19 +85,14 @@
       <VBox layoutY="454.0" spacing="10.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="0.0">
          <children>
             <Separator prefHeight="0.0" prefWidth="162.0" />
-            <Button maxWidth="-Infinity" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#changeStatusToInProcess" prefHeight="25.0" prefWidth="162.0" text="Exportar Este">
+            <Button layoutX="10.0" layoutY="13.0" maxWidth="-Infinity" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#importTypeList" prefHeight="25.0" prefWidth="162.0" text="Importar Lista">
                <graphic>
-                  <TextField alignment="CENTER" maxWidth="30.0" nodeOrientation="LEFT_TO_RIGHT" text=";" />
+                  <TextField fx:id="typeImportSeparatorTxt" alignment="CENTER" maxWidth="30.0" nodeOrientation="LEFT_TO_RIGHT" text=";" />
                </graphic>
             </Button>
-            <Button layoutX="10.0" layoutY="13.0" maxWidth="-Infinity" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#changeStatusToInProcess" prefHeight="25.0" prefWidth="162.0" text="Importar Lista">
+            <Button layoutX="10.0" layoutY="13.0" maxWidth="-Infinity" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#exportTypeList" prefHeight="25.0" prefWidth="162.0" text="Exportar Lista">
                <graphic>
-                  <TextField alignment="CENTER" maxWidth="30.0" nodeOrientation="LEFT_TO_RIGHT" text=";" />
-               </graphic>
-            </Button>
-            <Button layoutX="10.0" layoutY="13.0" maxWidth="-Infinity" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#changeStatusToInProcess" prefHeight="25.0" prefWidth="162.0" text="Exportar Lista">
-               <graphic>
-                  <TextField alignment="CENTER" maxWidth="30.0" nodeOrientation="LEFT_TO_RIGHT" text=";" />
+                  <TextField fx:id="typeExportSeparator" alignment="CENTER" maxWidth="30.0" nodeOrientation="LEFT_TO_RIGHT" text=";" />
                </graphic>
             </Button>
          </children>
