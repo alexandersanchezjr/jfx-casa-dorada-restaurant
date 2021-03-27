@@ -1,11 +1,30 @@
 package model;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class Restaurant {
+	//Constants to Serialization
+	
+	public final static String EMPLOYEE_FILE_NAME = "data/employees.cdr";
+	public final static String OPERATORS_USERS_FILE_NAME = "data/operators.cdr";
+	public final static String ADMINS_USERS_FILE_NAME = "data/admins.cdr";
+	public final static String CUSTOMERS_FILE_NAME = "data/customers.cdr";
+	public final static String ORDERS_FILE_NAME = "data/orders.cdr";
+	public final static String PRODUCTS_FILE_NAME = "data/products.cdr";
+	public final static String TYPES_PRODUCTS_FILE_NAME = "data/typesOfProducts.cdr";
+	public final static String INGREDIENTS_FILE_NAME = "data/ingredients.cdr";
+	public final static String[] ed = new String[5];
+	
+	//Attributes (Lists)
+	
 	private ArrayList<Employee> employees;
 	private ArrayList<User> operatorsUsers;
 	private ArrayList<User> admins;
@@ -444,6 +463,16 @@ public class Restaurant {
 		boolean added = false;
 		Customer thisCustomer = new Customer(name, surname, id, address, phoneNumber, comments, loggedUser);
 		if(!customers.contains(thisCustomer)) {
+			for(int i = 0; i<customers.size(); i++) {
+				if((thisCustomer.getName().compareToIgnoreCase(customers.get(i).getName()) > 0) || thisCustomer.getName().compareToIgnoreCase(customers.get(i).getName()) == 0) {
+					customers.add(i, thisCustomer);
+					added = true;
+				}
+				else {
+					customers.add(i+1, thisCustomer);
+					added = true;
+				}
+			}
 			added = customers.add(thisCustomer);
 		}
 		return added;
@@ -487,12 +516,55 @@ public class Restaurant {
 		return disabled;
 	}
 	
+	//Serialization 
+	
+	public void saveRestaurantData() throws IOException {
+		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(EMPLOYEE_FILE_NAME));
+		oos.writeObject(employees);
+		oos.close();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void loadRestaurantData() throws IOException, ClassNotFoundException {
+		ObjectInputStream oisE = new ObjectInputStream(new FileInputStream(EMPLOYEE_FILE_NAME));
+		employees = (ArrayList<Employee>)oisE.readObject();
+		oisE.close();
+		
+		ObjectInputStream oisO = new ObjectInputStream(new FileInputStream(OPERATORS_USERS_FILE_NAME));
+		operatorsUsers = (ArrayList<User>)oisO.readObject();
+		oisO.close();
+		
+		ObjectInputStream oisA = new ObjectInputStream(new FileInputStream(ADMINS_USERS_FILE_NAME));
+		admins = (ArrayList<User>)oisA.readObject();
+		oisA.close();
+		
+		ObjectInputStream oisC = new ObjectInputStream(new FileInputStream(CUSTOMERS_FILE_NAME));
+		customers = (ArrayList<Customer>)oisC.readObject();
+		oisC.close();
+		
+		ObjectInputStream oisOR = new ObjectInputStream(new FileInputStream(ORDERS_FILE_NAME));
+		orders = (ArrayList<Order>)oisOR.readObject();
+		oisOR.close();
+		
+		ObjectInputStream oisP = new ObjectInputStream(new FileInputStream(PRODUCTS_FILE_NAME));
+		products = (ArrayList<Product>)oisP.readObject();
+		oisP.close();
+		
+		ObjectInputStream oisT = new ObjectInputStream(new FileInputStream(TYPES_PRODUCTS_FILE_NAME));
+		types = (ArrayList<Type>)oisT.readObject();
+		oisT.close();
+		
+		ObjectInputStream oisI = new ObjectInputStream(new FileInputStream(INGREDIENTS_FILE_NAME));
+		ingredients = (ArrayList<Ingredient>)oisI.readObject();
+		oisI.close();
+	}
+	
 	//EXPORT EMPLOYEES
 	
 	public void exportEmployees(String fileName, String separator) throws FileNotFoundException{
 	    PrintWriter pw = new PrintWriter(fileName);
 
-	    for(int i=0;i<employees.size();i++){
+	    for(int i = 0; i<employees.size(); i++) {
 	      Employee thisEmployee = employees.get(i);
 	      pw.println(thisEmployee.getName()+"separator"+thisEmployee.getSurname()+"separator"+thisEmployee.getId()+"separator"+thisEmployee.getOrdersCont());
 	    }
