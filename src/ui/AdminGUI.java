@@ -39,9 +39,9 @@ public class AdminGUI {
 		
 		fxmlLoader.setController(welcomeGUI);
 		Parent WelcomeWindow = fxmlLoader.load();
-    	
-		mainAdminPane.getChildren().clear();
-		mainAdminPane.getChildren().addAll(WelcomeWindow);
+
+		mainAdminPane.getChildren().setAll(WelcomeWindow);
+		welcomeGUI.firstAdmin();
     }
 
     @FXML
