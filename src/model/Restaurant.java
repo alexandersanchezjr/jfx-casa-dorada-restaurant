@@ -519,9 +519,37 @@ public class Restaurant {
 	//Serialization 
 	
 	public void saveRestaurantData() throws IOException {
-		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(EMPLOYEE_FILE_NAME));
-		oos.writeObject(employees);
-		oos.close();
+		ObjectOutputStream oosE = new ObjectOutputStream(new FileOutputStream(EMPLOYEE_FILE_NAME));
+		oosE.writeObject(employees);
+		oosE.close();
+		
+		ObjectOutputStream oosO = new ObjectOutputStream(new FileOutputStream(OPERATORS_USERS_FILE_NAME));
+		oosO.writeObject(operatorsUsers);
+		oosO.close();
+		
+		ObjectOutputStream oosA = new ObjectOutputStream(new FileOutputStream(ADMINS_USERS_FILE_NAME));
+		oosA.writeObject(admins);
+		oosA.close();
+		
+		ObjectOutputStream oosC = new ObjectOutputStream(new FileOutputStream(CUSTOMERS_FILE_NAME));
+		oosC.writeObject(customers);
+		oosC.close();
+		
+		ObjectOutputStream oosOR = new ObjectOutputStream(new FileOutputStream(ORDERS_FILE_NAME));
+		oosOR.writeObject(orders);
+		oosOR.close();
+		
+		ObjectOutputStream oosP = new ObjectOutputStream(new FileOutputStream(PRODUCTS_FILE_NAME));
+		oosP.writeObject(products);
+		oosP.close();
+		
+		ObjectOutputStream oosT = new ObjectOutputStream(new FileOutputStream(TYPES_PRODUCTS_FILE_NAME));
+		oosT.writeObject(types);
+		oosT.close();
+		
+		ObjectOutputStream oosI = new ObjectOutputStream(new FileOutputStream(INGREDIENTS_FILE_NAME));
+		oosI.writeObject(ingredients);
+		oosI.close();
 	}
 	
 	@SuppressWarnings("unchecked")
