@@ -97,6 +97,15 @@ public class WelcomeGUI {
     	employeeGUI = new EmployeeGUI();
     	adminGUI = new AdminGUI();
     	initialize();
+    	try {
+			restaurant.loadRestaurantData();
+		} catch (ClassNotFoundException cnfe) {
+			// TODO Auto-generated catch block
+			cnfe.printStackTrace();
+		} catch (IOException ioe) {
+			// TODO Auto-generated catch block
+			ioe.printStackTrace();
+		}
     }
   
 	public void initialize() {
