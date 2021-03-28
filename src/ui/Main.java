@@ -31,7 +31,7 @@ public class Main extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Casa Dorada Restaurant");
 		primaryStage.show();
-		//welcomeGUI.resizeImageView();
+		welcomeGUI.resizeImageView();
 		welcomeGUI.firstAdmin();
 	}
 }

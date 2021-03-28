@@ -107,10 +107,10 @@ public class WelcomeGUI {
 	
 	//Methods of welcome.fxml
 	
-	/*public void resizeImageView() {
+	public void resizeImageView() {
 		imgRestaurant.fitWidthProperty().bind(imagePane.widthProperty());
 		imgRestaurant.fitHeightProperty().bind(imagePane.heightProperty());
-	}*/
+	}
 	
 	public void firstAdmin() {
 		if(restaurant.getAdmins().size() == 0) {
