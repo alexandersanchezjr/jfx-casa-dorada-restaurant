@@ -156,24 +156,28 @@ public class Restaurant {
 	
 	//Product MANAGEMENT
 
-	public boolean addProduct(String name, ArrayList<Ingredient> ingredients, ArrayList<PriceBySize> pricesBySizes, boolean availability, String selectedType, boolean typeAvailability, User typeCreator, String size, String price) {
+	public boolean addProduct(String name, ArrayList<Ingredient> ingredients, ArrayList<PriceBySize> pricesBySizes, boolean availability, String selectedType, boolean typeAvailability, User typeCreator, String size, String price) throws IOException {
 		boolean added = false;
 		Product newProduct = new Product(name,(identifier++), ingredients, pricesBySizes, availability, selectedType, typeAvailability, typeCreator, size, price, loggedUser);
 		if(!products.contains(newProduct)) {	
 			added = products.add(newProduct);
+			saveRestaurantData();
+
 		}
 		return added;
 	}
 	
-	public void updateProduct(Product p, String name, boolean availability, String selectedType, ArrayList<Ingredient> ingredients) {
+	public void updateProduct(Product p, String name, boolean availability, String selectedType, ArrayList<Ingredient> ingredients) throws IOException {
 		p.setName(name);
 		p.setAvailability(availability);
 		p.setType(selectedType);
 		p.setModifier(loggedUser);
 		p.setIngredients(ingredients);
+		saveRestaurantData();
+
 	}
 	
-	public boolean deleteProduct(Product p) {
+	public boolean deleteProduct(Product p) throws IOException {
 		boolean deleted = false;
 		boolean found = false;
 		for(int i = 0; i<orders.size() && !found; i++) {
@@ -185,40 +189,48 @@ public class Restaurant {
 		}
 		if(found == false) {
 			deleted = products.remove(p);
+			saveRestaurantData();
+
 		}
 		return deleted;
 	}
 	
-	public boolean disableProduct(Product p) {
+	public boolean disableProduct(Product p) throws IOException {
 		boolean disabled = false;
 		if(p.isAvailability()) {
 			p.setAvailability(false);
 			disabled = true;
+			saveRestaurantData();
+
 		}
 		return disabled;
 	}
 	
-	public boolean enableProduct(Product p) {
+	public boolean enableProduct(Product p) throws IOException {
 		boolean disabled = false;
 		if(!p.isAvailability()) {
 			p.setAvailability(true);
 			disabled = true;
+			saveRestaurantData();
+
 		}
 		return disabled;
 	}
 	
 	//Type of product MANAGEMENT
 	
-	public boolean addTypeProduct(String name, boolean availability) {
+	public boolean addTypeProduct(String name, boolean availability) throws IOException {
 		boolean added = false;
 		Type thisType = new Type(name, availability, loggedUser);
 		if(!types.contains(thisType)) {
 			added = types.add(thisType);
+			saveRestaurantData();
+
 		}
 		return added;
 	}
 	
-	public boolean deleteTypeProduct(Type t) {
+	public boolean deleteTypeProduct(Type t) throws IOException {
 		boolean deleted = false;
 		boolean found = false;
 		for(int i = 0; i<products.size() && !found; i++ ) {
@@ -228,47 +240,57 @@ public class Restaurant {
 		}
 		if(found == false) {
 			deleted = types.remove(t);
+			saveRestaurantData();
+
 		}
 		return deleted;
 	}
 	
-	public boolean disableType(Type t) {
+	public boolean disableType(Type t) throws IOException {
 		boolean disabled = false;
 		if(t.isAvailability()) {
 			t.setAvailability(false);
 			disabled = true;
+			saveRestaurantData();
+
 		}
 		return disabled;
 	}
 	
-	public boolean enableType(Type t) {
+	public boolean enableType(Type t) throws IOException {
 		boolean disabled = false;
 		if(!t.isAvailability()) {
 			t.setAvailability(true);
 			disabled = true;
+			saveRestaurantData();
+
 		}
 		return disabled;
 	}
 	
 	//Employee MANAGEMENT
 	
-	public boolean addEmployee(String name, String surname, String id, User creator) {
+	public boolean addEmployee(String name, String surname, String id, User creator) throws IOException {
 		boolean added = false;
 		Employee thisEmployee = new Employee(name, surname,id, loggedUser);
 		if(!employees.contains(thisEmployee)) {
 			added = employees.add(thisEmployee);
+			saveRestaurantData();
+
 		}
 		return added;
 	}
 	
-	public void updateEmployee(Employee e, String name, String surname, String id) {
+	public void updateEmployee(Employee e, String name, String surname, String id) throws IOException {
 		e.setName(name);
 		e.setSurname(surname);
 		e.setId(id);
 		e.setModifier(loggedUser);
+		saveRestaurantData();
+
 	}
 	
-	public boolean deleteEmployee(Employee e) {
+	public boolean deleteEmployee(Employee e) throws IOException {
 		boolean deleted = false;
 		boolean found = false;
 		for(int i = 0; i<orders.size() && !found; i++) {
@@ -278,46 +300,56 @@ public class Restaurant {
 		}
 		if(found == false) {
 			deleted = employees.remove(e);
+			saveRestaurantData();
+
 		}
 		return deleted;
 	}
 	
-	public boolean enableEmployee(Employee e) {
+	public boolean enableEmployee(Employee e) throws IOException {
 		boolean disabled = false;
 		if(!e.isAvailability()) {
 			e.setAvailability(true);
 			disabled = true;
+			saveRestaurantData();
+
 		}
 		return disabled;
 	}
 	
-	public boolean disableEmployee(Employee e) {
+	public boolean disableEmployee(Employee e) throws IOException {
 		boolean disabled = false;
 		if(e.isAvailability()) {
 			e.setAvailability(false);
 			disabled = true;
+			saveRestaurantData();
+
 		}
 		return disabled;
 	}
 	
 	//User MANAGEMENT
 	
-	public boolean addUser(String name, String surname, String id, User employeeCreator, String username, String password, User creator) {
+	public boolean addUser(String name, String surname, String id, User employeeCreator, String username, String password, User creator) throws IOException {
 		boolean added = false;
 		User thisUser = new User(name, surname, id, employeeCreator, username, password, loggedUser);
 		if(!operatorsUsers.contains(thisUser)) { // If contains() generate error, change with a normal search with a for loop
 			added = operatorsUsers.add(thisUser);
+			saveRestaurantData();
+
 		}
 		return added;
 	}
 	
-	public void updateUser(User u, String username, String password) {
+	public void updateUser(User u, String username, String password) throws IOException {
 		u.setUsername(username);
 		u.setPassword(password);
 		u.setModifier(loggedUser);
+		saveRestaurantData();
+
 	}
 	
-	public boolean deleteUser(User u) {
+	public boolean deleteUser(User u) throws IOException {
 		boolean deleted = false;
 		boolean found = false;
 		for(int i = 0; i<orders.size() && !found; i++) { //If the user to delete is CREATOR or MODIFIER of an ORDER
@@ -333,39 +365,47 @@ public class Restaurant {
 		if(found == false) {
 			deleted = operatorsUsers.remove(u);
 		}
+		saveRestaurantData();
+
 		return deleted;
 	}
 	
-	public boolean enableUser(User u) {
+	public boolean enableUser(User u) throws IOException {
 		boolean disabled = false;
 		if(!u.isAvailability()) {
 			u.setAvailability(true);
 			disabled = true;
+			saveRestaurantData();
+
 		}
 		return disabled;
 	}
 	
-	public boolean disableUser(User u) {
+	public boolean disableUser(User u) throws IOException {
 		boolean disabled = false;
 		if(u.isAvailability()) {
 			u.setAvailability(false);
 			disabled = true;
+			saveRestaurantData();
+
 		}
 		return disabled;
 	}
 	
 	// AdminUser MANAGEMENT
 	
-	public boolean addAdminUser(String name, String surname, String id, User employeeCreator, String username, String password, User creator) {
+	public boolean addAdminUser(String name, String surname, String id, User employeeCreator, String username, String password, User creator) throws IOException {
 		boolean added = false;
 		User thisAdmin = new User(name, surname, id, employeeCreator, username, password, loggedUser);
 		if(!admins.contains(thisAdmin)) { // If contains() generate error, change with a normal search with a for loop
 			added = admins.add(thisAdmin);
+			saveRestaurantData();
+
 		}
 		return added;
 	}
 	
-	public boolean deletedAdminUser(User u) {
+	public boolean deletedAdminUser(User u) throws IOException {	//TO BE CHECKED
 		boolean deleted = false;
 		boolean found = false;
 		for(int i = 0; i<products.size() && !found; i++) { //If the user to delete is CREATOR or MODIFIER of a PRODUCT, INGREDIENT OR TYPE OF PRODUCT
@@ -383,83 +423,101 @@ public class Restaurant {
 		if(found == false) {
 			deleted = admins.remove(u);
 		}
+		saveRestaurantData();
+
 		return deleted;
 	}
 	
 	//Ingredients MANAGEMENT
 	
-	public boolean addIngredient(String name, boolean availability) {
+	public boolean addIngredient(String name, boolean availability) throws IOException {
 		boolean added = false;
 		Ingredient thisIngredient = new Ingredient(name, availability, (identifier++), loggedUser);
 		if(!ingredients.contains(thisIngredient)) {	
 			added = ingredients.add(thisIngredient);
+			saveRestaurantData();
+
 		}
 		return added;
 	}
 	
-	public boolean deleteIngredient(Ingredient ingredient) {
+	public boolean deleteIngredient(Ingredient ingredient) throws IOException {
 		boolean deleted = false;
 		for(int i = 0; i<products.size(); i++) {
 			if(!products.get(i).getIngredients().contains(ingredient)) {
 				deleted = ingredients.remove(ingredient);
+				saveRestaurantData();
+
 			}
 		}
 		return deleted;
 	}
 	
-	public void updateIngredient(Ingredient i, String name) {
+	public void updateIngredient(Ingredient i, String name) throws IOException {
 		i.setName(name);
 		i.setModifier(loggedUser);
+		saveRestaurantData();
+
 	}
 	
-	public boolean enableIngredient(Ingredient ingredient) {
+	public boolean enableIngredient(Ingredient ingredient) throws IOException {
 		boolean enabled = false;
 		if(!ingredient.isAvailability()) {
 			ingredient.setAvailability(true);
 			enabled = true;
+			saveRestaurantData();
+
 		}
 		return enabled;
 	}
 	
-	public boolean disableIngredient(Ingredient ingredient) {
+	public boolean disableIngredient(Ingredient ingredient) throws IOException {
 		boolean disabled = false;
 		if(ingredient.isAvailability()) {
 			ingredient.setAvailability(false);
 			disabled = true;
+			saveRestaurantData();
+
 		}
 		return disabled;
 	}
 	
 	//Order MANAGEMENT
 	
-	public boolean addOrder(Date date, String selectedStatus, ArrayList<DetailProduct> products, Employee e, String customerName, String customerSurname, String customerId, String customerAddress, String customerPhoneNumber, String comments, User customerCreator, String customerComments) {
+	public boolean addOrder(Date date, String selectedStatus, ArrayList<DetailProduct> products, Employee e, String customerName, String customerSurname, String customerId, String customerAddress, String customerPhoneNumber, String comments, User customerCreator, String customerComments) throws IOException {
 		boolean added = false;
 		Order newOrder = new Order((identifier++), date, selectedStatus, products,  e, customerName, customerSurname, customerId, customerAddress, customerPhoneNumber, comments, customerCreator, customerComments, loggedUser);
 		if(!orders.contains(newOrder)) {
 			added = orders.add(newOrder);
 			orders.get(orders.indexOf(newOrder)).getEmployee().addOrder();
+			saveRestaurantData();
+
 		}
 		return added;
 	}
 	
-	public boolean deleteOrder(Order o) {
+	public boolean deleteOrder(Order o) throws IOException {
 		boolean deleted = false;
 		if(o.getStatus().equalsIgnoreCase("CANCELADO")) {
 			deleted = orders.remove(o);
+			saveRestaurantData();
+
 		}
 		return deleted;
 	}
 	
-	public void updateOrder(Order o, String status, ArrayList<DetailProduct> products, Employee e, String comments) {
+	public void updateOrder(Order o, String status, ArrayList<DetailProduct> products, Employee e, String comments) throws IOException {
 		o.setStatus(status);
 		o.setProducts(products);
 		o.setEmployee(e);
 		o.setComments(comments);
 		o.setModifier(loggedUser);
+		saveRestaurantData();
+
 	}
 	
 	//Customer MANAGEMENT
-	public boolean addCustomer(String name, String surname, String id, String address, String phoneNumber, String comments) {
+	public boolean addCustomer(String name, String surname, String id, String address, String phoneNumber, String comments) throws IOException {
 		boolean added = false;
 		Customer thisCustomer = new Customer(name, surname, id, address, phoneNumber, comments, loggedUser);
 		if(!customers.contains(thisCustomer)) {
@@ -475,20 +533,24 @@ public class Restaurant {
 			}
 			added = customers.add(thisCustomer);
 		}
+		saveRestaurantData();
+
 		return added;
 	}
 	
-	public boolean deleteCustomer(Customer c) {
+	public boolean deleteCustomer(Customer c) throws IOException {
 		boolean deleted = false;
 		for(int i = 0; i<orders.size(); i++) {
 			if((!orders.get(i).getStatus().equalsIgnoreCase("CANCELADO")) && (!orders.get(i).getCustomer().equals(c))) {
 				deleted = customers.remove(c);
+				saveRestaurantData();
+
 			}
 		}
 		return deleted;
 	}
 	
-	public void updateCustomer(Customer c, String name, String surname, String id, String address, String phoneNumber, String comments) {
+	public void updateCustomer(Customer c, String name, String surname, String id, String address, String phoneNumber, String comments) throws IOException {
 		c.setName(name);
 		c.setSurname(surname);
 		c.setId(id);
@@ -496,22 +558,27 @@ public class Restaurant {
 		c.setPhoneNumber(phoneNumber);
 		c.setComments(comments);
 		c.setModifier(loggedUser);
+		saveRestaurantData();
 	}
 	
-	public boolean enableCustomer(Customer c) {
+	public boolean enableCustomer(Customer c) throws IOException {
 		boolean enabled = false;
 		if(!c.isAvailability()) {
 			c.setAvailability(true);
 			enabled = true;
+			saveRestaurantData();
+
 		}
 		return enabled;
 	}
 	
-	public boolean disableCustomer(Customer c) {
+	public boolean disableCustomer(Customer c) throws IOException {
 		boolean disabled = false;
 		if(c.isAvailability()) {
 			c.setAvailability(false);
 			disabled = true;
+			saveRestaurantData();
+
 		}
 		return disabled;
 	}
