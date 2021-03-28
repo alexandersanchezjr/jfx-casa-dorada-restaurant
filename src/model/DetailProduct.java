@@ -62,5 +62,16 @@ public class DetailProduct {
 		this.selectedSize = selectedSize;
 	}
 	
+	public String getProductName () {
+		return product.getName();
+	}
+	
+	public String getSize () {
+		return selectedSize.getSize();
+	}
+	
+	public String getTotalPrice () {
+		return Integer.toString(amount * selectedSize.getPrice());
+	}
 	
 }
