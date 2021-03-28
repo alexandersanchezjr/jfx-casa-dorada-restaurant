@@ -153,14 +153,14 @@
                   <Font name="Gill Sans MT Bold" size="14.0" />
                </font>
             </Label>
-            <Button maxWidth="-Infinity" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#importAdminsList" prefHeight="25.0" prefWidth="162.0" text="Importar Lista">
+            <Button maxWidth="-Infinity" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#importOrdersList" prefHeight="25.0" prefWidth="162.0" text="Importar Lista">
                <graphic>
-                  <TextField fx:id="adminImportSeparatorTxt" alignment="CENTER" maxWidth="30.0" nodeOrientation="LEFT_TO_RIGHT" text=";" />
+                  <TextField fx:id="ordersImportSeparatorTxt" alignment="CENTER" maxWidth="30.0" nodeOrientation="LEFT_TO_RIGHT" text=";" />
                </graphic>
             </Button>
-            <Button maxWidth="-Infinity" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#exportAdminsList" prefHeight="25.0" prefWidth="162.0" text="Exportar Lista">
+            <Button maxWidth="-Infinity" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#exportOrdersList" prefHeight="25.0" prefWidth="162.0" text="Exportar Lista">
                <graphic>
-                  <TextField fx:id="adminExportSeparatorTxt" alignment="CENTER" maxWidth="30.0" nodeOrientation="LEFT_TO_RIGHT" text=";" />
+                  <TextField fx:id="ordersExportSeparatorTxt" alignment="CENTER" maxWidth="30.0" nodeOrientation="LEFT_TO_RIGHT" text=";" />
                </graphic>
             </Button>
          </children>
