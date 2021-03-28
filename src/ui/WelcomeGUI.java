@@ -221,9 +221,11 @@ public class WelcomeGUI {
 		fxmlLoader.setController(this);
 		Parent FirstAdminRegister = fxmlLoader.load();
 
-		mainWelcomePane.setStyle("-fx-background-color:white; -fx-opacity:1;");
-		mainWelcomePane.getChildren().setAll(FirstAdminRegister);
-		Stage st = (Stage)FirstAdminRegister.getScene().getWindow();
+		Scene firstUserPane = new Scene (FirstAdminRegister);
+		Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        
+        window.setScene(firstUserPane);
+        window.show();
     }
     
     //Methods of first_register_pane.fxml
@@ -271,10 +273,11 @@ public class WelcomeGUI {
 		
 		fxmlLoader.setController(this);
 		Parent WelcomeWindow = fxmlLoader.load();
-		mainFirstRegisterPane.getChildren().setAll(WelcomeWindow);
-		Stage st = (Stage)WelcomeWindow.getScene().getWindow();
-		st.setHeight(600);
-		st.setWidth(850);
+		Scene welcome = new Scene (WelcomeWindow);
+		Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        
+        window.setScene(welcome);
+        window.show();
 		firstAdmin();
     }
 }
