@@ -1,5 +1,8 @@
 package ui;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 /*import javafx.fxml.FXMLLoader;
@@ -15,6 +18,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
 import model.Restaurant;
 
 public class InventoryGUI {
@@ -67,10 +71,10 @@ public class InventoryGUI {
     private Label labClientComments;
 
     @FXML
-    private TextField adminImportSeparatorTxt;
+    private TextField ordersImportSeparatorTxt;
 
     @FXML
-    private TextField adminExportSeparatorTxt;
+    private TextField ordersExportSeparatorTxt;
 
     @FXML
     private DatePicker datePicker;
@@ -206,8 +210,21 @@ public class InventoryGUI {
     //Orders Pane ActionEvent methods
     
     @FXML
-    public void exportAdminsList(ActionEvent event) {
-
+    public void exportOrdersList(ActionEvent event) {
+    	FileChooser chooser = new FileChooser();
+	    chooser.setTitle("Choose location To Save Report");
+	    File selectedFile = null;
+	    while(selectedFile== null){
+	        selectedFile = chooser.showSaveDialog(null);
+	    }
+	    File file = new File(selectedFile.getAbsolutePath());
+	    String separator = ordersExportSeparatorTxt.getText();
+	    try {
+			restaurant.exportOrders(file.getName(), separator);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     @FXML
@@ -216,7 +233,7 @@ public class InventoryGUI {
     }
 
     @FXML
-    public void importAdminsList(ActionEvent event) {
+    public void importOrdersList(ActionEvent event) {
 
     }
     
