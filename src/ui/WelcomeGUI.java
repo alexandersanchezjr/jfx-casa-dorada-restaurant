@@ -142,6 +142,7 @@ public class WelcomeGUI {
 	        if(restaurant.getAdmins().get(i) != null) {	
     			if(adminUserTxt.getText().equals(restaurant.getAdmins().get(i).getUsername()) && adminPasswordTxt.getText().equals(restaurant.getAdmins().get(i).getPassword())) {
 	        		logged = true;
+	        		restaurant.setLoggedUser(restaurant.getAdmins().get(i));
     			}
 	        	else {
         			Alert alert = new Alert(AlertType.ERROR);
@@ -174,6 +175,7 @@ public class WelcomeGUI {
     	        if(restaurant.getOperatorsUsers().get(i) != null) {	
         			if(adminUserTxt.getText().trim().equals(restaurant.getOperatorsUsers().get(i).getUsername()) && adminPasswordTxt.getText().trim().equals(restaurant.getOperatorsUsers().get(i).getPassword())) {
     	        		logged = true;
+    	        		restaurant.setLoggedUser(restaurant.getOperatorsUsers().get(i));
         			}
     	        	else {
 	        			Alert alert = new Alert(AlertType.ERROR);
