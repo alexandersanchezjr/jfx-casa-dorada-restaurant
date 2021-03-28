@@ -74,4 +74,8 @@ public class DetailProduct {
 		return Integer.toString(amount * selectedSize.getPrice());
 	}
 	
+	public String getAmountToString () {
+		return Integer.toString(amount);
+	}
+	
 }
