@@ -2,6 +2,7 @@ package ui;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -173,7 +174,10 @@ public class EmployeeGUI {
 
     @FXML
     public void addProductToList(ActionEvent event) {
-    	ObservableList<DetailProduct> observableList = FXCollections.observableArrayList(restaurant.getOrders().getProducts());
+    	ArrayList<DetailProduct> products = new ArrayList<> ();
+    	products.add(restaurant.getOrders().get(typeChooser.getSelectionModel().getSelectedIndex()),amountChooser.getValue(), restaurant.getProducts().get(sizeChooser.getSelectionModel().getSelectedIndex()));
+    	
+    	ObservableList<DetailProduct> observableList = FXCollections.observableArrayList(products);
     	tcOrderProductName.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("productName"));
     	tcOrderProductType.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("category"));
     	tcOrderProductSize.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("size"));
