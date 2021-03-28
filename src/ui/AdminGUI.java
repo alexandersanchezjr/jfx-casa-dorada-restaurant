@@ -77,9 +77,12 @@ public class AdminGUI {
     	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("admins_pane.fxml"));
 		
 		fxmlLoader.setController(usersGUI);
-		Parent AdminsPane = fxmlLoader.load();
-		mainPane.getChildren().setAll(AdminsPane);
-		Stage st = (Stage)AdminsPane.getScene().getWindow();
+		Parent adminPane = fxmlLoader.load();
+		mainPane.getChildren().setAll(adminPane);
+		AnchorPane.setTopAnchor(adminPane, 0.0);
+		AnchorPane.setBottomAnchor(adminPane, 0.0);
+		AnchorPane.setLeftAnchor(adminPane, 0.0);
+		AnchorPane.setRightAnchor(adminPane, 0.0);
     }
     
     @FXML
@@ -113,7 +116,6 @@ public class AdminGUI {
 		AnchorPane.setBottomAnchor(OrdersPane, 0.0);
 		AnchorPane.setLeftAnchor(OrdersPane, 0.0);
 		AnchorPane.setRightAnchor(OrdersPane, 0.0);
-		Stage st = (Stage)OrdersPane.getScene().getWindow();
     }
 
     @FXML
@@ -121,18 +123,24 @@ public class AdminGUI {
     	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("products_pane.fxml"));
 		
 		fxmlLoader.setController(inventoryGUI);
-		Parent ProductsPane = fxmlLoader.load();
-		mainPane.getChildren().setAll(ProductsPane);
-		Stage st = (Stage)ProductsPane.getScene().getWindow();
+		Parent productPane = fxmlLoader.load();
+		mainPane.getChildren().setAll(productPane);
+		AnchorPane.setTopAnchor(productPane, 0.0);
+		AnchorPane.setBottomAnchor(productPane, 0.0);
+		AnchorPane.setLeftAnchor(productPane, 0.0);
+		AnchorPane.setRightAnchor(productPane, 0.0);
     }
 
     @FXML
     public void showTypesPane(ActionEvent event) throws IOException {
     	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("type_of_products_pane.fxml"));
 		
-		fxmlLoader.setController(inventoryGUI);
-		Parent TypeProductsPane = fxmlLoader.load();
-		mainPane.getChildren().setAll(TypeProductsPane);
-		Stage st = (Stage)TypeProductsPane.getScene().getWindow();
+    	fxmlLoader.setController(inventoryGUI);
+		Parent typesPane = fxmlLoader.load();
+		mainPane.getChildren().setAll(typesPane);
+		AnchorPane.setTopAnchor(typesPane, 0.0);
+		AnchorPane.setBottomAnchor(typesPane, 0.0);
+		AnchorPane.setLeftAnchor(typesPane, 0.0);
+		AnchorPane.setRightAnchor(typesPane, 0.0);
     }
 }
