@@ -92,6 +92,28 @@ public class Restaurant {
 	}
 	
 	/**
+	 * @return the orders
+	 */
+	public ArrayList<Order> getOrders() {
+		return orders;
+	}
+	
+	public ArrayList<String> getIdOrders() {
+		ArrayList<String> ids = new ArrayList<>();
+		for(int i = 0; i<orders.size(); i++) {
+			ids.add(orders.get(i).toString());
+		}
+		return ids;
+	}
+
+	/**
+	 * @param orders the orders to set
+	 */
+	public void setOrders(ArrayList<Order> orders) {
+		this.orders = orders;
+	}
+
+	/**
 	 * @return the admins
 	 */
 	public ArrayList<User> getAdmins() {

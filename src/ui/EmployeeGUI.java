@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -23,7 +24,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+<<<<<<< HEAD
+import javafx.scene.input.MouseEvent;
+=======
 import javafx.scene.control.cell.PropertyValueFactory;
+>>>>>>> 46273e732d983f352a6c9429fd046b26e32610aa
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.DetailProduct;
@@ -91,7 +96,7 @@ public class EmployeeGUI {
     private AnchorPane orderPane;
 
     @FXML
-    private ListView<?> lvOrders;
+    private ListView<String> lvOrders;
 
     @FXML
     private TableView<DetailProduct> tvProducts;
@@ -144,6 +149,15 @@ public class EmployeeGUI {
     @FXML
     private Label labTime;
     
+    @FXML
+    private Button bttEnProceso;
+
+    @FXML
+    private Button bttEnviado;
+
+    @FXML
+    private Button bttEntregado;
+    
     private WelcomeGUI welcomeGUI;
     private Restaurant restaurant;
     
@@ -188,17 +202,19 @@ public class EmployeeGUI {
 
     @FXML
     public void changeStatusToDelivered(ActionEvent event) {
-
+    	labOrderStatus.setText("ENTREGADO");
     }
 
     @FXML
     public void changeStatusToInProcess(ActionEvent event) {
-
+    	labOrderStatus.setText("EN PROCESO");
+    	bttEnviado.setDisable(false);
+    	bttEnProceso.setDisable(true);
     }
 
     @FXML
     public void changeStatusToSent(ActionEvent event) {
-
+    	labOrderStatus.setText("ENVIADO");
     }
 
     @FXML
@@ -241,7 +257,34 @@ public class EmployeeGUI {
 
     @FXML
     public void showOrdersPane(ActionEvent event) {
-
+    	menuPane.setVisible(false);
+    	orderPane.setVisible(true);
+    	ObservableList<String> orders = FXCollections.observableArrayList(restaurant.getIdOrders());
+    	lvOrders.setItems(orders);
+    	
+    	int indexOrder = lvOrders.getSelectionModel().getSelectedIndex();
+    	if(restaurant.getOrders().get(indexOrder).getStatus().equalsIgnoreCase("SOLICITADO")) {
+    		bttEnviado.setDisable(true);
+    		bttEntregado.setDisable(true);
+    	}
+    	else if(restaurant.getOrders().get(indexOrder).getStatus().equalsIgnoreCase("EN_PROCESO")) {
+    		bttEnProceso.setDisable(true);
+    		bttEntregado.setDisable(true);
+    	}
+    	else if(restaurant.getOrders().get(indexOrder).getStatus().equalsIgnoreCase("ENVIADO")) {
+    		bttEnviado.setDisable(true);
+    		bttEnProceso.setDisable(true);
+    	}
+    	else if(restaurant.getOrders().get(indexOrder).getStatus().equalsIgnoreCase("ENTREGADO")) {
+    		bttEnProceso.setDisable(true);
+    		bttEnviado.setDisable(true);
+    		bttEntregado.setDisable(true);
+    	}
+    }
+    
+    @FXML 
+    public void handleMouseClick(MouseEvent arg0) {
+    	
     }
     
     @FXML
