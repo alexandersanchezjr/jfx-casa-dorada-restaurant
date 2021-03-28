@@ -2,6 +2,7 @@ package ui;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -23,11 +24,18 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+<<<<<<< HEAD
 import javafx.scene.input.MouseEvent;
+=======
+import javafx.scene.control.cell.PropertyValueFactory;
+>>>>>>> 46273e732d983f352a6c9429fd046b26e32610aa
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import model.DetailProduct;
 import model.Product;
 import model.Restaurant;
+import model.Type;
+import model.UserAccount;
 
 public class EmployeeGUI {
 	@FXML
@@ -43,7 +51,7 @@ public class EmployeeGUI {
     private TextArea orderCommentTxt;
 
     @FXML
-    private ComboBox<String> typeChooser;
+    private ComboBox<Type> typeChooser;
 
     @FXML
     private ComboBox<Product> productChooser;
@@ -91,19 +99,22 @@ public class EmployeeGUI {
     private ListView<String> lvOrders;
 
     @FXML
-    private TableView<?> tvProducts;
+    private TableView<DetailProduct> tvProducts;
 
     @FXML
-    private TableColumn<?, ?> tcOrderProductName;
+    private TableColumn<DetailProduct, String> tcOrderProductName;
 
     @FXML
-    private TableColumn<?, ?> tcOrderProductType;
+    private TableColumn<DetailProduct, String> tcOrderProductType;
 
     @FXML
-    private TableColumn<?, ?> tcOrderProductSize;
+    private TableColumn<DetailProduct, String> tcOrderProductSize;
 
     @FXML
-    private TableColumn<?, ?> tcOrderProductPrice;
+    private TableColumn<DetailProduct, String> tcOrderProductPrice;
+    
+    @FXML
+    private TableColumn<DetailProduct, String> tcAmount;
 
     @FXML
     private Label labOrderId;
@@ -156,7 +167,12 @@ public class EmployeeGUI {
     
     public void injectWelcomeGUI(WelcomeGUI welcomeGUI, Restaurant restaurant) {
     	this.welcomeGUI = welcomeGUI;
+    	
+    	
+    		
     }
+    
+    
     
     public void timer() {
     	Timer timer = new Timer();
@@ -172,7 +188,16 @@ public class EmployeeGUI {
 
     @FXML
     public void addProductToList(ActionEvent event) {
-
+    	ArrayList<DetailProduct> products = new ArrayList<> ();
+    	products.add(restaurant.getOrders().get(typeChooser.getSelectionModel().getSelectedIndex()),amountChooser.getValue(), restaurant.getProducts().get(sizeChooser.getSelectionModel().getSelectedIndex()));
+    	
+    	ObservableList<DetailProduct> observableList = FXCollections.observableArrayList(products);
+    	tcOrderProductName.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("productName"));
+    	tcOrderProductType.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("category"));
+    	tcOrderProductSize.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("size"));
+    	tcOrderProductPrice.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("totalPrice"));
+    	tcAmount.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("amountToString"));
+    
     }
 
     @FXML
@@ -261,4 +286,24 @@ public class EmployeeGUI {
     public void handleMouseClick(MouseEvent arg0) {
     	
     }
+    
+    @FXML
+    void selectProductItem(ActionEvent event) {
+    	if(productChooser.getValue() != null)
+    		sizeChooser.setDisable(false);
+    }
+
+    @FXML
+    void selectSizeItem(ActionEvent event) {
+    	if(sizeChooser.getValue() != null)
+    		amountChooser.setDisable(false);
+    }
+
+    @FXML
+    void selectTypeItem(ActionEvent event) {
+    	
+    	if(typeChooser.getValue() != null)
+    		productChooser.setDisable(false);
+    }
+
 }
