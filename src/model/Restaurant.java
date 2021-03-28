@@ -155,7 +155,7 @@ public class Restaurant {
 	}
 	
 	//Product MANAGEMENT
-
+	
 	public boolean addProduct(String name, ArrayList<Ingredient> ingredients, ArrayList<PriceBySize> pricesBySizes, boolean availability, String selectedType, boolean typeAvailability, User typeCreator, String size, String price) {
 		boolean added = false;
 		Product newProduct = new Product(name,(identifier++), ingredients, pricesBySizes, availability, selectedType, typeAvailability, typeCreator, size, price, loggedUser);
@@ -164,7 +164,7 @@ public class Restaurant {
 		}
 		return added;
 	}
-	
+
 	public void updateProduct(Product p, String name, boolean availability, String selectedType, ArrayList<Ingredient> ingredients) {
 		p.setName(name);
 		p.setAvailability(availability);
