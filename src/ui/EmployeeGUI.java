@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,11 +22,14 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import model.DetailProduct;
 import model.Product;
 import model.Restaurant;
 import model.Type;
+import model.UserAccount;
 
 public class EmployeeGUI {
 	@FXML
@@ -88,19 +93,22 @@ public class EmployeeGUI {
     private ListView<?> lvOrders;
 
     @FXML
-    private TableView<?> tvProducts;
+    private TableView<DetailProduct> tvProducts;
 
     @FXML
-    private TableColumn<?, ?> tcOrderProductName;
+    private TableColumn<DetailProduct, String> tcOrderProductName;
 
     @FXML
-    private TableColumn<?, ?> tcOrderProductType;
+    private TableColumn<DetailProduct, String> tcOrderProductType;
 
     @FXML
-    private TableColumn<?, ?> tcOrderProductSize;
+    private TableColumn<DetailProduct, String> tcOrderProductSize;
 
     @FXML
-    private TableColumn<?, ?> tcOrderProductPrice;
+    private TableColumn<DetailProduct, String> tcOrderProductPrice;
+    
+    @FXML
+    private TableColumn<DetailProduct, String> tcAmount;
 
     @FXML
     private Label labOrderId;
@@ -165,7 +173,12 @@ public class EmployeeGUI {
 
     @FXML
     public void addProductToList(ActionEvent event) {
-    	
+    	ObservableList<DetailProduct> observableList = FXCollections.observableArrayList(restaurant.getOrders().getProducts());
+    	tcOrderProductName.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("productName"));
+    	tcOrderProductType.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("category"));
+    	tcOrderProductSize.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("totalPrice"));
+    	tcOrderProductPrice.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("totalPrice"));
+    
     }
 
     @FXML
