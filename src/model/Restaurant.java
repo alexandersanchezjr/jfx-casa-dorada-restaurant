@@ -678,4 +678,15 @@ public class Restaurant {
 
 	    pw.close();
 	}
+	public void exportOrders(String fileName, String separator) throws FileNotFoundException{
+	    PrintWriter pw = new PrintWriter(fileName);
+	    
+	    
+	    for(int i = 0; i<orders.size(); i++) {
+	      Order thisOrder = orders.get(i);
+	      pw.println(thisOrder.getCustomer().getName() + separator + thisOrder.getCustomer().getAddress() + separator + thisOrder.getCustomer().getPhoneNumber()+ separator + thisOrder.getEmployee().getName() + separator + thisOrder.getStatus() + thisOrder.getDate() + separator + thisOrder.getComments() );
+	    }
+
+	    pw.close();
+	}
 }
