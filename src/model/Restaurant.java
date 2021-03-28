@@ -409,11 +409,23 @@ public class Restaurant {
 		boolean deleted = false;
 		boolean found = false;
 		for(int i = 0; i<products.size() && !found; i++) { //If the user to delete is CREATOR or MODIFIER of a PRODUCT, INGREDIENT OR TYPE OF PRODUCT
-			if((products.get(i).getCreator().equals(u) || products.get(i).getModifier().equals(u)) || (ingredients.get(i).getCreator().equals(u) || ingredients.get(i).getModifier().equals(u)) || (types.get(i).getCreator().equals(u) || types.get(i).getModifier().equals(u))) {
+			if((products.get(i).getCreator().equals(u) || products.get(i).getModifier().equals(u))) {
 				found = true;
 			}
 			
 		}
+		for(int i = 0; i<ingredients.size() && !found; i++) {
+			if(ingredients.get(i).getCreator().equals(u) || ingredients.get(i).getModifier().equals(u)) {
+				found = true;
+			}
+		}
+		
+		for(int i = 0; i<types.size() && !found; i++) {
+			if(types.get(i).getCreator().equals(u) || types.get(i).getModifier().equals(u)) {
+				found = true;
+			}
+		}
+		
 		for( int i = 0; i<employees.size() && !found; i++) { //If the user to delete is CREATOR or MODIFIER of an EMPLOYEE, OPERATOR USER OR ADMIN
 			if((employees.get(i).getCreator().equals(u) || employees.get(i).getModifier().equals(u)) || (operatorsUsers.get(i).getCreator().equals(u) || operatorsUsers.get(i).getModifier().equals(u)) || (admins.get(i).getCreator().equals(u) || admins.get(i).getModifier().equals(u))) {
 				found = true;
