@@ -9,11 +9,11 @@ public class DetailProduct {
 	 * @param product
 	 * @param amount
 	 */
-	public DetailProduct(Product product, int amount, String size, int price) {
+	public DetailProduct(Product product, int amount, PriceBySize selectedSize) {
 		super();
 		this.product = product;
 		this.amount = amount;
-		this.selectedSize = new PriceBySize (size, price);
+		this.selectedSize = selectedSize;
 	}
 
 	/**
