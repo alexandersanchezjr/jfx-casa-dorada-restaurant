@@ -88,6 +88,12 @@ public class WelcomeGUI {
     
     public WelcomeGUI(Restaurant restaurant) {
     	this.restaurant = restaurant;
+    	try {
+			restaurant.loadRestaurantData();
+		} catch (ClassNotFoundException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	employeeGUI = new EmployeeGUI();
     	adminGUI = new AdminGUI();
     	initialize();
