@@ -12,7 +12,9 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.RadioButton;
 import javafx.scene.image.ImageView;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -86,6 +88,12 @@ public class WelcomeGUI {
     
     public WelcomeGUI(Restaurant restaurant) {
     	this.restaurant = restaurant;
+    	try {
+			restaurant.loadRestaurantData();
+		} catch (ClassNotFoundException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	employeeGUI = new EmployeeGUI();
     	adminGUI = new AdminGUI();
     	initialize();
@@ -108,10 +116,10 @@ public class WelcomeGUI {
 	
 	//Methods of welcome.fxml
 	
-	/*public void resizeImageView() {
+	public void resizeImageView() {
 		imgRestaurant.fitWidthProperty().bind(imagePane.widthProperty());
 		imgRestaurant.fitHeightProperty().bind(imagePane.heightProperty());
-	}*/
+	}
 	
 	public void firstAdmin() {
 		if(restaurant.getAdmins().size() == 0) {
@@ -202,8 +210,11 @@ public class WelcomeGUI {
 				
 				fxmlLoader.setController(adminGUI);
 				Parent AdminWindow = fxmlLoader.load();
-				mainWelcomePane.getChildren().setAll(AdminWindow);
-				Stage st = (Stage)AdminWindow.getScene().getWindow();
+				Scene adminScene = new Scene (AdminWindow);
+				Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+		        
+		        window.setScene(adminScene);
+		        window.show();
 				adminGUI.timer();
     		}
     	}
@@ -225,9 +236,11 @@ public class WelcomeGUI {
 		fxmlLoader.setController(this);
 		Parent FirstAdminRegister = fxmlLoader.load();
 
-		mainWelcomePane.setStyle("-fx-background-color:white; -fx-opacity:1;");
-		mainWelcomePane.getChildren().setAll(FirstAdminRegister);
-		Stage st = (Stage)FirstAdminRegister.getScene().getWindow();
+		Scene firstUserPane = new Scene (FirstAdminRegister);
+		Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        
+        window.setScene(firstUserPane);
+        window.show();
     }
     
     //Methods of first_register_pane.fxml
@@ -275,10 +288,11 @@ public class WelcomeGUI {
 		
 		fxmlLoader.setController(this);
 		Parent WelcomeWindow = fxmlLoader.load();
-		mainFirstRegisterPane.getChildren().setAll(WelcomeWindow);
-		Stage st = (Stage)WelcomeWindow.getScene().getWindow();
-		st.setHeight(600);
-		st.setWidth(850);
+		Scene welcome = new Scene (WelcomeWindow);
+		Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        
+        window.setScene(welcome);
+        window.show();
 		firstAdmin();
     }
 }
