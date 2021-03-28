@@ -12,7 +12,9 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.RadioButton;
 import javafx.scene.image.ImageView;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -193,8 +195,11 @@ public class WelcomeGUI {
 				
 				fxmlLoader.setController(adminGUI);
 				Parent AdminWindow = fxmlLoader.load();
-				mainWelcomePane.getChildren().setAll(AdminWindow);
-				Stage st = (Stage)AdminWindow.getScene().getWindow();
+				Scene adminScene = new Scene (AdminWindow);
+				Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+		        
+		        window.setScene(adminScene);
+		        window.show();
 				adminGUI.timer();
     		}
     	}
