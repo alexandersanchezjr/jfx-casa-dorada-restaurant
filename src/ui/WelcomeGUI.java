@@ -195,13 +195,15 @@ public class WelcomeGUI {
     	
     	if(rdBtOperator.isSelected()) {
     		if(verificationOperatorLogin()) {
-	    		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("employee.fxml"));
-				
-				fxmlLoader.setController(employeeGUI);
-				Parent EmployeeWindow = fxmlLoader.load();
-				mainWelcomePane.getChildren().setAll(EmployeeWindow);
-				@SuppressWarnings("unused")
-				Stage st = (Stage)EmployeeWindow.getScene().getWindow();
+    			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("employee.fxml"));
+    			
+    			fxmlLoader.setController(employeeGUI);
+    			Parent employeePane = fxmlLoader.load();
+    			Scene employeeScene = new Scene (employeePane);
+    			Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+    	        
+    	        window.setScene(employeeScene);
+    	        window.show();
     		}       
         }
     	else if(rdBtAdmin.isSelected()) {
