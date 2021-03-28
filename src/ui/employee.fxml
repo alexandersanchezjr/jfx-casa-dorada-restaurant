@@ -49,6 +49,7 @@
                   <TableColumn fx:id="tcMenuProductType" prefWidth="75.0" text="Categoría" />
                   <TableColumn fx:id="tcMenuProductSize" prefWidth="75.0" text="Tamaño" />
                   <TableColumn fx:id="tcMenuProductPrice" minWidth="-1.0" prefWidth="-1.0" text="Precio" />
+                  <TableColumn fx:id="tcAmount" prefWidth="75.0" text="Cantidad" />
                </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

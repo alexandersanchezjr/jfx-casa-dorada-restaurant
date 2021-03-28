@@ -176,8 +176,9 @@ public class EmployeeGUI {
     	ObservableList<DetailProduct> observableList = FXCollections.observableArrayList(restaurant.getOrders().getProducts());
     	tcOrderProductName.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("productName"));
     	tcOrderProductType.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("category"));
-    	tcOrderProductSize.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("totalPrice"));
+    	tcOrderProductSize.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("size"));
     	tcOrderProductPrice.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("totalPrice"));
+    	tcAmount.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("amountToString"));
     
     }
 
