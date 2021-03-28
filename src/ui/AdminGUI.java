@@ -109,6 +109,10 @@ public class AdminGUI {
 		fxmlLoader.setController(inventoryGUI);
 		Parent OrdersPane = fxmlLoader.load();
 		mainPane.getChildren().setAll(OrdersPane);
+		AnchorPane.setTopAnchor(OrdersPane, 0.0);
+		AnchorPane.setBottomAnchor(OrdersPane, 0.0);
+		AnchorPane.setLeftAnchor(OrdersPane, 0.0);
+		AnchorPane.setRightAnchor(OrdersPane, 0.0);
 		Stage st = (Stage)OrdersPane.getScene().getWindow();
     }
 
