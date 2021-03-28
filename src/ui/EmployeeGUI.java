@@ -24,6 +24,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Product;
 import model.Restaurant;
+import model.Type;
 
 public class EmployeeGUI {
 	@FXML
@@ -39,7 +40,7 @@ public class EmployeeGUI {
     private TextArea orderCommentTxt;
 
     @FXML
-    private ComboBox<String> typeChooser;
+    private ComboBox<Type> typeChooser;
 
     @FXML
     private ComboBox<Product> productChooser;
@@ -143,7 +144,12 @@ public class EmployeeGUI {
     
     public void injectWelcomeGUI(WelcomeGUI welcomeGUI, Restaurant restaurant) {
     	this.welcomeGUI = welcomeGUI;
+    	
+    	
+    		
     }
+    
+    
     
     public void timer() {
     	Timer timer = new Timer();
@@ -159,7 +165,7 @@ public class EmployeeGUI {
 
     @FXML
     public void addProductToList(ActionEvent event) {
-
+    	
     }
 
     @FXML
@@ -219,4 +225,24 @@ public class EmployeeGUI {
     public void showOrdersPane(ActionEvent event) {
 
     }
+    
+    @FXML
+    void selectProductItem(ActionEvent event) {
+    	if(productChooser.getValue() != null)
+    		sizeChooser.setDisable(false);
+    }
+
+    @FXML
+    void selectSizeItem(ActionEvent event) {
+    	if(sizeChooser.getValue() != null)
+    		amountChooser.setDisable(false);
+    }
+
+    @FXML
+    void selectTypeItem(ActionEvent event) {
+    	
+    	if(typeChooser.getValue() != null)
+    		productChooser.setDisable(false);
+    }
+
 }
