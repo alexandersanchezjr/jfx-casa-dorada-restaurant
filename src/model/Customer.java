@@ -19,11 +19,10 @@ public class Customer {
 	 * @param address
 	 * @param phoneNumber
 	 */
-	public Customer(String name, String surname, String id, String address, String phoneNumber, String comments, User creator) {
+	public Customer(String name, String surname, String address, String phoneNumber, String comments, User creator) {
 		super();
 		this.name = name;
 		this.surname = surname;
-		this.setId(id);
 		this.address = address;
 		this.phoneNumber = phoneNumber;
 		this.comments = comments;

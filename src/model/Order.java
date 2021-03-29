@@ -21,13 +21,13 @@ public class Order implements Serializable {
 	 * @param id
 	 * @param date
 	 */
-	public Order(long id, String selectedStatus, ArrayList<DetailProduct> products, Employee e, String customerName, String customerSurname, String customerId, String customerAddress, String customerPhoneNumber, String comments, User customerCreator, String customerComments, User creator) {
+	public Order(long id, String selectedStatus, ArrayList<DetailProduct> products, Employee e, String customerName, String customerSurname, String customerAddress, String customerPhoneNumber, String comments, User customerCreator, String customerComments, User creator) {
 		this.id = "#"+String.valueOf(id);
 		date = new Date();
 		status = (Status.valueOf(selectedStatus));
 		this.products = products;
 		employee = e;
-		customer = new Customer(customerName, customerSurname, customerId, customerAddress, customerPhoneNumber, customerComments, customerCreator);
+		customer = new Customer(customerName, customerSurname, customerAddress, customerPhoneNumber, customerComments, customerCreator);
 		this.comments = comments;
 		this.creator = creator;
 		modifier = creator;
