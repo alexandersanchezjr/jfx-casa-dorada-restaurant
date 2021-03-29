@@ -4,9 +4,7 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ContextMenu?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.PasswordField?>
@@ -194,13 +192,6 @@
             <Font name="Gill Sans MT Bold" size="20.6" />
          </font>
       </Label>
-      <VBox layoutY="45.0" prefHeight="95.0" prefWidth="162.0" spacing="10.0">
-         <children>
-            <DatePicker fx:id="adminDatePicker" editable="false" maxWidth="1.7976931348623157E308" prefHeight="25.0" VBox.vgrow="ALWAYS" />
-            <ChoiceBox fx:id="adminTimePicker" maxWidth="1.7976931348623157E308" prefHeight="25.0" VBox.vgrow="ALWAYS" />
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#filterAdmins" prefHeight="25.0" text="Filtrar" VBox.vgrow="ALWAYS" />
-         </children>
-      </VBox>
       <VBox layoutY="485.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
          <children>
             <Separator prefHeight="0.0" prefWidth="162.0" />
