@@ -115,7 +115,7 @@
             </TableView>
          </children>
       </VBox>
-      <VBox layoutY="164.0" prefHeight="437.0" prefWidth="162.0" spacing="5.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="164.0">
+      <VBox layoutX="10.0" layoutY="164.0" prefHeight="432.0" prefWidth="162.0" spacing="5.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="164.0">
          <children>
             <Label text="Observaciones del pedido:">
                <font>
@@ -166,11 +166,13 @@
          </children>
       </VBox>
       <DatePicker fx:id="datePicker" layoutY="10.0" prefHeight="25.0" prefWidth="162.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="10.0" />
-      <Button layoutX="338.0" layoutY="7.0" mnemonicParsing="false" onAction="#filterOrders" prefHeight="25.0" prefWidth="178.0" text="Filtrar" AnchorPane.leftAnchor="338.0" AnchorPane.topAnchor="7.0">
+      <Button layoutX="626.0" layoutY="7.0" mnemonicParsing="false" onAction="#filterOrders" prefHeight="31.0" prefWidth="70.0" text="Filtrar" AnchorPane.leftAnchor="626.0" AnchorPane.topAnchor="7.0">
          <font>
             <Font name="Gill Sans MT" size="16.0" />
          </font></Button>
-      <ChoiceBox fx:id="timePicker" layoutX="178.0" layoutY="10.0" prefWidth="150.0" AnchorPane.leftAnchor="178.0" AnchorPane.topAnchor="10.0" />
+      <ChoiceBox fx:id="timePicker" layoutX="183.0" layoutY="10.0" prefHeight="25.0" prefWidth="109.0" AnchorPane.leftAnchor="183.0" AnchorPane.topAnchor="10.0" />
+      <DatePicker fx:id="datePicker1" layoutX="335.0" layoutY="10.0" prefHeight="25.0" prefWidth="162.0" />
+      <ChoiceBox fx:id="timePicker1" layoutX="510.0" layoutY="10.0" prefHeight="25.0" prefWidth="109.0" />
    </children>
    <padding>
       <Insets left="5.0" />
