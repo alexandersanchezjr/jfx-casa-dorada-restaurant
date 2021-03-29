@@ -824,11 +824,16 @@ public class Restaurant {
 	
 	public void exportOrders(String fileName, String separator) throws FileNotFoundException{
 	    PrintWriter pw = new PrintWriter(fileName);
-	    
-	    
-	    for(int i = 0; i<orders.size(); i++) {
-	      Order thisOrder = orders.get(i);
-	      pw.println(thisOrder.getCustomer().getName() + separator + thisOrder.getCustomer().getAddress() + separator + thisOrder.getCustomer().getPhoneNumber()+ separator + thisOrder.getEmployee().getName() + separator + thisOrder.getStatus() + thisOrder.getDate() + separator + thisOrder.getComments() );
+	   
+	    for(int i = 0; i < orders.size(); i++) {
+	    	Order thisOrder = orders.get(i);
+	    	String productString = "";
+	    	String previous = "";
+	    	for(int j = 0; j < thisOrder.getProducts().size(); j++){
+	    		productString += previous + thisOrder.getProducts().get(j).getProduct().getName() + separator + thisOrder.getProducts().get(j).getAmount() + separator + thisOrder.getProducts().get(j).getSelectedSize().getPrice();
+	    		previous = separator;
+	    	}
+	    	pw.println(thisOrder.getCustomer().getName() + separator + thisOrder.getCustomer().getAddress() + separator + thisOrder.getCustomer().getPhoneNumber()+ separator + thisOrder.getEmployee().getName() + separator + thisOrder.getStatus() + thisOrder.getDate() + separator + thisOrder.getComments() + separator + productString);
 	    }
 
 	    pw.close();
