@@ -86,23 +86,55 @@ public class AdminGUI {
     }
     
     @FXML
-    public void showOperatorPane(ActionEvent event) {
-
+    public void showOperatorPane(ActionEvent event) throws IOException {
+    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("operators_pane.fxml"));
+		
+		fxmlLoader.setController(inventoryGUI);
+		Parent operatorPane = fxmlLoader.load();
+		mainPane.getChildren().setAll(operatorPane);
+		AnchorPane.setTopAnchor(operatorPane, 0.0);
+		AnchorPane.setBottomAnchor(operatorPane, 0.0);
+		AnchorPane.setLeftAnchor(operatorPane, 0.0);
+		AnchorPane.setRightAnchor(operatorPane, 0.0);
     }
 
     @FXML
-    public void showClientsPane(ActionEvent event) {
-
+    public void showClientsPane(ActionEvent event) throws IOException {
+    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("clients_pane.fxml"));
+		
+		fxmlLoader.setController(inventoryGUI);
+		Parent clientPane = fxmlLoader.load();
+		mainPane.getChildren().setAll(clientPane);
+		AnchorPane.setTopAnchor(clientPane, 0.0);
+		AnchorPane.setBottomAnchor(clientPane, 0.0);
+		AnchorPane.setLeftAnchor(clientPane, 0.0);
+		AnchorPane.setRightAnchor(clientPane, 0.0);
     }
 
     @FXML
-    public void showEmployeePane(ActionEvent event) {
-
+    public void showEmployeePane(ActionEvent event) throws IOException {
+    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("admin_employee_pane.fxml"));
+		
+		fxmlLoader.setController(inventoryGUI);
+		Parent employeePane = fxmlLoader.load();
+		mainPane.getChildren().setAll(employeePane);
+		AnchorPane.setTopAnchor(employeePane, 0.0);
+		AnchorPane.setBottomAnchor(employeePane, 0.0);
+		AnchorPane.setLeftAnchor(employeePane, 0.0);
+		AnchorPane.setRightAnchor(employeePane, 0.0);
     }
 
     @FXML
-    public void showIngredientsPane(ActionEvent event) {
-
+    public void showIngredientsPane(ActionEvent event) throws IOException {
+    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ingredients_pane.fxml"));
+		
+		fxmlLoader.setController(inventoryGUI);
+		Parent ingredientsPane = fxmlLoader.load();
+		mainPane.getChildren().setAll(ingredientsPane);
+		AnchorPane.setTopAnchor(ingredientsPane, 0.0);
+		AnchorPane.setBottomAnchor(ingredientsPane, 0.0);
+		AnchorPane.setLeftAnchor(ingredientsPane, 0.0);
+		AnchorPane.setRightAnchor(ingredientsPane, 0.0);
     }
 
     @FXML
