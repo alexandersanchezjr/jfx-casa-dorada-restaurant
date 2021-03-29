@@ -24,18 +24,14 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-<<<<<<< HEAD
 import javafx.scene.input.MouseEvent;
-=======
 import javafx.scene.control.cell.PropertyValueFactory;
->>>>>>> 46273e732d983f352a6c9429fd046b26e32610aa
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.DetailProduct;
 import model.Product;
 import model.Restaurant;
 import model.Type;
-import model.UserAccount;
 
 public class EmployeeGUI {
 	@FXML
@@ -158,6 +154,12 @@ public class EmployeeGUI {
     @FXML
     private Button bttEntregado;
     
+    @FXML
+    private TextArea txtAreaCommentsOrder;
+
+    @FXML
+    private TextArea txtAreaCommentsCustomer;
+    
     private WelcomeGUI welcomeGUI;
     private Restaurant restaurant;
     
@@ -167,12 +169,7 @@ public class EmployeeGUI {
     
     public void injectWelcomeGUI(WelcomeGUI welcomeGUI, Restaurant restaurant) {
     	this.welcomeGUI = welcomeGUI;
-    	
-    	
-    		
     }
-    
-    
     
     public void timer() {
     	Timer timer = new Timer();
@@ -189,7 +186,8 @@ public class EmployeeGUI {
     @FXML
     public void addProductToList(ActionEvent event) {
     	ArrayList<DetailProduct> products = new ArrayList<> ();
-    	products.add(restaurant.getOrders().get(typeChooser.getSelectionModel().getSelectedIndex()),amountChooser.getValue(), restaurant.getProducts().get(sizeChooser.getSelectionModel().getSelectedIndex()));
+    	int i = typeChooser.getSelectionModel().getSelectedIndex();
+    	products.add(new DetailProduct(restaurant.getProducts().get(i), amountChooser.getValue(), restaurant.getProducts().get(i).getPricesBySizes().get(i)));
     	
     	ObservableList<DetailProduct> observableList = FXCollections.observableArrayList(products);
     	tcOrderProductName.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("productName"));
@@ -284,24 +282,25 @@ public class EmployeeGUI {
     
     @FXML 
     public void handleMouseClick(MouseEvent arg0) {
-    	
+    	int index = lvOrders.getSelectionModel().getSelectedIndex();
+    	txtAreaCommentsOrder.setText(restaurant.getOrders().get(index).getComments());
+    	txtAreaCommentsCustomer.setText(restaurant.getOrders().get(index).getCustomer().getComments());
     }
     
     @FXML
-    void selectProductItem(ActionEvent event) {
+    public void selectProductItem(ActionEvent event) {
     	if(productChooser.getValue() != null)
     		sizeChooser.setDisable(false);
     }
 
     @FXML
-    void selectSizeItem(ActionEvent event) {
+    public void selectSizeItem(ActionEvent event) {
     	if(sizeChooser.getValue() != null)
     		amountChooser.setDisable(false);
     }
 
     @FXML
-    void selectTypeItem(ActionEvent event) {
-    	
+    public void selectTypeItem(ActionEvent event) {
     	if(typeChooser.getValue() != null)
     		productChooser.setDisable(false);
     }
