@@ -832,20 +832,22 @@ public class Restaurant {
 	
 	public void exportEmployees(String fileName, String separator) throws FileNotFoundException{
 	    PrintWriter pw = new PrintWriter(fileName);
+	    int total = 0;
 	    for(int i = 0; i<employees.size(); i++) {
 	      Employee thisEmployee = employees.get(i);
-
 	      int ordersTotal = 0;
 	      for(int j = 0; j<orders.size(); j++) {
 	    	  if(orders.get(i).getEmployee().equals(thisEmployee)) {
 	    		  ordersTotal += orders.get(i).getTotal();
+	    		  total += ordersTotal;
 	    	  }
 	      }
 	      pw.println(thisEmployee.getName()+separator+thisEmployee.getSurname()+separator+thisEmployee.getId()+separator+thisEmployee.getOrdersCont()+separator+ordersTotal);
 	    }
+	    pw.println(total);
 	    pw.close();
 	}
-//EXPORT ORDERS
+	//EXPORT ORDERS
 	public void exportOrders(String fileName, String separator, String listViewId) throws FileNotFoundException{
 
 	    PrintWriter pw = new PrintWriter(fileName);
