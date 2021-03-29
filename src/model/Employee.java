@@ -58,7 +58,13 @@ public class Employee implements Serializable {
 		return ordersCont;
 	}
 
-
+	/**
+	 * @param ordersCont the ordersCont to set
+	 */
+	public void setOrdersCont(int ordersCont) {
+		this.ordersCont = ordersCont;
+	}
+	
 	/**
 	 * @param ordersCont the ordersCont to set
 	 */

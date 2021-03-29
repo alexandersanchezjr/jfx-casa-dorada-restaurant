@@ -19,11 +19,11 @@ public class Product implements Serializable {
 	 * @param name
 	 * @param availability
 	 */
-	public Product(String name, long id, ArrayList<Ingredient> ingredients, ArrayList<PriceBySize> pricesBySizes, boolean availability, String selectedType, boolean typeAvailability, User typeCreator, String size, String price, User creator) {  //selectedType = getValue del choiceBox
+	public Product(String name, long id, ArrayList<Ingredient> ingredients, boolean availability, String selectedType, boolean typeAvailability, User typeCreator, User creator) {  //selectedType = getValue del choiceBox
 		this.name = name;
 		this.id = id;
 		this.ingredients = ingredients;
-		pricesBySizes = new ArrayList<PriceBySize>();
+		this.pricesBySizes = new ArrayList<PriceBySize>();
 		this.availability = availability;
 		type = new Type(selectedType, typeAvailability, typeCreator);
 		this.creator = creator;

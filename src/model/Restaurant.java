@@ -1,12 +1,16 @@
 package model;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -178,9 +182,9 @@ public class Restaurant {
 	
 	//Product MANAGEMENT
 
-	public boolean addProduct(String name, ArrayList<Ingredient> ingredients, ArrayList<PriceBySize> pricesBySizes, boolean availability, String selectedType, boolean typeAvailability, User typeCreator, String size, String price) throws IOException {
+	public boolean addProduct(String name, ArrayList<Ingredient> ingredients, boolean availability, String selectedType, boolean typeAvailability, User typeCreator) throws IOException {
 		boolean added = false;
-		Product newProduct = new Product(name,(identifier++), ingredients, pricesBySizes, availability, selectedType, typeAvailability, typeCreator, size, price, loggedUser);
+		Product newProduct = new Product(name,(identifier++), ingredients, availability, selectedType, typeAvailability, typeCreator, loggedUser);
 		if(!products.contains(newProduct)) {	
 			added = products.add(newProduct);
 			saveRestaurantData();
@@ -688,19 +692,162 @@ public class Restaurant {
 		oisI.close();
 	}
 	
+	//IMPORT CUSTOMERS
+	
+	public void importCustomers(String fileName, String separator) throws IOException {
+		BufferedReader br = new BufferedReader(new FileReader(fileName));
+		String line = br.readLine();
+		while(line!=null) {
+			String[] parts = line.split(separator);
+			String name = parts[0];
+			String surname = parts[1];
+			String id = parts[2];
+			String address = parts[3];
+			String phoneNumber = parts[4];
+			String comments = parts[5];
+			customers.add(new Customer(name, surname, id, address, phoneNumber, comments, loggedUser));
+			line = br.readLine();
+		}
+		br.close();
+	}
+	
+	//IMPORT EMPLOYEES
+	
+	public void importEmployees(String fileName, String separator) throws IOException {
+		BufferedReader br = new BufferedReader(new FileReader(fileName));
+		String line = br.readLine();
+		while(line!=null) {
+			String[] parts = line.split(separator);
+			String name = parts[0];
+			String surname = parts[1];
+			String id = parts[2];
+			int ordersCont = Integer.parseInt(parts[3]);
+			employees.add(new Employee(name, surname, id, loggedUser));
+			for(int i = 0; i<employees.size(); i++) {
+				if(employees.get(i).getId().equals(id)) {
+					employees.get(i).setOrdersCont(ordersCont);
+				}
+			}
+			line = br.readLine();
+		}
+		br.close();
+	}
+	
+	//IMPORT ADMINS
+	
+	//IMPORT INGREDIENTS
+	
+	public void importIngredients(String fileName, String separator) throws IOException {
+		BufferedReader br = new BufferedReader(new FileReader(fileName));
+		String line = br.readLine();
+		while(line!=null) {
+			String[] parts = line.split(separator);
+			String name = parts[0];
+			boolean availability = Boolean.parseBoolean(parts[1]);
+			long id = Long.parseLong(parts[2]);
+			String idUser = parts[3];
+			int indexUser = 0;
+			for(int i = 0; i<admins.size(); i++) {
+				if(admins.get(i).getId().equals(idUser)) {
+					indexUser = i;
+				}
+			}
+			ingredients.add(new Ingredient(name, availability, id, admins.get(indexUser)));
+		}
+		br.close();
+	}
+	
+	//IMPORT PRODUCTS
+	
+	public void importProducts(String fileName, String separator) throws IOException {
+		BufferedReader br = new BufferedReader(new FileReader(fileName));
+		String line = br.readLine();
+		while(line!=null) {
+			String[] parts = line.split(separator);
+			String name = parts[0];
+			long id = Long.parseLong(parts[1]);
+			boolean availability = Boolean.parseBoolean(parts[2]);
+			String selectedType = parts[3];
+			int indexType = 0;
+			ArrayList<Ingredient> ingredientsProduct = new ArrayList<Ingredient>();
+			for(int i = 0; i<types.size(); i++) {
+				if(types.get(i).getName().equals(selectedType)) {
+					indexType = i;
+				}
+			}
+			
+			int k = 4;
+			while(!(parts[k].equalsIgnoreCase("false") || parts[k].equalsIgnoreCase("true"))) {
+				long idIngredient = Long.parseLong(parts[k]);
+				for(int i = 0; i<ingredients.size(); i++) {
+					if(ingredients.get(i).getId() == idIngredient) {
+						ingredientsProduct.add(ingredients.get(i));
+					}
+				}
+				k++;
+			}
+			products.add(new Product(name, id, ingredients, availability, selectedType, types.get(indexType).isAvailability(), types.get(indexType).getCreator(), loggedUser));
+			line = br.readLine();
+		}
+		br.close();
+	}
+	
+	//IMPORT ORDERS
+	
+	public void importOrders(String fileName, String separator) throws IOException, ParseException {
+		BufferedReader br = new BufferedReader(new FileReader(fileName));
+		String line = br.readLine();
+		line = br.readLine();
+		while(line!=null) {
+			String[] parts = line.split(separator);
+			long id = Long.parseLong(parts[0]);
+			String customerName = parts[1];
+			String address = parts[2];
+			String phoneNumber = parts[3];
+			String employeeName = parts[4];
+			int indexEmployee = 0;
+			for(int i = 0; i<employees.size(); i++) {
+				if(employees.get(i).getName().equals(employeeName)) {
+					indexEmployee = i;
+				}
+			}
+			String status = parts[5];
+			SimpleDateFormat sdf = new SimpleDateFormat("EEE MMMM d HH:mm:ss z yyyy");
+			Date date = sdf.parse(parts[6]);
+			String comments = parts[7];
+			ArrayList<DetailProduct> productsOrder = new ArrayList<>();
+			for(int i = 8; i<parts.length; i+=2) {
+				for(int j = 0; j<products.size(); j++) {
+					if(parts[i].equals(products.get(j).getName())) {
+						//productsOrder.add(products.get(j));
+					}
+				}
+			}
+			line = br.readLine();
+		}
+		br.close();
+	}
+	
 	//EXPORT EMPLOYEES
 	
 	public void exportEmployees(String fileName, String separator) throws FileNotFoundException{
 	    PrintWriter pw = new PrintWriter(fileName);
-
 	    for(int i = 0; i<employees.size(); i++) {
 	      Employee thisEmployee = employees.get(i);
-	      pw.println(thisEmployee.getName()+ "separator" +thisEmployee.getSurname()+"separator"+thisEmployee.getId()+"separator"+thisEmployee.getOrdersCont());
-	    }
 
+	      int ordersTotal = 0;
+	      for(int j = 0; j<orders.size(); j++) {
+	    	  if(orders.get(i).getEmployee().equals(thisEmployee)) {
+	    		  ordersTotal += orders.get(i).getTotal();
+	    	  }
+	      }
+	      pw.println(thisEmployee.getName()+separator+thisEmployee.getSurname()+separator+thisEmployee.getId()+separator+thisEmployee.getOrdersCont()+separator+ordersTotal);
+	    }
 	    pw.close();
 	}
+//EXPORT ORDERS
 	public void exportOrders(String fileName, String separator, String listViewId) throws FileNotFoundException{
+
 	    PrintWriter pw = new PrintWriter(fileName);
 	    pw.println("Pedido ID" + separator + "Nombre del Cliente" + separator + "Dirección del Cliente" + separator + "Teléfono del Cliente" + separator + "Nombre del Empleado" + separator + "Estado del Pedido" + separator + "Fecha y Hora" + separator + "Observaciones del Pedido");
 	   
