@@ -1,5 +1,9 @@
 package ui;
 
+import java.util.ArrayList;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -10,8 +14,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import model.DetailProduct;
 import model.Restaurant;
+import model.User;
 
 public class UsersGUI {
 	
@@ -21,19 +28,19 @@ public class UsersGUI {
     private AnchorPane adminPane;
 
     @FXML
-    private TableView<?> tvAdmins;
+    private TableView<User> tvAdmins;
 
     @FXML
-    private TableColumn<?, ?> tcAdminName;
+    private TableColumn<User, String> tcAdminName;
 
     @FXML
-    private TableColumn<?, ?> tcAdminSurname;
+    private TableColumn<User, String> tcAdminSurname;
 
     @FXML
-    private TableColumn<?, ?> tcAdminId;
+    private TableColumn<User, String> tcAdminId;
 
     @FXML
-    private TableColumn<?, ?> tcAdminUsername;
+    private TableColumn<User, String> tcAdminUsername;
 
     @FXML
     private Label labAdminId;
@@ -100,7 +107,17 @@ public class UsersGUI {
     private Restaurant restaurant;
     
     public UsersGUI() {
-
+    	initializeAdminTableView ();
+    }
+    
+    public void initializeAdminTableView () {
+    	
+    	ObservableList<User> observableList = FXCollections.observableArrayList(restaurant.getAdmins());
+    	tvAdmins.setItems(observableList);
+    	tcAdminName.setCellValueFactory(new PropertyValueFactory<User, String>("name"));
+    	tcAdminSurname.setCellValueFactory(new PropertyValueFactory<User, String>("surname"));
+    	tcAdminId.setCellValueFactory(new PropertyValueFactory<User, String>("id"));
+    	tcAdminUsername.setCellValueFactory(new PropertyValueFactory<User, String>("username"));
     }
     
     public void injectAdminGUI(Restaurant restaurant) {
