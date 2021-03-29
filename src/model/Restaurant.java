@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -520,9 +522,9 @@ public class Restaurant {
 	
 	//Order MANAGEMENT
 	
-	public boolean addOrder(Date date, String selectedStatus, ArrayList<DetailProduct> products, Employee e, String customerName, String customerSurname, String customerId, String customerAddress, String customerPhoneNumber, String comments, User customerCreator, String customerComments) throws IOException {
+	public boolean addOrder(String selectedStatus, ArrayList<DetailProduct> products, Employee e, String customerName, String customerSurname, String customerId, String customerAddress, String customerPhoneNumber, String comments, User customerCreator, String customerComments) throws IOException {
 		boolean added = false;
-		Order newOrder = new Order((identifier++), date, selectedStatus, products,  e, customerName, customerSurname, customerId, customerAddress, customerPhoneNumber, comments, customerCreator, customerComments, loggedUser);
+		Order newOrder = new Order((identifier++), selectedStatus, products,  e, customerName, customerSurname, customerId, customerAddress, customerPhoneNumber, comments, customerCreator, customerComments, loggedUser);
 		if(!orders.contains(newOrder)) {
 			added = orders.add(newOrder);
 			orders.get(orders.indexOf(newOrder)).getEmployee().addOrder();
@@ -792,12 +794,35 @@ public class Restaurant {
 	
 	//IMPORT ORDERS
 	
-	public void importOrders(String fileName, String separator) throws IOException {
+	public void importOrders(String fileName, String separator) throws IOException, ParseException {
 		BufferedReader br = new BufferedReader(new FileReader(fileName));
 		String line = br.readLine();
+		line = br.readLine();
 		while(line!=null) {
 			String[] parts = line.split(separator);
 			long id = Long.parseLong(parts[0]);
+			String customerName = parts[1];
+			String address = parts[2];
+			String phoneNumber = parts[3];
+			String employeeName = parts[4];
+			int indexEmployee = 0;
+			for(int i = 0; i<employees.size(); i++) {
+				if(employees.get(i).getName().equals(employeeName)) {
+					indexEmployee = i;
+				}
+			}
+			String status = parts[5];
+			SimpleDateFormat sdf = new SimpleDateFormat("EEE MMMM d HH:mm:ss z yyyy");
+			Date date = sdf.parse(parts[6]);
+			String comments = parts[7];
+			ArrayList<DetailProduct> productsOrder = new ArrayList<>();
+			for(int i = 8; i<parts.length; i+=2) {
+				for(int j = 0; j<products.size(); j++) {
+					if(parts[i].equals(products.get(j).getName())) {
+						//productsOrder.add(products.get(j));
+					}
+				}
+			}
 			line = br.readLine();
 		}
 		br.close();
@@ -815,7 +840,7 @@ public class Restaurant {
 	    		  ordersTotal += orders.get(i).getTotal();
 	    	  }
 	      }
-	      pw.println(thisEmployee.getName()+"separator"+thisEmployee.getSurname()+"separator"+thisEmployee.getId()+"separator"+thisEmployee.getOrdersCont()+separator+ordersTotal);
+	      pw.println(thisEmployee.getName()+separator+thisEmployee.getSurname()+separator+thisEmployee.getId()+separator+thisEmployee.getOrdersCont()+separator+ordersTotal);
 	    }
 	    pw.close();
 	}
