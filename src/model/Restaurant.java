@@ -518,9 +518,9 @@ public class Restaurant {
 	
 	//Order MANAGEMENT
 	
-	public boolean addOrder(Date date, String selectedStatus, ArrayList<DetailProduct> products, Employee e, String customerName, String customerSurname, String customerId, String customerAddress, String customerPhoneNumber, String comments, User customerCreator, String customerComments) throws IOException {
+	public boolean addOrder(String selectedStatus, ArrayList<DetailProduct> products, Employee e, String customerName, String customerSurname, String customerId, String customerAddress, String customerPhoneNumber, String comments, User customerCreator, String customerComments) throws IOException {
 		boolean added = false;
-		Order newOrder = new Order((identifier++), date, selectedStatus, products,  e, customerName, customerSurname, customerId, customerAddress, customerPhoneNumber, comments, customerCreator, customerComments, loggedUser);
+		Order newOrder = new Order((identifier++), selectedStatus, products,  e, customerName, customerSurname, customerId, customerAddress, customerPhoneNumber, comments, customerCreator, customerComments, loggedUser);
 		if(!orders.contains(newOrder)) {
 			added = orders.add(newOrder);
 			orders.get(orders.indexOf(newOrder)).getEmployee().addOrder();
@@ -695,25 +695,28 @@ public class Restaurant {
 
 	    for(int i = 0; i<employees.size(); i++) {
 	      Employee thisEmployee = employees.get(i);
-	      pw.println(thisEmployee.getName()+"separator"+thisEmployee.getSurname()+"separator"+thisEmployee.getId()+"separator"+thisEmployee.getOrdersCont());
+	      pw.println(thisEmployee.getName()+ "separator" +thisEmployee.getSurname()+"separator"+thisEmployee.getId()+"separator"+thisEmployee.getOrdersCont());
 	    }
 
 	    pw.close();
 	}
-	public void exportOrders(String fileName, String separator) throws FileNotFoundException{
+	public void exportOrders(String fileName, String separator, String listViewId) throws FileNotFoundException{
 	    PrintWriter pw = new PrintWriter(fileName);
+	    pw.println("Pedido ID" + separator + "Nombre del Cliente" + separator + "Dirección del Cliente" + separator + "Teléfono del Cliente" + separator + "Nombre del Empleado" + separator + "Estado del Pedido" + separator + "Fecha y Hora" + separator + "Observaciones del Pedido");
 	   
 	    for(int i = 0; i < orders.size(); i++) {
+	    	
 	    	Order thisOrder = orders.get(i);
-	    	String productString = "";
-	    	String previous = "";
-	    	for(int j = 0; j < thisOrder.getProducts().size(); j++){
-	    		productString += previous + thisOrder.getProducts().get(j).getProduct().getName() + separator + thisOrder.getProducts().get(j).getAmount() + separator + thisOrder.getProducts().get(j).getSelectedSize().getPrice();
-	    		previous = separator;
-	    	}
-	    	pw.println(thisOrder.getCustomer().getName() + separator + thisOrder.getCustomer().getAddress() + separator + thisOrder.getCustomer().getPhoneNumber()+ separator + thisOrder.getEmployee().getName() + separator + thisOrder.getStatus() + thisOrder.getDate() + separator + thisOrder.getComments() + separator + productString);
-	    }
+	    	if(thisOrder.getId().equals(listViewId)) {
+		    	String productString = "";
+		    	String previous = separator;
+		    	for(int j = 0; j < thisOrder.getProducts().size(); j++){
+		    		productString += previous + thisOrder.getProducts().get(j).getProduct().getName() + separator + thisOrder.getProducts().get(j).getAmount() + separator + thisOrder.getProducts().get(j).getSelectedSize().getPrice();
+		    	}
+		    	pw.println(thisOrder.getId() + separator + thisOrder.getCustomer().getName() + separator + thisOrder.getCustomer().getAddress() + separator + thisOrder.getCustomer().getPhoneNumber()+ separator + thisOrder.getEmployee().getName() + separator + thisOrder.getStatus() + separator + thisOrder.getDate() + separator + thisOrder.getComments() + productString);
 
+	    	}
+	    }
 	    pw.close();
 	}
 }
