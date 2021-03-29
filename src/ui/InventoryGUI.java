@@ -88,6 +88,13 @@ public class InventoryGUI {
     @FXML
     private ChoiceBox<?> timePicker;
     
+    @FXML
+    private DatePicker datePicker1;
+
+    @FXML
+    private ChoiceBox<?> timePicker1;
+
+    
     //products_pane.fxml attributes
     
     @FXML

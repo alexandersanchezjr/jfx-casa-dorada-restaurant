@@ -3,9 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ContextMenu?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
@@ -92,16 +90,6 @@
             <Font name="Gill Sans MT Bold" size="30.0" />
          </font>
       </Label>
-      <TextField layoutX="576.0" layoutY="15.0" prefHeight="25.0" prefWidth="124.0" promptText="Buscar Cliente" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="15.0" />
-      <Button layoutX="510.0" layoutY="15.0" mnemonicParsing="false" text="Buscar" AnchorPane.rightAnchor="139.0" AnchorPane.topAnchor="15.0" />
-      <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="350.0" layoutY="15.0" prefHeight="25.0" prefWidth="125.0" text="Tardó 0.001 segundos" AnchorPane.rightAnchor="225.0" AnchorPane.topAnchor="15.0" />
-      <VBox layoutY="45.0" prefHeight="95.0" prefWidth="162.0" spacing="10.0">
-         <children>
-            <DatePicker fx:id="clientsDatePicker" editable="false" maxWidth="1.7976931348623157E308" prefHeight="25.0" VBox.vgrow="ALWAYS" />
-            <ChoiceBox fx:id="clientsTimePicker" maxWidth="1.7976931348623157E308" prefHeight="25.0" VBox.vgrow="ALWAYS" />
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#filter" prefHeight="25.0" text="Filtrar" VBox.vgrow="ALWAYS" />
-         </children>
-      </VBox>
       <VBox layoutY="497.0" spacing="10.0">
          <children>
             <Separator prefHeight="0.0" prefWidth="162.0" />
