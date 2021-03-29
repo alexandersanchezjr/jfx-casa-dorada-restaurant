@@ -109,6 +109,45 @@ public class UsersGUI {
     
     //
     
+    //clients_pane.fxml
+    
+    @FXML
+    private AnchorPane orderPaner;
+
+    @FXML
+    private TableView<?> tvProducts;
+
+    @FXML
+    private TableColumn<?, ?> tcOrderProductName;
+
+    @FXML
+    private TableColumn<?, ?> tcOrderProductType;
+
+    @FXML
+    private TableColumn<?, ?> tcOrderProductSize;
+
+    @FXML
+    private TableColumn<?, ?> tcOrderProductPrice;
+
+    @FXML
+    private TableColumn<?, ?> tcOrderProductPrice1;
+
+    @FXML
+    private TableColumn<?, ?> tcOrderProductPrice11;
+
+    @FXML
+    private Label labOrderId;
+
+    @FXML
+    private Label labClientComments;
+
+    @FXML
+    private TextField importSeparatorTxt;
+
+    @FXML
+    private TextField exportSeparatorTxt;
+    
+    
     private Restaurant restaurant;
     
     public UsersGUI() {
@@ -145,6 +184,23 @@ public class UsersGUI {
     		thisAdmin.setAvailability(false);
     	}
     		
+    }
+    
+    @FXML
+    void cleanAdminTableView(ActionEvent event) {
+    	TextInputDialog dialog = new TextInputDialog();
+    	dialog.setTitle("Confirme borrado de datos");
+    	dialog.setHeaderText("Por favor, escriba 'SI' si desea limpiar la lista de administradores ");
+
+    	// Traditional way to get the response value.
+    	String input = "";
+    	Optional<String> result = dialog.showAndWait();
+    	if (result.isPresent()){
+    	   input = result.get();
+    	}
+    	if (input.equals("SI")) {
+    		restaurant.getAdmins().clear();
+    	}
     }
 
     @FXML
@@ -199,6 +255,18 @@ public class UsersGUI {
     		
     	}
     	
+    }
+    
+    @FXML
+    void deleteAdmin(ActionEvent event) {
+    	User thisAdmin = tvAdmins.getSelectionModel().getSelectedItem();
+    	
+    	try {
+			restaurant.deletedAdminUser(thisAdmin);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     @FXML
@@ -282,7 +350,34 @@ public class UsersGUI {
     			
     	}
     }
+    
+    //CLIENTS METHODS
+    
+
+    
+    @FXML
+    void cleanList(ActionEvent event) {
+
+    }
+
+    @FXML
+    void deleteClient(ActionEvent event) {
+
+    }
+
+    @FXML
+    void exportClientList(ActionEvent event) {
+
+    }
+
+    @FXML
+    void importClientList(ActionEvent event) {
+
+    }
    
- 
+     @FXML
+    void updateClient(ActionEvent event) {
+
+    }
     
 }
