@@ -10,7 +10,6 @@ public class DetailProduct {
 	 * @param amount
 	 */
 	public DetailProduct(Product product, int amount, PriceBySize selectedSize) {
-		super();
 		this.product = product;
 		this.amount = amount;
 		this.selectedSize = selectedSize;
