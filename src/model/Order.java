@@ -153,13 +153,9 @@ public class Order implements Serializable {
 	
 	public int getTotal() {
 		int total = 0;
-		
+		for(int i = 0; i<products.size(); i++) {
+			total += products.get(i).getAmount()*products.get(i).getSelectedSize().getPrice();
+		}
 		return total;
 	}
-	
-	@Override
-	public String toString() {
-		return String.valueOf(getId());
-	}
-	
 }
