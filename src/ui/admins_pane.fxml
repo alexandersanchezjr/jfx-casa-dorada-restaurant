@@ -27,7 +27,7 @@
    <children>
       <VBox layoutX="174.0" layoutY="45.0" prefHeight="540.0" prefWidth="526.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="174.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="45.0">
          <children>
-            <TableView fx:id="tvAdmins" prefHeight="200.0" prefWidth="526.0" VBox.vgrow="ALWAYS">
+            <TableView fx:id="tvAdmins" onMouseClicked="#showAdminInfo" prefHeight="200.0" prefWidth="526.0" VBox.vgrow="ALWAYS">
                <columns>
                   <TableColumn fx:id="tcAdminName" prefWidth="75.0" text="Nombre" />
                   <TableColumn fx:id="tcAdminSurname" prefWidth="75.0" text="Apellido" />
@@ -62,11 +62,6 @@
                   <RowConstraints minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label fx:id="labAdminId" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="#107373" GridPane.vgrow="ALWAYS">
-                     <font>
-                        <Font name="Gill Sans MT" size="20.0" />
-                     </font>
-                  </Label>
                   <TextField fx:id="adminNameTxt" maxHeight="1.7976931348623157E308" promptText="Nombre" text="Alexander " GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                      <font>
                         <Font name="Gill Sans MT" size="16.0" />
@@ -97,7 +92,7 @@
                      <children>
                         <PasswordField fx:id="adminHiddenPasswordTxt" editable="false" maxHeight="1.7976931348623157E308" prefWidth="178.0" promptText="Contraseña" text="123456" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="0.0">
                            <font>
-                              <Font size="16.0" />
+                              <Font name="Gill Sans MT" size="16.0" />
                            </font>
                         </PasswordField>
                         <TextField fx:id="adminPasswordTxt" layoutY="-1.0" maxHeight="1.7976931348623157E308" prefWidth="178.0" promptText="Contraseña" text="123456" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="0.0">
@@ -164,12 +159,12 @@
                   </TextField>
                   <AnchorPane maxHeight="1.7976931348623157E308" prefWidth="155.0" GridPane.rowIndex="3" GridPane.vgrow="ALWAYS">
                      <children>
-                        <PasswordField fx:id="newPasswordTxt" maxHeight="1.7976931348623157E308" prefWidth="178.0" promptText="Contraseña" text="123456" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="0.0">
+                        <PasswordField fx:id="newHiddenPasswordTxt" maxHeight="1.7976931348623157E308" prefWidth="178.0" promptText="Contraseña" text="123456" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="0.0">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </PasswordField>
-                        <TextField layoutY="-1.0" maxHeight="1.7976931348623157E308" prefWidth="178.0" promptText="Contraseña" text="123456" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="0.0">
+                        <TextField fx:id="newPasswordTxt" layoutY="-1.0" maxHeight="1.7976931348623157E308" prefWidth="178.0" promptText="Contraseña" text="123456" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="0.0">
                            <font>
                               <Font name="Gill Sans MT" size="16.0" />
                            </font>
