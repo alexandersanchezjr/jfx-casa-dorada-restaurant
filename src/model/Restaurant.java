@@ -73,6 +73,14 @@ public class Restaurant {
 	public ArrayList<Product> getProducts() {
 		return products;
 	}
+	
+	public ArrayList<String> getIdProducts() {
+		ArrayList<String> ids = new ArrayList<>();
+		for(int i = 0; i<products.size(); i++) {
+			ids.add(Long.toString(products.get(i).getId()));
+		}
+		return ids;
+	}
 
 	/**
 	 * @param products the products to set
@@ -515,16 +523,15 @@ public class Restaurant {
 			ingredient.setAvailability(false);
 			disabled = true;
 			saveRestaurantData();
-
 		}
 		return disabled;
 	}
 	
 	//Order MANAGEMENT
 	
-	public boolean addOrder(String selectedStatus, ArrayList<DetailProduct> products, Employee e, String customerName, String customerSurname, String customerId, String customerAddress, String customerPhoneNumber, String comments, User customerCreator, String customerComments) throws IOException {
+	public boolean addOrder(String selectedStatus, ArrayList<DetailProduct> products, Employee e, String customerName, String customerSurname, String customerAddress, String customerPhoneNumber, String comments, User customerCreator, String customerComments) throws IOException {
 		boolean added = false;
-		Order newOrder = new Order((identifier++), selectedStatus, products,  e, customerName, customerSurname, customerId, customerAddress, customerPhoneNumber, comments, customerCreator, customerComments, loggedUser);
+		Order newOrder = new Order((identifier++), selectedStatus, products,  e, customerName, customerSurname, customerAddress, customerPhoneNumber, comments, customerCreator, customerComments, loggedUser);
 		if(!orders.contains(newOrder)) {
 			added = orders.add(newOrder);
 			orders.get(orders.indexOf(newOrder)).getEmployee().addOrder();
@@ -557,7 +564,8 @@ public class Restaurant {
 	//Customer MANAGEMENT
 	public boolean addCustomer(String name, String surname, String id, String address, String phoneNumber, String comments) throws IOException {
 		boolean added = false;
-		Customer thisCustomer = new Customer(name, surname, id, address, phoneNumber, comments, loggedUser);
+		Customer thisCustomer = new Customer(name, surname, address, phoneNumber, comments, loggedUser);
+		thisCustomer.setId(id);
 		if(!customers.contains(thisCustomer)) {
 			for(int i = 0; i<customers.size(); i++) {
 				if((thisCustomer.getName().compareToIgnoreCase(customers.get(i).getName()) > 0) || thisCustomer.getName().compareToIgnoreCase(customers.get(i).getName()) == 0) {
@@ -705,7 +713,7 @@ public class Restaurant {
 			String address = parts[3];
 			String phoneNumber = parts[4];
 			String comments = parts[5];
-			customers.add(new Customer(name, surname, id, address, phoneNumber, comments, loggedUser));
+			addCustomer(name, surname, id, address, phoneNumber, comments);
 			line = br.readLine();
 		}
 		br.close();
@@ -802,27 +810,40 @@ public class Restaurant {
 			String[] parts = line.split(separator);
 			long id = Long.parseLong(parts[0]);
 			String customerName = parts[1];
-			String address = parts[2];
-			String phoneNumber = parts[3];
-			String employeeName = parts[4];
+			String customerSurname = parts[2];
+			String address = parts[3];
+			String phoneNumber = parts[4];
+			String employeeName = parts[5];
+			
 			int indexEmployee = 0;
+			int indexCustomer = 0;
 			for(int i = 0; i<employees.size(); i++) {
 				if(employees.get(i).getName().equals(employeeName)) {
 					indexEmployee = i;
 				}
 			}
-			String status = parts[5];
+			for(int i = 0; i<customers.size(); i++) {
+				if(customers.get(i).getPhoneNumber().equals(phoneNumber)) {
+					indexCustomer = i;
+				}
+			}
+			String status = parts[6];
 			SimpleDateFormat sdf = new SimpleDateFormat("EEE MMMM d HH:mm:ss z yyyy");
-			Date date = sdf.parse(parts[6]);
-			String comments = parts[7];
+			Date date = sdf.parse(parts[7]);
+			String comments = parts[8];
 			ArrayList<DetailProduct> productsOrder = new ArrayList<>();
-			for(int i = 8; i<parts.length; i+=2) {
+			for(int i = 9; i<parts.length; i+=4) {
 				for(int j = 0; j<products.size(); j++) {
 					if(parts[i].equals(products.get(j).getName())) {
-						//productsOrder.add(products.get(j));
+						PriceBySize pbs = new PriceBySize(parts[i+2], Integer.parseInt(parts[i+3]));
+						DetailProduct dp = new DetailProduct(products.get(j), Integer.parseInt(parts[i+1]), pbs);
+						productsOrder.add(dp);
 					}
 				}
 			}
+			Order o = new Order(id, status, productsOrder, employees.get(indexEmployee), customerName, customerSurname, address, phoneNumber, comments, customers.get(indexCustomer).getCreator(), customers.get(indexCustomer).getComments(), loggedUser);
+			o.setDate(date);
+			orders.add(o);
 			line = br.readLine();
 		}
 		br.close();
@@ -845,7 +866,8 @@ public class Restaurant {
 	    }
 	    pw.close();
 	}
-//EXPORT ORDERS
+
+	//EXPORT ORDERS
 	public void exportOrders(String fileName, String separator, String listViewId) throws FileNotFoundException{
 
 	    PrintWriter pw = new PrintWriter(fileName);
@@ -858,9 +880,9 @@ public class Restaurant {
 		    	String productString = "";
 		    	String previous = separator;
 		    	for(int j = 0; j < thisOrder.getProducts().size(); j++){
-		    		productString += previous + thisOrder.getProducts().get(j).getProduct().getName() + separator + thisOrder.getProducts().get(j).getAmount() + separator + thisOrder.getProducts().get(j).getSelectedSize().getPrice();
+		    		productString += previous + thisOrder.getProducts().get(j).getProduct().getName() + separator + thisOrder.getProducts().get(j).getAmount() + separator + thisOrder.getProducts().get(j).getSize() + separator + thisOrder.getProducts().get(j).getSelectedSize().getPrice();
 		    	}
-		    	pw.println(thisOrder.getId() + separator + thisOrder.getCustomer().getName() + separator + thisOrder.getCustomer().getAddress() + separator + thisOrder.getCustomer().getPhoneNumber()+ separator + thisOrder.getEmployee().getName() + separator + thisOrder.getStatus() + separator + thisOrder.getDate() + separator + thisOrder.getComments() + productString);
+		    	pw.println(thisOrder.getId() + separator + thisOrder.getCustomer().getName() + separator + thisOrder.getCustomer().getSurname() + separator + thisOrder.getCustomer().getAddress() + separator + thisOrder.getCustomer().getPhoneNumber()+ separator + thisOrder.getEmployee().getName() + separator + thisOrder.getStatus() + separator + thisOrder.getDate() + separator + thisOrder.getComments() + productString);
 
 	    	}
 	    }
