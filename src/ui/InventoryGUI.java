@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,8 +24,12 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+import model.Ingredient;
+import model.PriceBySize;
 import model.Restaurant;
 
 public class InventoryGUI {
@@ -101,31 +106,31 @@ public class InventoryGUI {
     private AnchorPane productsPane;
 
     @FXML
-    private ListView<?> lvProducts;
+    private ListView<String> lvProducts;
 
     @FXML
-    private ComboBox<?> cbIngredients;
+    private ComboBox<String> cbIngredients;
 
     @FXML
     private TextField sizeNameTxt;
 
     @FXML
-    private TableView<?> tvIngredients;
+    private TableView<Ingredient> tvIngredients;
 
     @FXML
-    private TableColumn<?, ?> tcProductIngredientName;
+    private TableColumn<Ingredient, String> tcProductIngredientName;
 
     @FXML
-    private TableColumn<?, ?> tcProductIngredientCode;
+    private TableColumn<Ingredient, String> tcProductIngredientCode;
 
     @FXML
-    private TableView<?> tvSizes;
+    private TableView<PriceBySize> tvSizes;
 
     @FXML
-    private TableColumn<?, ?> tcProductSizeName;
+    private TableColumn<PriceBySize, String> tcProductSizeName;
 
     @FXML
-    private TableColumn<?, ?> tcProductSizePrice;
+    private TableColumn<PriceBySize, Integer> tcProductSizePrice;
 
     @FXML
     private TextField sizePriceTxt;
@@ -238,12 +243,12 @@ public class InventoryGUI {
 	    File file = new File(selectedFile.getAbsolutePath());
 	    String separator = ordersExportSeparatorTxt.getText();
 	    String listViewId = "";
-	    try {
+	    /*try {
 			restaurant.exportOrders(file.getName(), separator, listViewId);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
     }
 
     @FXML
@@ -299,17 +304,43 @@ public class InventoryGUI {
 
     @FXML
     public void addIngredient(ActionEvent event) {
-
+    	int index = lvProducts.getSelectionModel().getSelectedIndex();
+    	for(int i = 0; i<restaurant.getIngredients().size(); i++) {
+    		if(restaurant.getIngredients().get(i).getName().equals(cbIngredients.getSelectionModel().getSelectedItem())) {
+    			restaurant.getProducts().get(index).addIngredient(restaurant.getIngredients().get(i));
+    		}
+    	}
+    	loadIngredientsProduct(index);
     }
 
     @FXML
     public void addSize(ActionEvent event) {
-
+    	int index = lvProducts.getSelectionModel().getSelectedIndex();
+    	if(sizeNameTxt.getText().isEmpty() || sizePriceTxt.getText().isEmpty()) {
+    		Alert alert = new Alert(AlertType.ERROR);
+	    	alert.setTitle("");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("¡Ups! No has llenado todos los campos para añadir un tamaño y su precio");
+	    	alert.showAndWait();
+    	}
+    	else {
+    		PriceBySize newPriceBySize = new PriceBySize(sizeNameTxt.getText(), Integer.parseInt(sizePriceTxt.getText()));
+    		restaurant.getProducts().get(index).addPriceBySize(newPriceBySize);
+    		loadPricesBySizeProduct(index);
+    	}
     }
 
     @FXML
     public void changeAvailability(ActionEvent event) {
-
+    	int index = lvProducts.getSelectionModel().getSelectedIndex();
+    	if(tbAvailability.getText().equals("Habilitado")) {
+    		restaurant.getProducts().get(index).setAvailability(false);
+    		tbAvailability.setText("Deshabilitado");
+    	}
+    	else {
+    		restaurant.getProducts().get(index).setAvailability(true);
+    		tbAvailability.setText("Habilitado");
+    	}
     }
 
     @FXML
@@ -329,8 +360,49 @@ public class InventoryGUI {
 
     @FXML
     public void updateProductName(ActionEvent event) {
-
+    	int index = lvProducts.getSelectionModel().getSelectedIndex();
+    	restaurant.getProducts().get(index).setName(productNameTxt.getText());
     }
+    
+    public void loadIngredientsProduct(int indexProduct) {
+    	ObservableList<Ingredient> ingredientsProduct = FXCollections.observableArrayList(restaurant.getProducts().get(indexProduct).getIngredients());
+		tvIngredients.setItems(ingredientsProduct);
+		tcProductIngredientName.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("name"));
+		tcProductIngredientCode.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("id"));
+    }
+    
+    public void loadPricesBySizeProduct(int indexProduct) {
+    	ObservableList<PriceBySize> pricesBySize = FXCollections.observableArrayList(restaurant.getProducts().get(indexProduct).getPricesBySizes());
+		tvSizes.setItems(pricesBySize);
+		tcProductSizeName.setCellValueFactory(new PropertyValueFactory<PriceBySize,String>("size"));
+		tcProductSizePrice.setCellValueFactory(new PropertyValueFactory<PriceBySize,Integer>("price"));
+    }
+    
+	@FXML 
+	public void handleMouseClick(MouseEvent arg0) {
+		int index = lvProducts.getSelectionModel().getSelectedIndex();
+		productNameTxt.setText(restaurant.getProducts().get(index).getName());
+		if(restaurant.getProducts().get(index).isAvailability()) {
+			tbAvailability.setText("Habilitado");
+		}
+		else {
+			tbAvailability.setText("Deshabilitado");
+		}
+		cbCategoryInProducts.setPromptText(restaurant.getProducts().get(index).getType().getName());
+		
+		loadIngredientsProduct(index);
+		loadPricesBySizeProduct(index);
+		
+		//Separating ingredients enable
+		ArrayList<String> ingredients = new ArrayList<>();
+		for(int i = 0; i<restaurant.getIngredients().size(); i++) {
+			if(restaurant.getIngredients().get(i).isAvailability()) {
+				ingredients.add(restaurant.getIngredients().get(i).getName());
+			}
+		}
+		ObservableList<String> ingredientsEnable = FXCollections.observableArrayList(ingredients);
+		cbIngredients.setItems(ingredientsEnable);
+	}
     
 	//Type of Product ActionEvent methods
     
