@@ -190,6 +190,7 @@ public class EmployeeGUI {
     	products.add(new DetailProduct(restaurant.getProducts().get(i), amountChooser.getValue(), restaurant.getProducts().get(i).getPricesBySizes().get(i)));
     	
     	ObservableList<DetailProduct> observableList = FXCollections.observableArrayList(products);
+    	//Have to do the tvMenuProductsList.setItems(observableList
     	tcOrderProductName.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("productName"));
     	tcOrderProductType.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("category"));
     	tcOrderProductSize.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("size"));
