@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,6 +32,7 @@ import javafx.stage.FileChooser;
 import model.Ingredient;
 import model.PriceBySize;
 import model.Restaurant;
+import model.User;
 
 public class InventoryGUI {
 
@@ -178,7 +180,7 @@ public class InventoryGUI {
     private ToggleButton tbAvailability;
 
     @FXML
-    private ComboBox<?> cbCategoryInProducts;
+    private ComboBox<String> cbCategoryInProducts;
 
     @FXML
     private TextField productsImportSeparatorTxt;
@@ -345,7 +347,36 @@ public class InventoryGUI {
 
     @FXML
     public void createNewProduct(ActionEvent event) {
-
+    	if(newProductNameTxt.getText().isEmpty() || cbTypeForNewProduct.getPromptText().equals("Categoría") || tvIngredientsForNewProduct.getItems().isEmpty() || tvSizesForNewProduct.getItems().isEmpty()) {
+    		Alert alert = new Alert(AlertType.ERROR);
+	    	alert.setTitle("");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("¡Ups! Llena todos los campos para crear un producto");
+	    	alert.showAndWait();
+    	}
+    	else {
+    		@SuppressWarnings("unchecked")
+			List<Ingredient> ingredientsList = (List<Ingredient>) tvIngredientsForNewProduct.getItems();
+    	    ArrayList<Ingredient> ingredients;
+    	    if (ingredientsList instanceof ArrayList<?>) {
+    	        ingredients = (ArrayList<Ingredient>) ingredientsList;
+    	    } else {
+    	        ingredients = new ArrayList<>(ingredientsList);
+    	    }
+    	    String type = cbTypeForNewProduct.getPromptText();
+    	    int indexType = 0;
+    	    for(int i = 0; i<restaurant.getTypes().size(); i++) {
+    	    	if(restaurant.getTypes().get(i).getName().equals(type)) {
+    	    		indexType = i;
+    	    	}
+    	    }
+    		try {
+				restaurant.addProduct(newProductNameTxt.getText(), ingredients, type, restaurant.getTypes().get(indexType).isAvailability(), restaurant.getTypes().get(indexType).getCreator());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
     }
 
     @FXML
@@ -362,6 +393,17 @@ public class InventoryGUI {
     public void updateProductName(ActionEvent event) {
     	int index = lvProducts.getSelectionModel().getSelectedIndex();
     	restaurant.getProducts().get(index).setName(productNameTxt.getText());
+    }
+    
+    @FXML
+    public void updateComboBox(ActionEvent event) {
+    	String name = cbCategoryInProducts.getSelectionModel().getSelectedItem();
+    	for(int i = 0; i<restaurant.getTypes().size(); i++) {
+    		if(restaurant.getTypes().get(i).getName().equals(name)) {
+    			restaurant.getProducts().get(lvProducts.getSelectionModel().getSelectedIndex()).setType(name);
+    			cbCategoryInProducts.setPromptText(name);
+    		}
+    	}
     }
     
     public void loadIngredientsProduct(int indexProduct) {
@@ -388,6 +430,16 @@ public class InventoryGUI {
 		else {
 			tbAvailability.setText("Deshabilitado");
 		}
+		
+		//Separating types enable
+		ArrayList<String> types = new ArrayList<>();
+		for(int i = 0; i<restaurant.getTypes().size(); i++) {
+			if(restaurant.getTypes().get(i).isAvailability()) {
+				types.add(restaurant.getTypes().get(i).getName());
+			}
+		}
+		ObservableList<String> typesEnable = FXCollections.observableArrayList(types);
+		cbCategoryInProducts.setItems(typesEnable);
 		cbCategoryInProducts.setPromptText(restaurant.getProducts().get(index).getType().getName());
 		
 		loadIngredientsProduct(index);
@@ -402,6 +454,8 @@ public class InventoryGUI {
 		}
 		ObservableList<String> ingredientsEnable = FXCollections.observableArrayList(ingredients);
 		cbIngredients.setItems(ingredientsEnable);
+		
+		labProductId.setText(Long.toString(restaurant.getProducts().get(index).getId()));
 	}
     
 	//Type of Product ActionEvent methods
