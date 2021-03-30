@@ -535,6 +535,14 @@ public class Restaurant {
 		if(!orders.contains(newOrder)) {
 			added = orders.add(newOrder);
 			orders.get(orders.indexOf(newOrder)).getEmployee().addOrder();
+			
+			int employeeValue = 0;			
+			for (int i = 0; i < newOrder.getProducts().size(); i++) {
+				employeeValue += newOrder.getProducts().get(i).getAmount() * newOrder.getProducts().get(i).getSelectedSize().getPrice();
+			}
+				
+			orders.get(orders.indexOf(newOrder)).getEmployee().addOrderValue(employeeValue);
+			
 			saveRestaurantData();
 
 		}
@@ -741,10 +749,12 @@ public class Restaurant {
 			String surname = parts[1];
 			String id = parts[2];
 			int ordersCont = Integer.parseInt(parts[3]);
+			int totalSum = Integer.parseInt(parts[4]);
 			employees.add(new Employee(name, surname, id, loggedUser));
 			for(int i = 0; i<employees.size(); i++) {
 				if(employees.get(i).getId().equals(id)) {
 					employees.get(i).setOrdersCont(ordersCont);
+					employees.get(i).addOrderValue(totalSum);
 				}
 			}
 			line = br.readLine();
@@ -884,7 +894,7 @@ public class Restaurant {
 	    		  total += ordersTotal;
 	    	  }
 	      }
-	      pw.println(thisEmployee.getName()+separator+thisEmployee.getSurname()+separator+thisEmployee.getId()+separator+thisEmployee.getOrdersCont()+separator+ordersTotal);
+	      pw.println(thisEmployee.getName()+separator+thisEmployee.getSurname()+separator+thisEmployee.getId()+separator+thisEmployee.getOrdersCont()+separator+ordersTotal + thisEmployee.getTotalSum());
 	    }
 	    pw.println(total);
 	    pw.close();
