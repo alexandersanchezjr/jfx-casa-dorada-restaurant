@@ -115,7 +115,6 @@ public class UsersGUI {
     //clients_pane.fxml attributes
     
 
-
     @FXML
     private TableView<Customer> tvClients;
 

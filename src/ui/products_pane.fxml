@@ -241,7 +241,7 @@
                   <Font name="Gill Sans MT" size="16.0" />
                </font>
             </ToggleButton>
-            <ComboBox fx:id="cbCategoryInProducts" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Bebidas" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+            <ComboBox fx:id="cbCategoryInProducts" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#updateComboBox" promptText="Bebidas" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
             <Button mnemonicParsing="false" onAction="#updateProductName" text="Actualizar" GridPane.rowIndex="2">
                <font>
                   <Font name="Gill Sans MT" size="16.0" />
