@@ -190,9 +190,9 @@ public class Restaurant {
 	
 	//Product MANAGEMENT
 
-	public boolean addProduct(String name, ArrayList<Ingredient> ingredients, boolean availability, String selectedType, boolean typeAvailability, User typeCreator) throws IOException {
+	public boolean addProduct(String name, ArrayList<Ingredient> ingredients, String selectedType, boolean typeAvailability, User typeCreator) throws IOException {
 		boolean added = false;
-		Product newProduct = new Product(name,(identifier++), ingredients, availability, selectedType, typeAvailability, typeCreator, loggedUser);
+		Product newProduct = new Product(name,(identifier++), ingredients, selectedType, typeAvailability, typeCreator, loggedUser);
 		if(!products.contains(newProduct)) {	
 			added = products.add(newProduct);
 			saveRestaurantData();
@@ -794,7 +794,9 @@ public class Restaurant {
 				}
 				k++;
 			}
-			products.add(new Product(name, id, ingredients, availability, selectedType, types.get(indexType).isAvailability(), types.get(indexType).getCreator(), loggedUser));
+			Product p = new Product(name, id, ingredients, selectedType, types.get(indexType).isAvailability(), types.get(indexType).getCreator(), loggedUser);
+			p.setAvailability(availability);
+			products.add(p);
 			line = br.readLine();
 		}
 		br.close();
