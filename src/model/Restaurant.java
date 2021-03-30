@@ -719,6 +719,17 @@ public class Restaurant {
 		br.close();
 	}
 	
+	public void exportCustomers (String fileName, String separator) throws FileNotFoundException {
+		PrintWriter pw = new PrintWriter(fileName);
+		
+		for(int j = 0; j < customers.size(); j++){
+    		pw.write(customers.get(j).getName() + separator + customers.get(j).getSurname() + separator + customers.get(j).getId() + separator + customers.get(j).getAddress() + separator + customers.get(j).getPhoneNumber() + separator + customers.get(j).getComments()); 
+    	}
+		pw.close();
+		
+	}
+	
+	
 	//IMPORT EMPLOYEES
 	
 	public void importEmployees(String fileName, String separator) throws IOException {
@@ -852,6 +863,8 @@ public class Restaurant {
 	public void exportProduct (String fileName, String separator) throws FileNotFoundException {
 		PrintWriter pw = new PrintWriter (fileName);
 		int total = 0;
+		//TODO finished this method
+		
 		
 	}
 	
