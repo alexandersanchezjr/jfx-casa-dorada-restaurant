@@ -9,6 +9,7 @@ public class Employee implements Serializable {
 	private String surname;
 	private String id;
 	private int ordersCont;
+	private int totalSum;
 	private boolean availability;
 	private User creator;
 	private User modifier;
@@ -65,6 +66,26 @@ public class Employee implements Serializable {
 		this.ordersCont = ordersCont;
 	}
 	
+	/**
+	 * @return the totalSum
+	 */
+	public int getTotalSum() {
+		return totalSum;
+	}
+	
+	public void addOrderValue (int valueToAdd) {
+		totalSum += valueToAdd;
+	}
+
+
+	/**
+	 * @param totalSum the totalSumm to set
+	 */
+	public void setTotalSumm(int totalSum) {
+		this.totalSum = totalSum;
+	}
+
+
 	/**
 	 * @param ordersCont the ordersCont to set
 	 */
