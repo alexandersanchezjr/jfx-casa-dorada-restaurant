@@ -873,8 +873,8 @@ public class Restaurant {
 	}
 	//EXPORT PRODUCTS
 	public void exportProduct (String fileName, String separator) throws FileNotFoundException {
-		PrintWriter pw = new PrintWriter (fileName);
-		int total = 0;
+		//PrintWriter pw = new PrintWriter (fileName);
+		//int total = 0;
 		//TODO finished this method
 		
 		
