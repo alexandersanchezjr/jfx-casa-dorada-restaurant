@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="orderPaner" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox layoutY="45.0" prefHeight="550.0" prefWidth="700.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="45.0">
          <children>
@@ -124,7 +124,7 @@
                   <RowConstraints prefHeight="100.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label fx:id="labEmployeeId2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Crea un nuevo operario:" GridPane.columnSpan="2" GridPane.vgrow="ALWAYS">
+                  <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Crea un nuevo operario:" GridPane.columnSpan="2" GridPane.vgrow="ALWAYS">
                      <font>
                         <Font name="Gill Sans MT" size="20.0" />
                      </font>
