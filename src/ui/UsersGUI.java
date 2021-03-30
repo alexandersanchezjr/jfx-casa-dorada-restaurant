@@ -163,6 +163,70 @@ public class UsersGUI {
     
     //
     
+    //operators_pane.fxml ATTRIBUTES
+    
+    @FXML
+    private AnchorPane orderPaner;
+
+    @FXML
+    private TableView<User> tvOperatorsList;
+
+    @FXML
+    private TableColumn<User, String> tcOperatorsName;
+
+    @FXML
+    private TableColumn<User, String> tcOperatorsSurname;
+
+    @FXML
+    private TableColumn<User, String> tcOperatorsId;
+
+    @FXML
+    private TableColumn<User, String> tcOperatorsUsername;
+
+    @FXML
+    private TextField operatorNameTxt;
+
+    @FXML
+    private TextField operatorSurnameTxt;
+
+    @FXML
+    private TextField operatorIdTxt;
+
+    @FXML
+    private ToggleButton operatorAvailability;
+
+    @FXML
+    private TextField operatorUsernameTxt;
+
+    @FXML
+    private PasswordField operatorHiddenPasswordTxt;
+
+    @FXML
+    private TextField operatorPasswordTxt;
+
+    @FXML
+    private CheckBox chkbShowOperatorPassword;
+
+    @FXML
+    private TextField newOperatorNameTxt;
+
+    @FXML
+    private TextField newOperatorSurnameTxt;
+
+    @FXML
+    private TextField newOperatorIdTxt;
+
+    @FXML
+    private TextField newOperatorUsernameTxt;
+
+    @FXML
+    private PasswordField newHiddenPasswordTxct;
+
+    @FXML
+    private TextField newOperatorPasswordTxt;
+
+    @FXML
+    private CheckBox chkbShowNewOperatorPassword;
     
     private Restaurant restaurant;
     
@@ -491,5 +555,150 @@ public class UsersGUI {
      			
      	}
     }
+     
+     //OPERATOR METHODS
+     
+     public void initializeCustomerTableView () {
+    	 
+    	 ObservableList<User> observableList = FXCollections.observableArrayList(restaurant.getOperatorsUsers());
+    	 tvOperatorsList.setItems(observableList);
+    	 tcOperatorsName.setCellValueFactory(new PropertyValueFactory<User, String>("name"));
+    	 tcOperatorsSurname.setCellValueFactory(new PropertyValueFactory<User, String>("surname"));
+    	 tcOperatorsId.setCellValueFactory(new PropertyValueFactory<User, String>("id"));
+    	 tcOperatorsUsername.setCellValueFactory(new PropertyValueFactory<User, String>("username"));
+     }
+     
+     @FXML
+     void changeOperatorAvailability(ActionEvent event) {
+    	 User thisOperator = (User) tvOperatorsList.getSelectionModel().getSelectedItem();
+     	
+     	if (operatorAvailability.isSelected()) {
+     		operatorAvailability.setText("HABILITADO");
+     		thisOperator.setAvailability(true);
+     	}else {
+     		operatorAvailability.setText("DESHABILITADO");
+     		thisOperator.setAvailability(false);
+     	}
+     		
+     }
+
+     @FXML
+     void cleanOperatorsList(ActionEvent event) {
+    	 TextInputDialog dialog = new TextInputDialog();
+    	 dialog.setTitle("Confirme borrado de datos");
+    	 dialog.setHeaderText("Por favor, escriba 'SI' si desea limpiar la lista de administradores ");
+		
+    	 // Traditional way to get the response value.
+    	 String input = "";
+    	 Optional<String> result = dialog.showAndWait();
+    	 if (result.isPresent()){
+		   input = result.get();
+    	 }
+    	 if (input.equals("SI")) {
+    		 restaurant.getOperatorsUsers().clear();
+    	 }
+     }
+
+     @FXML
+     void confirmOperatorPassword(ActionEvent event) {
+    	 if(!chkbShowOperatorPassword.isSelected()) {
+     		User thisOperator = tvOperatorsList.getSelectionModel().getSelectedItem();
+ 	    	
+ 	    	TextInputDialog dialog = new TextInputDialog();
+ 	    	dialog.setTitle("Contraseña");
+ 	    	dialog.setHeaderText("Por favor, confirme su contraseña");
+ 	
+ 	    	// Traditional way to get the response value.
+ 	    	String inputPassword = "";
+ 	    	Optional<String> result = dialog.showAndWait();
+ 	    	if (result.isPresent()){
+ 	    	   inputPassword = result.get();
+ 	    	}
+ 	    	if (inputPassword.equals(thisOperator.getPassword())) {
+ 	    		operatorPasswordTxt.setText(inputPassword);
+ 	    		operatorPasswordTxt.setVisible(true);
+ 	    		operatorHiddenPasswordTxt.setVisible(false);
+ 	    	}
+     	}else {
+     		operatorHiddenPasswordTxt.setText(operatorPasswordTxt.getText());
+     		operatorHiddenPasswordTxt.setVisible(true);
+     		operatorPasswordTxt.setVisible(false);
+     	}
+     }
+
+     @FXML
+     void createOperator(ActionEvent event) {
+    	 if(newOperatorNameTxt.getText().isEmpty() || newOperatorSurnameTxt.getText().isEmpty() || newOperatorIdTxt.getText().isEmpty() || newOperatorUsernameTxt.getText().isEmpty() || (newOperatorPasswordTxt.getText().isEmpty() && newHiddenPasswordTxct.getText().isEmpty())) {
+     		Alert alert = new Alert(AlertType.ERROR);
+ 	    	alert.setTitle("Campos Vacíos");
+ 	    	alert.setHeaderText(null);
+ 	    	alert.setContentText("Por favor, rellene todos los campos para poder crear un operario");
+ 	    	alert.showAndWait();
+     	}else {
+     		if (newPasswordTxt.getText().equals(newHiddenPasswordTxt.getText())) {
+     			try {
+     				restaurant.addUser(newOperatorNameTxt.getText(), newOperatorSurnameTxt.getText(), newOperatorIdTxt.getText(), null, newOperatorUsernameTxt.getText(), newOperatorPasswordTxt.getText(), null);
+     			} catch (IOException e) {
+     				// TODO Auto-generated catch block
+     				e.printStackTrace();
+     			}
+     		}
+     		
+     	}
+     	initializeAdminTableView ();
+     }
+
+     @FXML
+     void deleteOperator(ActionEvent event) {
+    	 User thisOperator = tvOperatorsList.getSelectionModel().getSelectedItem();
+     	
+     	try {
+ 			restaurant.deleteUser(thisOperator);
+ 		} catch (IOException e) {
+ 			// TODO Auto-generated catch block
+ 			e.printStackTrace();
+ 		}
+     }
+
+     @FXML
+     void showNewOperatorPassword(ActionEvent event) {
+    	 if(!chkbShowNewOperatorPassword.isSelected()) {
+ 	    	
+    		    
+    		 newOperatorPasswordTxt.setText(newHiddenPasswordTxct.getText());
+     		newOperatorPasswordTxt.setVisible(true);
+     		newHiddenPasswordTxct.setVisible(false);
+ 	    
+     	}else {
+     		newHiddenPasswordTxct.setText(newOperatorPasswordTxt.getText());
+     		newHiddenPasswordTxct.setVisible(true);
+     		newOperatorPasswordTxt.setVisible(false);
+     	}
+     }
+
+     @FXML
+     void updateOperator(ActionEvent event) {
+     	User thisOperator = tvOperatorsList.getSelectionModel().getSelectedItem();
+
+		
+     	if(operatorNameTxt.getText().isEmpty() || operatorSurnameTxt.getText().isEmpty() || operatorIdTxt.getText().isEmpty() || operatorUsernameTxt.getText().isEmpty() || (operatorHiddenPasswordTxt.getText().isEmpty() && operatorPasswordTxt.getText().isEmpty())) {
+     		Alert alert = new Alert(AlertType.ERROR);
+ 	    	alert.setTitle("Campos Vacíos");
+ 	    	alert.setHeaderText(null);
+ 	    	alert.setContentText("Por favor, rellene todos los campos para poder actualizar un administrador");
+ 	    	alert.showAndWait();
+     	}else {
+     		if (adminHiddenPasswordTxt.getText().equals(adminPasswordTxt.getText())) {
+     			
+     			thisOperator.setName(operatorNameTxt.getText());
+     			thisOperator.setSurname(operatorSurnameTxt.getText());
+     			thisOperator.setId(operatorIdTxt.getText());
+     			thisOperator.setUsername(operatorUsernameTxt.getText());
+     			thisOperator.setPassword(operatorHiddenPasswordTxt.getText());
+     		}
+     			
+     	}    	 
+     }
+
     
 }
