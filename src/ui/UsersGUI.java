@@ -30,6 +30,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.Customer;
 import model.DetailProduct;
+import model.Employee;
 import model.Restaurant;
 import model.User;
 
@@ -113,8 +114,7 @@ public class UsersGUI {
     
     //clients_pane.fxml attributes
     
-    @FXML
-    private AnchorPane orderPaner;
+
 
     @FXML
     private TableView<Customer> tvClients;
@@ -165,8 +165,6 @@ public class UsersGUI {
     
     //operators_pane.fxml ATTRIBUTES
     
-    @FXML
-    private AnchorPane orderPaner;
 
     @FXML
     private TableView<User> tvOperatorsList;
@@ -227,6 +225,61 @@ public class UsersGUI {
 
     @FXML
     private CheckBox chkbShowNewOperatorPassword;
+    
+    //admin_employee_pane.fxml attributes
+    
+    @FXML
+    private AnchorPane orderPaner;
+
+    @FXML
+    private TableView<Employee> tvAdminEmployees;
+
+    @FXML
+    private TableColumn<Employee, String> tcAdminEmployeesName;
+
+    @FXML
+    private TableColumn<Employee, String> tcAdminEmployeesSurname;
+
+    @FXML
+    private TableColumn<Employee, String> tcAdminEmployeesId;
+
+    @FXML
+    private TableColumn<Employee, String> tcAdminsNumberOfEmployeeOrders;
+
+    @FXML
+    private TableColumn<Employee, String> tcAdminEmployeesTotalValue;
+
+    @FXML
+    private TextField employeeNameTxt;
+
+    @FXML
+    private TextField employeeSurnameTxt;
+
+    @FXML
+    private TextField employeeIdTxt;
+
+    @FXML
+    private ToggleButton tbEmployeeAvailability;
+
+    @FXML
+    private Label labEmployeeId1;
+
+    @FXML
+    private TextField newEmployeeNameTxt;
+
+    @FXML
+    private TextField newEmployeeSurnameTxt;
+
+    @FXML
+    private TextField newEmployeeIdTxt;
+
+    @FXML
+    private TextField employeeImportSeparatorTxt;
+
+    @FXML
+    private TextField employeeExportSeparatorTxt;
+    
+    //////////////////////////////////////////////
     
     private Restaurant restaurant;
     
@@ -427,6 +480,7 @@ public class UsersGUI {
     			thisAdmin.setId(adminIdTxt.getText());
     			thisAdmin.setUsername(adminUsernameTxt.getText());
     			thisAdmin.setPassword(adminHiddenPasswordTxt.getText());
+    			initializeAdminTableView();
     		}
     			
     	}
@@ -552,6 +606,7 @@ public class UsersGUI {
  			thisCustomer.setId(clientIdTxt.getText());
  			thisCustomer.setAddress(clientAddressTxt.getText());
  			thisCustomer.setPhoneNumber(clientPhoneTxt.getText());
+ 			initializeClientTableView();
      			
      	}
     }
@@ -645,7 +700,7 @@ public class UsersGUI {
      		}
      		
      	}
-     	initializeAdminTableView ();
+    	 initializeCustomerTableView ();
      }
 
      @FXML
@@ -695,9 +750,120 @@ public class UsersGUI {
      			thisOperator.setId(operatorIdTxt.getText());
      			thisOperator.setUsername(operatorUsernameTxt.getText());
      			thisOperator.setPassword(operatorHiddenPasswordTxt.getText());
+     			initializeCustomerTableView();
      		}
      			
      	}    	 
+     }
+     
+     //EMPLOYEE METHODS
+     
+     public void initializeEmployeeTableView () {
+    	 
+    	 ObservableList<Employee> observableList = FXCollections.observableArrayList(restaurant.getEmployees());
+    	 tvAdminEmployees.setItems(observableList);
+    	 tcAdminEmployeesName.setCellValueFactory(new PropertyValueFactory<Employee, String>("name"));
+    	 tcAdminEmployeesSurname.setCellValueFactory(new PropertyValueFactory<Employee, String>("surname"));
+    	 tcAdminEmployeesId.setCellValueFactory(new PropertyValueFactory<Employee, String>("id"));
+    	 tcAdminsNumberOfEmployeeOrders.setCellValueFactory(new PropertyValueFactory<Employee, String>("ordersCont"));
+    	 tcAdminEmployeesTotalValue.setCellValueFactory(new PropertyValueFactory<Employee, String>("totalSum"));
+     }
+     
+     @FXML
+     void changeEmployeeAvailability(ActionEvent event) {
+    	 Employee thisEmployee = tvAdminEmployees.getSelectionModel().getSelectedItem();
+     	
+     	if (tbEmployeeAvailability.isSelected()) {
+     		tbEmployeeAvailability.setText("HABILITADO");
+     		thisEmployee.setAvailability(true);
+     	}else {
+     		tbEmployeeAvailability.setText("DESHABILITADO");
+     		thisEmployee.setAvailability(false);
+     	}
+     }
+
+     @FXML
+     void createEmployee(ActionEvent event) {
+    	 if(employeeNameTxt.getText().isEmpty() || employeeSurnameTxt.getText().isEmpty() || employeeIdTxt.getText().isEmpty() ) {
+      		Alert alert = new Alert(AlertType.ERROR);
+  	    	alert.setTitle("Campos Vacíos");
+  	    	alert.setHeaderText(null);
+  	    	alert.setContentText("Por favor, rellene todos los campos para poder crear un empleado");
+  	    	alert.showAndWait();
+      	}else {
+  			try {
+  				restaurant.addEmployee(employeeNameTxt.getText(), employeeSurnameTxt.getText(), employeeIdTxt.getText(), null);
+  	  			initializeEmployeeTableView ();
+
+  			} catch (IOException e) {
+  				// TODO Auto-generated catch block
+  				e.printStackTrace();
+  			}
+      	}
+  		
+     }
+
+     @FXML
+     void exportEmployeesList(ActionEvent event) {
+    	 FileChooser fileChooser = new FileChooser();
+       	 
+         //Set extension filter for text files
+         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv");
+         fileChooser.getExtensionFilters().add(extFilter);
+         fileChooser.setInitialFileName("Reporte-Empleados.csv");
+
+
+         //Show save file dialog
+         
+         File file = fileChooser.showSaveDialog((Stage)((Node)event.getSource()).getScene().getWindow());
+
+         if (file != null) {
+         	try {
+ 				restaurant.exportEmployees(file.getAbsolutePath(), employeeExportSeparatorTxt.getText());
+ 			} catch (FileNotFoundException e) {
+ 				// TODO Auto-generated catch block
+ 				e.printStackTrace();
+ 			}
+         }
+     }
+
+     @FXML
+     void importEmployeesList(ActionEvent event) {
+    	 FileChooser fileChooser = new FileChooser();
+      	 
+         //Set extension filter for text files
+         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv");
+         fileChooser.getExtensionFilters().add(extFilter);
+         
+         File file = fileChooser.showOpenDialog((Stage)((Node)event.getSource()).getScene().getWindow());
+         
+         if (file != null) {
+         	try {
+ 				restaurant.importEmployees(file.getAbsolutePath(), employeeImportSeparatorTxt.getText());
+ 			} catch (IOException e) {
+ 				// TODO Auto-generated catch block
+ 				e.printStackTrace();
+ 			}
+         }
+     }
+
+     @FXML
+     void updateEmployeeBasicInfo(ActionEvent event) {
+    	 Employee thisEmployee = tvAdminEmployees.getSelectionModel().getSelectedItem();
+
+ 		
+      	if(employeeNameTxt.getText().isEmpty() || employeeSurnameTxt.getText().isEmpty() || employeeIdTxt.getText().isEmpty()) {
+      		Alert alert = new Alert(AlertType.ERROR);
+  	    	alert.setTitle("Campos Vacíos");
+  	    	alert.setHeaderText(null);
+  	    	alert.setContentText("Por favor, rellene todos los campos para poder actualizar un empleado");
+  	    	alert.showAndWait();
+      	}else {
+  			thisEmployee.setName(employeeNameTxt.getText());
+  			thisEmployee.setSurname(employeeSurnameTxt.getText());
+  			thisEmployee.setId(employeeIdTxt.getText());
+  			initializeEmployeeTableView ();
+      	} 
      }
 
     
