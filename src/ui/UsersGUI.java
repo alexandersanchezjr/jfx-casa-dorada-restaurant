@@ -114,9 +114,6 @@ public class UsersGUI {
     //clients_pane.fxml attributes
     
     @FXML
-    private AnchorPane orderPaner;
-
-    @FXML
     private TableView<Customer> tvClients;
 
     @FXML
