@@ -1,7 +1,6 @@
 package ui;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -32,7 +31,6 @@ import javafx.stage.FileChooser;
 import model.Ingredient;
 import model.PriceBySize;
 import model.Restaurant;
-import model.User;
 
 public class InventoryGUI {
 
