@@ -27,6 +27,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import model.Customer;
 import model.DetailProduct;
 import model.Restaurant;
 import model.User;
@@ -109,43 +110,57 @@ public class UsersGUI {
     
     //
     
-    //clients_pane.fxml
+    //clients_pane.fxml attributes
     
     @FXML
     private AnchorPane orderPaner;
 
     @FXML
-    private TableView<?> tvProducts;
+    private TableView<Customer> tvClients;
 
     @FXML
-    private TableColumn<?, ?> tcOrderProductName;
+    private TableColumn<Customer, String> tcClientName;
 
     @FXML
-    private TableColumn<?, ?> tcOrderProductType;
+    private TableColumn<Customer, String> tcClientSurname;
 
     @FXML
-    private TableColumn<?, ?> tcOrderProductSize;
+    private TableColumn<Customer, String> tcClientId;
 
     @FXML
-    private TableColumn<?, ?> tcOrderProductPrice;
+    private TableColumn<Customer, String> tcClientAddress;
 
     @FXML
-    private TableColumn<?, ?> tcOrderProductPrice1;
+    private TableColumn<Customer, String> tcClientPhone;
 
     @FXML
-    private TableColumn<?, ?> tcOrderProductPrice11;
+    private TableColumn<Customer, String> tcClientComments;
 
     @FXML
-    private Label labOrderId;
+    private TextField clientNameTxt;
+
+    @FXML
+    private TextField clientSurnameTxt;
+
+    @FXML
+    private TextField clientIdTxt;
+
+    @FXML
+    private TextField clientAddressTxt;
+
+    @FXML
+    private TextField clientPhoneTxt;
 
     @FXML
     private Label labClientComments;
 
     @FXML
-    private TextField importSeparatorTxt;
+    private TextField importClientSeparatorTxt;
 
     @FXML
-    private TextField exportSeparatorTxt;
+    private TextField exportClientSeparatorTxt;
+    
+    //
     
     
     private Restaurant restaurant;
@@ -160,7 +175,7 @@ public class UsersGUI {
     
     
     
-    //admin_pane.fxml methods
+    //ADMIN METHODS
     public void initializeAdminTableView () {
     	
     	ObservableList<User> observableList = FXCollections.observableArrayList(restaurant.getAdmins());
@@ -254,6 +269,7 @@ public class UsersGUI {
     		}
     		
     	}
+    	initializeAdminTableView ();
     	
     }
     
@@ -353,31 +369,106 @@ public class UsersGUI {
     
     //CLIENTS METHODS
     
+    public void initializeClientTableView () {
+    	
+    	ObservableList<Customer> observableList = FXCollections.observableArrayList(restaurant.getCustomers());
+    	tvClients.setItems(observableList);
+    	tcClientName.setCellValueFactory(new PropertyValueFactory<Customer, String>("name"));
+    	tcClientSurname.setCellValueFactory(new PropertyValueFactory<Customer, String>("surname"));
+    	tcClientId.setCellValueFactory(new PropertyValueFactory<Customer, String>("id"));
+    	tcClientAddress.setCellValueFactory(new PropertyValueFactory<Customer, String>("address"));
+    	tcClientPhone.setCellValueFactory(new PropertyValueFactory<Customer, String>("phoneNumber"));
+    	tcClientComments.setCellValueFactory(new PropertyValueFactory<Customer, String>("comments"));
+    	
+    }
 
     
     @FXML
     void cleanList(ActionEvent event) {
+    	TextInputDialog dialog = new TextInputDialog();
+    	dialog.setTitle("Confirme borrado de datos");
+    	dialog.setHeaderText("Por favor, escriba 'SI' si desea limpiar la lista de clientes ");
 
+    	// Traditional way to get the response value.
+    	String input = "";
+    	Optional<String> result = dialog.showAndWait();
+    	if (result.isPresent()){
+    	   input = result.get();
+    	}
+    	if (input.equals("SI")) {
+    		restaurant.getCustomers().clear();
+    	}
     }
 
     @FXML
     void deleteClient(ActionEvent event) {
-
+    	User thisAdmin = tvAdmins.getSelectionModel().getSelectedItem();
+    	
+    	try {
+			restaurant.deletedAdminUser(thisAdmin);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     @FXML
     void exportClientList(ActionEvent event) {
+    	FileChooser fileChooser = new FileChooser();
+   	 
+        //Set extension filter for text files
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+        fileChooser.setInitialFileName("Reporte-Clientes.csv");
 
+
+        //Show save file dialog
+        
+        File file = fileChooser.showSaveDialog((Stage)((Node)event.getSource()).getScene().getWindow());
+
+        if (file != null) {
+            //TODO make a exportAdmins() method in restaurant
+        }
     }
 
     @FXML
     void importClientList(ActionEvent event) {
 
     }
+    
+    @FXML
+    void showClientInfo(MouseEvent event) {
+    	Customer thisCustomer = tvClients.getSelectionModel().getSelectedItem();
+    	
+    	clientNameTxt.setText(thisCustomer.getName());
+    	clientSurnameTxt.setText(thisCustomer.getSurname());
+    	clientIdTxt.setText(thisCustomer.getId());
+    	clientAddressTxt.setText(thisCustomer.getAddress());
+    	clientPhoneTxt.setText(thisCustomer.getPhoneNumber());
+    	
+    	
+    }
    
      @FXML
     void updateClient(ActionEvent event) {
+    	 Customer thisCustomer = tvClients.getSelectionModel().getSelectedItem();
 
+ 		
+     	if(clientNameTxt.getText().isEmpty() || clientSurnameTxt.getText().isEmpty() || clientIdTxt.getText().isEmpty() || clientAddressTxt.getText().isEmpty() || clientPhoneTxt.getText().isEmpty()) {
+     		Alert alert = new Alert(AlertType.ERROR);
+ 	    	alert.setTitle("Campos Vacíos");
+ 	    	alert.setHeaderText(null);
+ 	    	alert.setContentText("Por favor, rellene todos los campos para poder actualizar un cliente");
+ 	    	alert.showAndWait();
+     	}else {
+     		
+ 			thisCustomer.setName(clientNameTxt.getText());
+ 			thisCustomer.setSurname(clientSurnameTxt.getText());
+ 			thisCustomer.setId(clientIdTxt.getText());
+ 			thisCustomer.setAddress(clientAddressTxt.getText());
+ 			thisCustomer.setPhoneNumber(clientPhoneTxt.getText());
+     			
+     	}
     }
     
 }
