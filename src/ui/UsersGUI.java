@@ -1,6 +1,7 @@
 package ui;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -417,7 +418,7 @@ public class UsersGUI {
     	FileChooser fileChooser = new FileChooser();
    	 
         //Set extension filter for text files
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv");
         fileChooser.getExtensionFilters().add(extFilter);
         fileChooser.setInitialFileName("Reporte-Clientes.csv");
 
@@ -427,13 +428,33 @@ public class UsersGUI {
         File file = fileChooser.showSaveDialog((Stage)((Node)event.getSource()).getScene().getWindow());
 
         if (file != null) {
-            //TODO make a exportAdmins() method in restaurant
+        	try {
+				restaurant.exportCustomers(file.getAbsolutePath(), exportClientSeparatorTxt.getText());
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
     }
 
     @FXML
     void importClientList(ActionEvent event) {
-
+    	FileChooser fileChooser = new FileChooser();
+      	 
+        //Set extension filter for text files
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv");
+        fileChooser.getExtensionFilters().add(extFilter);
+        
+        File file = fileChooser.showOpenDialog((Stage)((Node)event.getSource()).getScene().getWindow());
+        
+        if (file != null) {
+        	try {
+				restaurant.importCustomers(file.getAbsolutePath(), importClientSeparatorTxt.getText());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
     }
     
     @FXML
