@@ -83,6 +83,8 @@ public class AdminGUI {
 		AnchorPane.setBottomAnchor(adminPane, 0.0);
 		AnchorPane.setLeftAnchor(adminPane, 0.0);
 		AnchorPane.setRightAnchor(adminPane, 0.0);
+		
+		usersGUI.initializeAdminTableView();
     }
     
     @FXML
