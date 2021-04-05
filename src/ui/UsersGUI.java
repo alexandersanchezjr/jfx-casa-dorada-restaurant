@@ -280,7 +280,7 @@ public class UsersGUI {
     private Restaurant restaurant;
     
     public UsersGUI() {
-    	initializeAdminTableView ();
+    	
     }
     
      public void injectAdminGUI(Restaurant restaurant) {
