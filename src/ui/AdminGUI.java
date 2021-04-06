@@ -91,7 +91,7 @@ public class AdminGUI {
     public void showOperatorPane(ActionEvent event) throws IOException {
     	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("operators_pane.fxml"));
 		
-		fxmlLoader.setController(inventoryGUI);
+		fxmlLoader.setController(usersGUI);
 		Parent operatorPane = fxmlLoader.load();
 		mainPane.getChildren().setAll(operatorPane);
 		AnchorPane.setTopAnchor(operatorPane, 0.0);
@@ -104,7 +104,7 @@ public class AdminGUI {
     public void showClientsPane(ActionEvent event) throws IOException {
     	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("clients_pane.fxml"));
 		
-		fxmlLoader.setController(inventoryGUI);
+		fxmlLoader.setController(usersGUI);
 		Parent clientPane = fxmlLoader.load();
 		mainPane.getChildren().setAll(clientPane);
 		AnchorPane.setTopAnchor(clientPane, 0.0);
@@ -117,7 +117,7 @@ public class AdminGUI {
     public void showEmployeePane(ActionEvent event) throws IOException {
     	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("admin_employee_pane.fxml"));
 		
-		fxmlLoader.setController(inventoryGUI);
+		fxmlLoader.setController(usersGUI);
 		Parent employeePane = fxmlLoader.load();
 		mainPane.getChildren().setAll(employeePane);
 		AnchorPane.setTopAnchor(employeePane, 0.0);
