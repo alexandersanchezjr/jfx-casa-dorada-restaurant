@@ -3,9 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ContextMenu?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Separator?>
@@ -145,13 +143,6 @@
             <Font name="Gill Sans MT Bold" size="30.0" />
          </font>
       </Label>
-      <VBox layoutY="45.0" prefHeight="95.0" prefWidth="162.0" spacing="10.0">
-         <children>
-            <DatePicker fx:id="employeeDatePicker" editable="false" maxWidth="1.7976931348623157E308" prefHeight="25.0" VBox.vgrow="ALWAYS" />
-            <ChoiceBox fx:id="employeeTimePicker" maxWidth="1.7976931348623157E308" prefHeight="25.0" VBox.vgrow="ALWAYS" />
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#filterOrders" prefHeight="25.0" text="Filtrar" VBox.vgrow="ALWAYS" />
-         </children>
-      </VBox>
       <VBox layoutY="485.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
          <children>
             <Separator prefHeight="0.0" prefWidth="162.0" />
