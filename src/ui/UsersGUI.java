@@ -637,7 +637,7 @@ public class UsersGUI {
      void cleanOperatorsList(ActionEvent event) {
     	 TextInputDialog dialog = new TextInputDialog();
     	 dialog.setTitle("Confirme borrado de datos");
-    	 dialog.setHeaderText("Por favor, escriba 'SI' si desea limpiar la lista de administradores ");
+    	 dialog.setHeaderText("Por favor, escriba 'SI' si desea limpiar la lista de operadores ");
 		
     	 // Traditional way to get the response value.
     	 String input = "";
@@ -686,7 +686,7 @@ public class UsersGUI {
  	    	alert.setContentText("Por favor, rellene todos los campos para poder crear un operario");
  	    	alert.showAndWait();
      	}else {
-     		if (newPasswordTxt.getText().equals(newHiddenPasswordTxt.getText())) {
+     		if (newOperatorPasswordTxt.getText().equals(newHiddenPasswordTxct.getText())) {
      			try {
      				restaurant.addUser(newOperatorNameTxt.getText(), newOperatorSurnameTxt.getText(), newOperatorIdTxt.getText(), null, newOperatorUsernameTxt.getText(), newOperatorPasswordTxt.getText(), null);
      			} catch (IOException e) {
@@ -780,7 +780,20 @@ public class UsersGUI {
      
      @FXML
      void cleanEmployeeList(ActionEvent event) {
-
+    	 TextInputDialog dialog = new TextInputDialog();
+    	 dialog.setTitle("Confirmar borrado de datos");
+    	 dialog.setHeaderText("Por favor, escriba 'SI' si desea limpiar la lista de empleados ");
+		
+    	 // Traditional way to get the response value.
+    	 String input = "";
+    	 Optional<String> result = dialog.showAndWait();
+    	 if (result.isPresent()){
+		   input = result.get();
+    	 }
+    	 if (input.equals("SI")) {
+    		 restaurant.getEmployees().clear();
+    		 initializeEmployeeTableView();
+    	 }
      }
 
      @FXML
@@ -793,14 +806,22 @@ public class UsersGUI {
   	    	alert.showAndWait();
       	}else {
   			try {
-  				restaurant.addEmployee(newEmployeeNameTxt.getText(), newEmployeeSurnameTxt.getText(), newEmployeeIdTxt.getText(), null);
-  				Alert alert = new Alert(AlertType.INFORMATION);
-  	  	    	alert.setTitle("Empleado Creado");
-  	  	    	alert.setHeaderText(null);
-  	  	    	alert.setContentText("El empleado ha sido creado exitosamente.");
-  	  	    	alert.showAndWait();
-  	  			initializeEmployeeTableView ();
+  				if(restaurant.addEmployee(newEmployeeNameTxt.getText(), newEmployeeSurnameTxt.getText(), newEmployeeIdTxt.getText(), null)) {
+  					Alert alert = new Alert(AlertType.INFORMATION);
+	  	  	    	alert.setTitle("Empleado Creado");
+	  	  	    	alert.setHeaderText(null);
+	  	  	    	alert.setContentText("El empleado ha sido creado exitosamente.");
+	  	  	    	alert.showAndWait();
+	  	  			initializeEmployeeTableView ();
 
+  				}else {
+  					Alert alert = new Alert(AlertType.ERROR);
+  		  	    	alert.setTitle("Error al crear");
+  		  	    	alert.setHeaderText(null);
+  		  	    	alert.setContentText("El usuario que intenta crear ya existe");
+  		  	    	alert.showAndWait();
+  				}
+	  				
   			} catch (IOException e) {
   				// TODO Auto-generated catch block
   				e.printStackTrace();
@@ -810,7 +831,14 @@ public class UsersGUI {
      }
      @FXML
      void deleteEmployeeItem(ActionEvent event) {
-
+    	 Employee thisEmployee = tvAdminEmployees.getSelectionModel().getSelectedItem();
+    	 
+    	 try {
+			restaurant.deleteEmployee(thisEmployee);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
      }
 
      @FXML
@@ -884,13 +912,19 @@ public class UsersGUI {
   	    	alert.setContentText("Por favor, rellene todos los campos para poder actualizar un empleado");
   	    	alert.showAndWait();
       	}else {
-      		int index = restaurant.getEmployees().indexOf(thisEmployee);
-      		restaurant.getEmployees().get(index).setName(employeeNameTxt.getText());
-      		restaurant.getEmployees().get(index).setSurname(employeeSurnameTxt.getText());
-      		restaurant.getEmployees().get(index).setId(employeeIdTxt.getText());
+      		//TODO check this fucking method
+      		try {
+				restaurant.updateEmployee(thisEmployee, employeeNameTxt.getText(), employeeSurnameTxt.getText(), employeeIdTxt.getText());
+				initializeEmployeeTableView();
+      		
+      		} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+      		
   			
       	} 
-		initializeEmployeeTableView ();
+		
 
      }
 
