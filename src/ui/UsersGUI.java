@@ -96,7 +96,7 @@ public class UsersGUI {
     private PasswordField newHiddenPasswordTxt;
 
     @FXML
-    private PasswordField newPasswordTxt;
+    private TextField newPasswordTxt;
 
     @FXML
     private CheckBox chkbNewAdminShowPassword;
@@ -280,7 +280,7 @@ public class UsersGUI {
     private Restaurant restaurant;
     
     public UsersGUI() {
-    	initializeAdminTableView ();
+    	
     }
     
      public void injectAdminGUI(Restaurant restaurant) {
