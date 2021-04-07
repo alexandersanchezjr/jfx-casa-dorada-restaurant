@@ -316,10 +316,11 @@ public class Restaurant {
 	}
 	
 	public void updateEmployee(Employee e, String name, String surname, String id) throws IOException {
-		e.setName(name);
-		e.setSurname(surname);
-		e.setId(id);
-		e.setModifier(loggedUser);
+		int index = employees.indexOf(e);
+		employees.get(index).setName(name);
+		employees.get(index).setSurname(surname);
+		employees.get(index).setId(id);
+		employees.get(index).setModifier(loggedUser);
 		saveRestaurantData();
 
 	}
