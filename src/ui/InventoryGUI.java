@@ -23,6 +23,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
@@ -214,6 +215,41 @@ public class InventoryGUI {
 
     @FXML
     private TextField typeExportSeparator;
+    
+    //ingredients_pane.fxml attributes
+    
+    @FXML
+    private AnchorPane ingredientsPane;
+
+    @FXML
+    private Label labIngredientId;
+
+    @FXML
+    private TextField ingredientNameTxt;
+
+    @FXML
+    private ToggleButton tbIngredientAvailability;
+
+    @FXML
+    private ToggleGroup availability;
+
+    @FXML
+    private TextField newIngredientName;
+
+    @FXML
+    private ToggleButton tbNewIngredientAvailability;
+
+    @FXML
+    private ToggleGroup availability1;
+
+    @FXML
+    private TextField ingredientsImportSeparatorTxt;
+
+    @FXML
+    private TextField ingredientsExportSeparatorTxt;
+
+    @FXML
+    private TableView<?> tvIngredientsPane;
 
 	private Restaurant restaurant;
     
@@ -485,6 +521,38 @@ public class InventoryGUI {
 
     @FXML
     public void updateType(ActionEvent event) {
+
+    }
+    
+    //Ingredients ActionEvent methods
+    
+    @FXML
+    void changeIngredientAvailability(ActionEvent event) {
+
+    }
+
+    @FXML
+    void changeNewIngredientAvailability(ActionEvent event) {
+
+    }
+
+    @FXML
+    void createNewIngredient(ActionEvent event) {
+
+    }
+
+    @FXML
+    void exportIngredientsList(ActionEvent event) {
+
+    }
+
+    @FXML
+    void importIngredientsList(ActionEvent event) {
+
+    }
+
+    @FXML
+    void updateIngredient(ActionEvent event) {
 
     }
     
