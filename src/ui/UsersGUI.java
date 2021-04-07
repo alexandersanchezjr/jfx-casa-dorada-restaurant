@@ -777,10 +777,15 @@ public class UsersGUI {
      		thisEmployee.setAvailability(false);
      	}
      }
+     
+     @FXML
+     void cleanEmployeeList(ActionEvent event) {
+
+     }
 
      @FXML
      void createEmployee(ActionEvent event) {
-    	 if(employeeNameTxt.getText().isEmpty() || employeeSurnameTxt.getText().isEmpty() || employeeIdTxt.getText().isEmpty() ) {
+    	 if(newEmployeeNameTxt.getText().isEmpty() || newEmployeeSurnameTxt.getText().isEmpty() || newEmployeeIdTxt.getText().isEmpty() ) {
       		Alert alert = new Alert(AlertType.ERROR);
   	    	alert.setTitle("Campos Vacíos");
   	    	alert.setHeaderText(null);
@@ -788,7 +793,12 @@ public class UsersGUI {
   	    	alert.showAndWait();
       	}else {
   			try {
-  				restaurant.addEmployee(employeeNameTxt.getText(), employeeSurnameTxt.getText(), employeeIdTxt.getText(), null);
+  				restaurant.addEmployee(newEmployeeNameTxt.getText(), newEmployeeSurnameTxt.getText(), newEmployeeIdTxt.getText(), null);
+  				Alert alert = new Alert(AlertType.INFORMATION);
+  	  	    	alert.setTitle("Empleado Creado");
+  	  	    	alert.setHeaderText(null);
+  	  	    	alert.setContentText("El empleado ha sido creado exitosamente.");
+  	  	    	alert.showAndWait();
   	  			initializeEmployeeTableView ();
 
   			} catch (IOException e) {
@@ -797,6 +807,10 @@ public class UsersGUI {
   			}
       	}
   		
+     }
+     @FXML
+     void deleteEmployeeItem(ActionEvent event) {
+
      }
 
      @FXML
@@ -842,6 +856,21 @@ public class UsersGUI {
  			}
          }
      }
+     
+     @FXML
+     void selectEmployeeItem(MouseEvent event) {
+    	Employee thisEmployee = tvAdminEmployees.getSelectionModel().getSelectedItem();
+    	
+    	if(thisEmployee.isAvailability())
+    		tbEmployeeAvailability.setText("HABILITADO");
+    	else
+    		tbEmployeeAvailability.setText("DESHABILITADO");
+     	
+    	employeeNameTxt.setText(thisEmployee.getName());
+    	employeeSurnameTxt.setText(thisEmployee.getSurname());
+     	employeeIdTxt.setText(thisEmployee.getId());
+     	  	 
+     }
 
      @FXML
      void updateEmployeeBasicInfo(ActionEvent event) {
@@ -855,11 +884,14 @@ public class UsersGUI {
   	    	alert.setContentText("Por favor, rellene todos los campos para poder actualizar un empleado");
   	    	alert.showAndWait();
       	}else {
-  			thisEmployee.setName(employeeNameTxt.getText());
-  			thisEmployee.setSurname(employeeSurnameTxt.getText());
-  			thisEmployee.setId(employeeIdTxt.getText());
-  			initializeEmployeeTableView ();
+      		int index = restaurant.getEmployees().indexOf(thisEmployee);
+      		restaurant.getEmployees().get(index).setName(employeeNameTxt.getText());
+      		restaurant.getEmployees().get(index).setSurname(employeeSurnameTxt.getText());
+      		restaurant.getEmployees().get(index).setId(employeeIdTxt.getText());
+  			
       	} 
+		initializeEmployeeTableView ();
+
      }
 
     
