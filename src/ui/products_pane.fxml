@@ -232,7 +232,7 @@
                <font>
                   <Font name="Gill Sans MT" size="20.0" />
                </font></Label>
-            <TextField fx:id="productNameTxt" editable="false" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="169.0" text="Pollo" GridPane.rowIndex="1">
+            <TextField fx:id="productNameTxt" editable="false" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="169.0" promptText="Nombre de producto" GridPane.rowIndex="1">
                <font>
                   <Font name="Gill Sans MT" size="16.0" />
                </font></TextField>
