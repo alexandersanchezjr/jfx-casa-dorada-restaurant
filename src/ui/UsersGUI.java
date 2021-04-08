@@ -833,11 +833,17 @@ public class UsersGUI {
   		
      }
      @FXML
-     void deleteEmployeeItem(ActionEvent event) {
+     void deleteEmployeeItem(ActionEvent event) {	//TODO 
     	 Employee thisEmployee = tvAdminEmployees.getSelectionModel().getSelectedItem();
     	 
     	 try {
 			restaurant.deleteEmployee(thisEmployee);
+			Alert alert = new Alert(AlertType.INFORMATION);
+  	    	alert.setTitle("Empleado Eliminado");
+  	    	alert.setHeaderText(null);
+  	    	alert.setContentText("El empleado ha sido eliminado exitosamente.");
+  	    	alert.showAndWait();
+  	    	initializeEmployeeTableView();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -881,6 +887,7 @@ public class UsersGUI {
          if (file != null) {
          	try {
  				restaurant.importEmployees(file.getAbsolutePath(), employeeImportSeparatorTxt.getText());
+ 				initializeEmployeeTableView();
  			} catch (IOException e) {
  				// TODO Auto-generated catch block
  				e.printStackTrace();
@@ -892,20 +899,27 @@ public class UsersGUI {
      void selectEmployeeItem(MouseEvent event) {
     	Employee thisEmployee = tvAdminEmployees.getSelectionModel().getSelectedItem();
     	
-    	tbEmployeeAvailability.setDisable(false);
-    	employeeNameTxt.setDisable(false);
-    	employeeSurnameTxt.setDisable(false);
-    	employeeIdTxt.setDisable(false);
-    	updateEmployeeButton.setDisable(false);
+    	if (thisEmployee != null) {
+    		tbEmployeeAvailability.setDisable(false);
+        	employeeNameTxt.setDisable(false);
+        	employeeSurnameTxt.setDisable(false);
+        	employeeIdTxt.setDisable(false);
+        	updateEmployeeButton.setDisable(false);
+        	
+        	if(thisEmployee.isAvailability()) {
+        		tbEmployeeAvailability.setText("HABILITADO");
+        		tbEmployeeAvailability.setSelected(true);
+        	}else {
+        		tbEmployeeAvailability.setText("DESHABILITADO");
+        		tbEmployeeAvailability.setSelected(false);
+        	}
+        		
+         	
+        	employeeNameTxt.setText(thisEmployee.getName());
+        	employeeSurnameTxt.setText(thisEmployee.getSurname());
+         	employeeIdTxt.setText(thisEmployee.getId());
+    	}
     	
-    	if(thisEmployee.isAvailability())
-    		tbEmployeeAvailability.setText("HABILITADO");
-    	else
-    		tbEmployeeAvailability.setText("DESHABILITADO");
-     	
-    	employeeNameTxt.setText(thisEmployee.getName());
-    	employeeSurnameTxt.setText(thisEmployee.getSurname());
-     	employeeIdTxt.setText(thisEmployee.getId());
      	  	 
      }
 
@@ -946,7 +960,6 @@ public class UsersGUI {
     				e.printStackTrace();
     			}
       		}
-      		//TODO check this fucking method			
       	}	
      }
 
