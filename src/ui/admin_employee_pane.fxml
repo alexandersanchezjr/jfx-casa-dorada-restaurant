@@ -58,28 +58,23 @@
                   <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label fx:id="labEmployeeId" maxWidth="1.7976931348623157E308" text="#107373">
-                     <font>
-                        <Font name="Gill Sans MT" size="20.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="employeeNameTxt" promptText="Nombre" text="Alexander " GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                  <TextField fx:id="employeeNameTxt" disable="true" promptText="Nombre" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                      <font>
                         <Font name="Gill Sans MT" size="16.0" />
                      </font></TextField>
-                  <TextField fx:id="employeeSurnameTxt" promptText="Apellido" text="Sánchez" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                  <TextField fx:id="employeeSurnameTxt" disable="true" promptText="Apellido" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                      <font>
                         <Font name="Gill Sans MT" size="16.0" />
                      </font></TextField>
-                  <TextField fx:id="employeeIdTxt" layoutX="10.0" layoutY="33.0" promptText="Identificación" text="1006307963" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                  <TextField fx:id="employeeIdTxt" disable="true" layoutX="10.0" layoutY="33.0" promptText="Identificación" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                      <font>
                         <Font name="Gill Sans MT" size="16.0" />
                      </font></TextField>
-                  <Button mnemonicParsing="false" onAction="#updateEmployeeBasicInfo" text="Actualizar" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                  <Button disable="true" mnemonicParsing="false" onAction="#updateEmployeeBasicInfo" text="Actualizar" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                      <font>
                         <Font name="Gill Sans MT" size="16.0" />
                      </font></Button>
-                  <ToggleButton fx:id="tbEmployeeAvailability" mnemonicParsing="false" onAction="#changeEmployeeAvailability" text="Habilitado" GridPane.columnIndex="1">
+                  <ToggleButton fx:id="tbEmployeeAvailability" disable="true" mnemonicParsing="false" onAction="#changeEmployeeAvailability" text="Disponibilidad" GridPane.columnIndex="1">
                      <font>
                         <Font name="Gill Sans MT" size="16.0" />
                      </font>
@@ -143,7 +138,7 @@
             <Font name="Gill Sans MT Bold" size="30.0" />
          </font>
       </Label>
-      <VBox layoutY="485.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+      <VBox layoutY="471.0" spacing="10.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="0.0">
          <children>
             <Separator prefHeight="0.0" prefWidth="162.0" />
             <Label text="Escribe tu separador:">
