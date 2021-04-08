@@ -609,13 +609,20 @@ public class UsersGUI {
  	    	alert.setHeaderText(null);
  	    	alert.setContentText("Por favor, rellene todos los campos para poder actualizar un cliente");
  	    	alert.showAndWait();
-     	}else {
+     	}else if (thisCustomer == null) {
+  			Alert alert = new Alert(AlertType.ERROR);
+  	    	alert.setTitle("Error al actualizar");
+  	    	alert.setHeaderText(null);
+  	    	alert.setContentText("Por favor, seleccione un cliente");
+  	    	alert.showAndWait();
+  		}else {
      		
- 			thisCustomer.setName(clientNameTxt.getText());
- 			thisCustomer.setSurname(clientSurnameTxt.getText());
- 			thisCustomer.setId(clientIdTxt.getText());
- 			thisCustomer.setAddress(clientAddressTxt.getText());
- 			thisCustomer.setPhoneNumber(clientPhoneTxt.getText());
+ 			try {
+				restaurant.updateCustomer(thisCustomer, clientNameTxt.getText(), clientSurnameTxt.getText(), clientIdTxt.getText(), clientAddressTxt.getText(), clientPhoneTxt.getText(), labClientComments.getText());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
  			initializeClientTableView();
      			
      	}
@@ -710,7 +717,7 @@ public class UsersGUI {
      		}
      		
      	}
-    	 initializeCustomerTableView ();
+    	 initializeOperatorsTableView ();
      }
 
      @FXML
@@ -760,7 +767,7 @@ public class UsersGUI {
      			thisOperator.setId(operatorIdTxt.getText());
      			thisOperator.setUsername(operatorUsernameTxt.getText());
      			thisOperator.setPassword(operatorHiddenPasswordTxt.getText());
-     			initializeCustomerTableView();
+     			initializeOperatorsTableView();
      		}
      			
      	}    	 
