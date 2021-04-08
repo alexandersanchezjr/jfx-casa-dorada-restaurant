@@ -578,11 +578,22 @@ public class UsersGUI {
     void showClientInfo(MouseEvent event) {
     	Customer thisCustomer = tvClients.getSelectionModel().getSelectedItem();
     	
-    	clientNameTxt.setText(thisCustomer.getName());
-    	clientSurnameTxt.setText(thisCustomer.getSurname());
-    	clientIdTxt.setText(thisCustomer.getId());
-    	clientAddressTxt.setText(thisCustomer.getAddress());
-    	clientPhoneTxt.setText(thisCustomer.getPhoneNumber());
+    	if (thisCustomer != null) {
+    		clientNameTxt.setDisable(false);
+    		clientNameTxt.setText(thisCustomer.getName());
+   		
+    		clientSurnameTxt.setDisable(false);
+    		clientSurnameTxt.setText(thisCustomer.getSurname());
+
+    		clientIdTxt.setDisable(false);
+    		clientIdTxt.setText(thisCustomer.getId());
+
+    		clientAddressTxt.setDisable(false);
+    		clientAddressTxt.setText(thisCustomer.getAddress());
+
+    		clientPhoneTxt.setDisable(false);
+    		clientPhoneTxt.setText(thisCustomer.getPhoneNumber());
+    	}
     	
     	
     }
@@ -612,7 +623,7 @@ public class UsersGUI {
      
      //OPERATOR METHODS
      
-     public void initializeCustomerTableView () {
+     public void initializeOperatorsTableView () {
     	 
     	 ObservableList<User> observableList = FXCollections.observableArrayList(restaurant.getOperatorsUsers());
     	 tvOperatorsList.setItems(observableList);
