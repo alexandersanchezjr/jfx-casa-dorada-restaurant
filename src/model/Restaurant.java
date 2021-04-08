@@ -726,6 +726,8 @@ public class Restaurant {
 			line = br.readLine();
 		}
 		br.close();
+		saveRestaurantData();
+
 	}
 	
 	public void exportCustomers (String fileName, String separator) throws FileNotFoundException {
@@ -744,23 +746,27 @@ public class Restaurant {
 	public void importEmployees(String fileName, String separator) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(fileName));
 		String line = br.readLine();
-		while(line!=null) {
+		while(line!=null ) {
 			String[] parts = line.split(separator);
-			String name = parts[0];
-			String surname = parts[1];
-			String id = parts[2];
-			int ordersCont = Integer.parseInt(parts[3]);
-			int totalSum = Integer.parseInt(parts[4]);
-			employees.add(new Employee(name, surname, id, loggedUser));
-			for(int i = 0; i<employees.size(); i++) {
-				if(employees.get(i).getId().equals(id)) {
-					employees.get(i).setOrdersCont(ordersCont);
-					employees.get(i).addOrderValue(totalSum);
+			if (parts.length > 2) {
+				String name = parts[0];
+				String surname = parts[1];
+				String id = parts[2];
+				int ordersCont = Integer.parseInt(parts[3]);
+				int totalSum = Integer.parseInt(parts[4]);
+				employees.add(new Employee(name, surname, id, loggedUser));
+				for(int i = 0; i<employees.size(); i++) {
+					if(employees.get(i).getId().equals(id)) {
+						employees.get(i).setOrdersCont(ordersCont);
+						employees.get(i).addOrderValue(totalSum);
+					}
 				}
 			}
+			
 			line = br.readLine();
 		}
 		br.close();
+		saveRestaurantData();
 	}
 	
 	//IMPORT ADMINS
@@ -785,6 +791,8 @@ public class Restaurant {
 			ingredients.add(new Ingredient(name, availability, id, admins.get(indexUser)));
 		}
 		br.close();
+		saveRestaurantData();
+
 	}
 	
 	//IMPORT PRODUCTS
@@ -822,6 +830,8 @@ public class Restaurant {
 			line = br.readLine();
 		}
 		br.close();
+		saveRestaurantData();
+
 	}
 	
 	//IMPORT ORDERS
@@ -871,6 +881,8 @@ public class Restaurant {
 			line = br.readLine();
 		}
 		br.close();
+		saveRestaurantData();
+
 	}
 	//EXPORT PRODUCTS
 	public void exportProduct (String fileName, String separator) throws FileNotFoundException {
@@ -886,18 +898,21 @@ public class Restaurant {
 	public void exportEmployees(String fileName, String separator) throws FileNotFoundException{
 	    PrintWriter pw = new PrintWriter(fileName);
 	    int total = 0;
+	    int totalOrderNumber = 0;
 	    for(int i = 0; i<employees.size(); i++) {
 	      Employee thisEmployee = employees.get(i);
 	      int ordersTotal = 0;
+	      
 	      for(int j = 0; j<orders.size(); j++) {
 	    	  if(orders.get(i).getEmployee().equals(thisEmployee)) {
 	    		  ordersTotal += orders.get(i).getTotal();
 	    		  total += ordersTotal;
+	    		  totalOrderNumber++;
 	    	  }
 	      }
 	      pw.println(thisEmployee.getName()+separator+thisEmployee.getSurname()+separator+thisEmployee.getId()+separator+thisEmployee.getOrdersCont()+separator+ordersTotal + thisEmployee.getTotalSum());
 	    }
-	    pw.println(total);
+	    pw.println(total + separator + totalOrderNumber);
 	    pw.close();
 	}
 
