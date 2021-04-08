@@ -74,7 +74,7 @@
                      <font>
                         <Font name="Gill Sans MT" size="16.0" />
                      </font></Button>
-                  <ToggleButton fx:id="tbEmployeeAvailability" disable="true" mnemonicParsing="false" onAction="#changeEmployeeAvailability" text="Disponibilidad" GridPane.columnIndex="1">
+                  <ToggleButton fx:id="tbEmployeeAvailability" disable="true" mnemonicParsing="false" onAction="#changeEmployeeAvailability" selected="true" text="Disponibilidad" GridPane.columnIndex="1">
                      <font>
                         <Font name="Gill Sans MT" size="16.0" />
                      </font>
@@ -100,17 +100,17 @@
                         <Font name="Gill Sans MT Bold" size="20.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="newEmployeeNameTxt" promptText="Nombre" text="Alexander " GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                  <TextField fx:id="newEmployeeNameTxt" promptText="Nombre" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                      <font>
                         <Font name="Gill Sans MT" size="16.0" />
                      </font>
                   </TextField>
-                  <TextField fx:id="newEmployeeSurnameTxt" promptText="Apellido" text="Sánchez" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                  <TextField fx:id="newEmployeeSurnameTxt" promptText="Apellido" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                      <font>
                         <Font name="Gill Sans MT" size="16.0" />
                      </font>
                   </TextField>
-                  <TextField fx:id="newEmployeeIdTxt" layoutX="10.0" layoutY="33.0" promptText="Identificación" text="1006307963" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                  <TextField fx:id="newEmployeeIdTxt" layoutX="10.0" layoutY="33.0" promptText="Identificación" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                      <font>
                         <Font name="Gill Sans MT" size="16.0" />
                      </font>
