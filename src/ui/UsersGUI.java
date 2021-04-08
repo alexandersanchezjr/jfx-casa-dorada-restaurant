@@ -783,20 +783,35 @@ public class UsersGUI {
      
      @FXML
      void cleanEmployeeList(ActionEvent event) {
-    	 TextInputDialog dialog = new TextInputDialog();
-    	 dialog.setTitle("Confirmar borrado de datos");
-    	 dialog.setHeaderText("Por favor, escriba 'SI' si desea limpiar la lista de empleados ");
+		 TextInputDialog dialog = new TextInputDialog();
+		 dialog.setTitle("Confirmar borrado de datos");
+		 dialog.setHeaderText("Por favor, escriba 'SI' si desea limpiar la lista de empleados ");
 		
-    	 // Traditional way to get the response value.
-    	 String input = "";
-    	 Optional<String> result = dialog.showAndWait();
-    	 if (result.isPresent()){
-		   input = result.get();
-    	 }
-    	 if (input.equals("SI")) {
-    		 restaurant.getEmployees().clear();
-    		 initializeEmployeeTableView();
-    	 }
+		 // Traditional way to get the response value.
+		 String input = "";
+		 Optional<String> result = dialog.showAndWait();
+		 if (result.isPresent()){
+			 input = result.get();
+		 }
+		 if (input.equals("SI")) {
+			restaurant.getEmployees().clear();
+			try {
+				restaurant.saveRestaurantData();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			initializeEmployeeTableView();
+			tbEmployeeAvailability.setDisable(true);
+			employeeNameTxt.setDisable(true);
+	    	employeeSurnameTxt.setDisable(true);
+	    	employeeIdTxt.setDisable(true);
+	    	updateEmployeeButton.setDisable(true);
+	    	tbEmployeeAvailability.setText("Disponibilidad");
+  	    	employeeNameTxt.setText(null);
+  	    	employeeSurnameTxt.setText(null);
+  	    	employeeIdTxt.setText(null);
+		 }
      }
 
      @FXML
@@ -844,6 +859,16 @@ public class UsersGUI {
   	    	alert.setContentText("El empleado ha sido eliminado exitosamente.");
   	    	alert.showAndWait();
   	    	initializeEmployeeTableView();
+  	    	tbEmployeeAvailability.setDisable(true);
+  	    	employeeNameTxt.setDisable(true);
+  	    	employeeSurnameTxt.setDisable(true);
+  	    	employeeIdTxt.setDisable(true);
+  	    	updateEmployeeButton.setDisable(true);
+  	    	tbEmployeeAvailability.setText("Disponibilidad");
+  	    	employeeNameTxt.setText(null);
+  	    	employeeSurnameTxt.setText(null);
+  	    	employeeIdTxt.setText(null);
+  	    
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
