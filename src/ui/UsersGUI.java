@@ -3,7 +3,6 @@ package ui;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Optional;
 
 import javafx.collections.FXCollections;
@@ -889,6 +888,11 @@ public class UsersGUI {
      void selectEmployeeItem(MouseEvent event) {
     	Employee thisEmployee = tvAdminEmployees.getSelectionModel().getSelectedItem();
     	
+    	tbEmployeeAvailability.setDisable(false);
+    	employeeNameTxt.setDisable(false);
+    	employeeSurnameTxt.setDisable(false);
+    	employeeIdTxt.setDisable(false);
+    	
     	if(thisEmployee.isAvailability())
     		tbEmployeeAvailability.setText("HABILITADO");
     	else
@@ -902,8 +906,7 @@ public class UsersGUI {
 
      @FXML
      void updateEmployeeBasicInfo(ActionEvent event) {
-    	 Employee thisEmployee = tvAdminEmployees.getSelectionModel().getSelectedItem();
-
+    	Employee thisEmployee = tvAdminEmployees.getSelectionModel().getSelectedItem();
  		
       	if(employeeNameTxt.getText().isEmpty() || employeeSurnameTxt.getText().isEmpty() || employeeIdTxt.getText().isEmpty()) {
       		Alert alert = new Alert(AlertType.ERROR);
@@ -912,20 +915,33 @@ public class UsersGUI {
   	    	alert.setContentText("Por favor, rellene todos los campos para poder actualizar un empleado");
   	    	alert.showAndWait();
       	}else {
-      		//TODO check this fucking method
-      		try {
-				restaurant.updateEmployee(thisEmployee, employeeNameTxt.getText(), employeeSurnameTxt.getText(), employeeIdTxt.getText());
-				initializeEmployeeTableView();
-      		
-      		} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-      		
-  			
-      	} 
-		
-
+      		if (thisEmployee == null) {
+      			Alert alert = new Alert(AlertType.ERROR);
+	  	    	alert.setTitle("Error al actualizar");
+	  	    	alert.setHeaderText(null);
+	  	    	alert.setContentText("Por favor, seleccione un empleado");
+	  	    	alert.showAndWait();
+      		}else {
+      			try {
+    				restaurant.updateEmployee(thisEmployee, employeeNameTxt.getText(), employeeSurnameTxt.getText(), employeeIdTxt.getText());
+    				Alert alert = new Alert(AlertType.INFORMATION);
+	  	  	    	alert.setTitle("Empleado Actualizado");
+	  	  	    	alert.setHeaderText(null);
+	  	  	    	alert.setContentText("El empleado ha sido actualizado exitosamente.");
+	  	  	    	alert.showAndWait();
+	  	  	    	tvAdminEmployees.refresh();
+		  	  	    tbEmployeeAvailability.setDisable(true);
+		  	    	employeeNameTxt.setDisable(true);
+		  	    	employeeSurnameTxt.setDisable(true);
+		  	    	employeeIdTxt.setDisable(true);
+      			
+      			} catch (IOException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			}
+      		}
+      		//TODO check this fucking method			
+      	}	
      }
 
     
