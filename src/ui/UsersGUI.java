@@ -20,6 +20,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -252,6 +253,9 @@ public class UsersGUI {
 
     @FXML
     private TextField employeeIdTxt;
+
+    @FXML
+    private Button updateEmployeeButton;
 
     @FXML
     private ToggleButton tbEmployeeAvailability;
@@ -892,6 +896,7 @@ public class UsersGUI {
     	employeeNameTxt.setDisable(false);
     	employeeSurnameTxt.setDisable(false);
     	employeeIdTxt.setDisable(false);
+    	updateEmployeeButton.setDisable(false);
     	
     	if(thisEmployee.isAvailability())
     		tbEmployeeAvailability.setText("HABILITADO");
@@ -934,6 +939,7 @@ public class UsersGUI {
 		  	    	employeeNameTxt.setDisable(true);
 		  	    	employeeSurnameTxt.setDisable(true);
 		  	    	employeeIdTxt.setDisable(true);
+		  	    	updateEmployeeButton.setDisable(true);
       			
       			} catch (IOException e) {
     				// TODO Auto-generated catch block
