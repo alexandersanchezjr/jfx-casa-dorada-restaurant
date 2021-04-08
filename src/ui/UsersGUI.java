@@ -150,6 +150,9 @@ public class UsersGUI {
 
     @FXML
     private Label labClientComments;
+   
+    @FXML
+    private Button updateClientButton;
 
     @FXML
     private TextField importClientSeparatorTxt;
@@ -515,15 +518,59 @@ public class UsersGUI {
     	}
     	if (input.equals("SI")) {
     		restaurant.getCustomers().clear();
+    		try {
+				restaurant.saveRestaurantData();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    		initializeClientTableView();
+  	    	clientNameTxt.setDisable(true);
+    		clientNameTxt.setText(null);
+   		
+    		clientSurnameTxt.setDisable(true);
+    		clientSurnameTxt.setText(null);
+
+    		clientIdTxt.setDisable(true);
+    		clientIdTxt.setText(null);
+
+    		clientAddressTxt.setDisable(true);
+    		clientAddressTxt.setText(null);
+
+    		clientPhoneTxt.setDisable(true);
+    		clientPhoneTxt.setText(null);
     	}
     }
 
     @FXML
     void deleteClient(ActionEvent event) {
-    	User thisAdmin = tvAdmins.getSelectionModel().getSelectedItem();
+    	Customer thisCustomer = tvClients.getSelectionModel().getSelectedItem();
     	
     	try {
-			restaurant.deletedAdminUser(thisAdmin);
+			restaurant.deleteCustomer(thisCustomer);
+			Alert alert = new Alert(AlertType.INFORMATION);
+  	    	alert.setTitle("Cliente Eliminado");
+  	    	alert.setHeaderText(null);
+  	    	alert.setContentText("El cliente ha sido eliminado exitosamente.");
+  	    	alert.showAndWait();
+  	    	initializeClientTableView();
+  	    	clientNameTxt.setDisable(true);
+    		clientNameTxt.setText(null);
+   		
+    		clientSurnameTxt.setDisable(true);
+    		clientSurnameTxt.setText(null);
+
+    		clientIdTxt.setDisable(true);
+    		clientIdTxt.setText(null);
+
+    		clientAddressTxt.setDisable(true);
+    		clientAddressTxt.setText(null);
+
+    		clientPhoneTxt.setDisable(true);
+    		clientPhoneTxt.setText(null);
+    		
+    		labClientComments.setText(null);
+    	    updateClientButton.setDisable(true);;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -593,6 +640,8 @@ public class UsersGUI {
 
     		clientPhoneTxt.setDisable(false);
     		clientPhoneTxt.setText(thisCustomer.getPhoneNumber());
+    		
+    		labClientComments.setText(thisCustomer.getComments());
     	}
     	
     	
