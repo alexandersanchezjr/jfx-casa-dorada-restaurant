@@ -9,14 +9,19 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Restaurant {
+public class Restaurant implements Serializable{
 	//Constants to Serialization
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public final static String EMPLOYEE_FILE_NAME = "data/employees.cdr";
 	public final static String OPERATORS_USERS_FILE_NAME = "data/operators.cdr";
 	public final static String ADMINS_USERS_FILE_NAME = "data/admins.cdr";
@@ -195,7 +200,6 @@ public class Restaurant {
 		Product newProduct = new Product(name,(identifier++), ingredients, selectedType, typeAvailability, typeCreator, loggedUser);
 		if(!products.contains(newProduct)) {	
 			added = products.add(newProduct);
-			saveRestaurantData();
 
 		}
 		return added;
@@ -207,7 +211,6 @@ public class Restaurant {
 		p.setType(selectedType);
 		p.setModifier(loggedUser);
 		p.setIngredients(ingredients);
-		saveRestaurantData();
 
 	}
 	
@@ -223,7 +226,6 @@ public class Restaurant {
 		}
 		if(found == false) {
 			deleted = products.remove(p);
-			saveRestaurantData();
 
 		}
 		return deleted;
@@ -234,7 +236,6 @@ public class Restaurant {
 		if(p.isAvailability()) {
 			p.setAvailability(false);
 			disabled = true;
-			saveRestaurantData();
 
 		}
 		return disabled;
@@ -245,7 +246,6 @@ public class Restaurant {
 		if(!p.isAvailability()) {
 			p.setAvailability(true);
 			disabled = true;
-			saveRestaurantData();
 
 		}
 		return disabled;
@@ -258,7 +258,6 @@ public class Restaurant {
 		Type thisType = new Type(name, availability, loggedUser);
 		if(!types.contains(thisType)) {
 			added = types.add(thisType);
-			saveRestaurantData();
 
 		}
 		return added;
@@ -274,7 +273,6 @@ public class Restaurant {
 		}
 		if(found == false) {
 			deleted = types.remove(t);
-			saveRestaurantData();
 
 		}
 		return deleted;
@@ -285,7 +283,6 @@ public class Restaurant {
 		if(t.isAvailability()) {
 			t.setAvailability(false);
 			disabled = true;
-			saveRestaurantData();
 
 		}
 		return disabled;
@@ -296,7 +293,6 @@ public class Restaurant {
 		if(!t.isAvailability()) {
 			t.setAvailability(true);
 			disabled = true;
-			saveRestaurantData();
 
 		}
 		return disabled;
@@ -309,7 +305,6 @@ public class Restaurant {
 		Employee thisEmployee = new Employee(name, surname,id, loggedUser);
 		if(!employees.contains(thisEmployee)) {
 			added = employees.add(thisEmployee);
-			saveRestaurantData();
 
 		}
 		return added;
@@ -321,7 +316,6 @@ public class Restaurant {
 		employees.get(index).setSurname(surname);
 		employees.get(index).setId(id);
 		employees.get(index).setModifier(loggedUser);
-		saveRestaurantData();
 
 	}
 	
@@ -335,7 +329,6 @@ public class Restaurant {
 		}
 		if(found == false) {
 			deleted = employees.remove(e);
-			saveRestaurantData();
 
 		}
 		return deleted;
@@ -346,7 +339,6 @@ public class Restaurant {
 		if(!e.isAvailability()) {
 			e.setAvailability(true);
 			disabled = true;
-			saveRestaurantData();
 
 		}
 		return disabled;
@@ -357,7 +349,6 @@ public class Restaurant {
 		if(e.isAvailability()) {
 			e.setAvailability(false);
 			disabled = true;
-			saveRestaurantData();
 
 		}
 		return disabled;
@@ -370,7 +361,6 @@ public class Restaurant {
 		User thisUser = new User(name, surname, id, employeeCreator, username, password, loggedUser);
 		if(!operatorsUsers.contains(thisUser)) { // If contains() generate error, change with a normal search with a for loop
 			added = operatorsUsers.add(thisUser);
-			saveRestaurantData();
 
 		}
 		return added;
@@ -380,7 +370,6 @@ public class Restaurant {
 		u.setUsername(username);
 		u.setPassword(password);
 		u.setModifier(loggedUser);
-		saveRestaurantData();
 
 	}
 	
@@ -400,7 +389,6 @@ public class Restaurant {
 		if(found == false) {
 			deleted = operatorsUsers.remove(u);
 		}
-		saveRestaurantData();
 
 		return deleted;
 	}
@@ -410,7 +398,6 @@ public class Restaurant {
 		if(!u.isAvailability()) {
 			u.setAvailability(true);
 			disabled = true;
-			saveRestaurantData();
 
 		}
 		return disabled;
@@ -421,7 +408,6 @@ public class Restaurant {
 		if(u.isAvailability()) {
 			u.setAvailability(false);
 			disabled = true;
-			saveRestaurantData();
 
 		}
 		return disabled;
@@ -434,7 +420,6 @@ public class Restaurant {
 		User thisAdmin = new User(name, surname, id, employeeCreator, username, password, loggedUser);
 		if(!admins.contains(thisAdmin)) { // If contains() generate error, change with a normal search with a for loop
 			added = admins.add(thisAdmin);
-			saveRestaurantData();
 
 		}
 		return added;
@@ -470,7 +455,6 @@ public class Restaurant {
 		if(found == false) {
 			deleted = admins.remove(u);
 		}
-		saveRestaurantData();
 
 		return deleted;
 	}
@@ -482,7 +466,6 @@ public class Restaurant {
 		Ingredient thisIngredient = new Ingredient(name, availability, (identifier++), loggedUser);
 		if(!ingredients.contains(thisIngredient)) {	
 			added = ingredients.add(thisIngredient);
-			saveRestaurantData();
 
 		}
 		return added;
@@ -493,7 +476,6 @@ public class Restaurant {
 		for(int i = 0; i<products.size(); i++) {
 			if(!products.get(i).getIngredients().contains(ingredient)) {
 				deleted = ingredients.remove(ingredient);
-				saveRestaurantData();
 
 			}
 		}
@@ -503,7 +485,6 @@ public class Restaurant {
 	public void updateIngredient(Ingredient i, String name) throws IOException {
 		i.setName(name);
 		i.setModifier(loggedUser);
-		saveRestaurantData();
 
 	}
 	
@@ -512,7 +493,6 @@ public class Restaurant {
 		if(!ingredient.isAvailability()) {
 			ingredient.setAvailability(true);
 			enabled = true;
-			saveRestaurantData();
 
 		}
 		return enabled;
@@ -523,7 +503,6 @@ public class Restaurant {
 		if(ingredient.isAvailability()) {
 			ingredient.setAvailability(false);
 			disabled = true;
-			saveRestaurantData();
 		}
 		return disabled;
 	}
@@ -544,7 +523,6 @@ public class Restaurant {
 				
 			orders.get(orders.indexOf(newOrder)).getEmployee().addOrderValue(employeeValue);
 			
-			saveRestaurantData();
 
 		}
 		return added;
@@ -554,7 +532,6 @@ public class Restaurant {
 		boolean deleted = false;
 		if(o.getStatus().equalsIgnoreCase("CANCELADO")) {
 			deleted = orders.remove(o);
-			saveRestaurantData();
 
 		}
 		return deleted;
@@ -566,7 +543,6 @@ public class Restaurant {
 		o.setEmployee(e);
 		o.setComments(comments);
 		o.setModifier(loggedUser);
-		saveRestaurantData();
 
 	}
 	
@@ -576,7 +552,7 @@ public class Restaurant {
 		Customer thisCustomer = new Customer(name, surname, address, phoneNumber, comments, loggedUser);
 		thisCustomer.setId(id);
 		if(!customers.contains(thisCustomer)) {
-			for(int i = 0; i<customers.size(); i++) {
+			for(int i = 0; i<customers.size() && !added; i++) {
 				if((thisCustomer.getName().compareToIgnoreCase(customers.get(i).getName()) > 0) || thisCustomer.getName().compareToIgnoreCase(customers.get(i).getName()) == 0) {
 					customers.add(i, thisCustomer);
 					added = true;
@@ -588,7 +564,6 @@ public class Restaurant {
 			}
 			added = customers.add(thisCustomer);
 		}
-		saveRestaurantData();
 
 		return added;
 	}
@@ -598,7 +573,6 @@ public class Restaurant {
 		for(int i = 0; i<orders.size(); i++) {
 			if((!orders.get(i).getStatus().equalsIgnoreCase("CANCELADO")) && (!orders.get(i).getCustomer().equals(c))) {
 				deleted = customers.remove(c);
-				saveRestaurantData();
 
 			}
 		}
@@ -613,7 +587,6 @@ public class Restaurant {
 		c.setPhoneNumber(phoneNumber);
 		c.setComments(comments);
 		c.setModifier(loggedUser);
-		saveRestaurantData();
 	}
 	
 	public boolean enableCustomer(Customer c) throws IOException {
@@ -621,7 +594,6 @@ public class Restaurant {
 		if(!c.isAvailability()) {
 			c.setAvailability(true);
 			enabled = true;
-			saveRestaurantData();
 
 		}
 		return enabled;
@@ -632,82 +604,14 @@ public class Restaurant {
 		if(c.isAvailability()) {
 			c.setAvailability(false);
 			disabled = true;
-			saveRestaurantData();
 
 		}
 		return disabled;
 	}
 	
-	//Serialization 
+
 	
-	public void saveRestaurantData() throws IOException {
-		ObjectOutputStream oosE = new ObjectOutputStream(new FileOutputStream(EMPLOYEE_FILE_NAME));
-		oosE.writeObject(employees);
-		oosE.close();
-		
-		ObjectOutputStream oosO = new ObjectOutputStream(new FileOutputStream(OPERATORS_USERS_FILE_NAME));
-		oosO.writeObject(operatorsUsers);
-		oosO.close();
-		
-		ObjectOutputStream oosA = new ObjectOutputStream(new FileOutputStream(ADMINS_USERS_FILE_NAME));
-		oosA.writeObject(admins);
-		oosA.close();
-		
-		ObjectOutputStream oosC = new ObjectOutputStream(new FileOutputStream(CUSTOMERS_FILE_NAME));
-		oosC.writeObject(customers);
-		oosC.close();
-		
-		ObjectOutputStream oosOR = new ObjectOutputStream(new FileOutputStream(ORDERS_FILE_NAME));
-		oosOR.writeObject(orders);
-		oosOR.close();
-		
-		ObjectOutputStream oosP = new ObjectOutputStream(new FileOutputStream(PRODUCTS_FILE_NAME));
-		oosP.writeObject(products);
-		oosP.close();
-		
-		ObjectOutputStream oosT = new ObjectOutputStream(new FileOutputStream(TYPES_PRODUCTS_FILE_NAME));
-		oosT.writeObject(types);
-		oosT.close();
-		
-		ObjectOutputStream oosI = new ObjectOutputStream(new FileOutputStream(INGREDIENTS_FILE_NAME));
-		oosI.writeObject(ingredients);
-		oosI.close();
-	}
-	
-	@SuppressWarnings("unchecked")
-	public void loadRestaurantData() throws IOException, ClassNotFoundException {
-		ObjectInputStream oisE = new ObjectInputStream(new FileInputStream(EMPLOYEE_FILE_NAME));
-		employees = (ArrayList<Employee>)oisE.readObject();
-		oisE.close();
-		
-		ObjectInputStream oisO = new ObjectInputStream(new FileInputStream(OPERATORS_USERS_FILE_NAME));
-		operatorsUsers = (ArrayList<User>)oisO.readObject();
-		oisO.close();
-		
-		ObjectInputStream oisA = new ObjectInputStream(new FileInputStream(ADMINS_USERS_FILE_NAME));
-		admins = (ArrayList<User>)oisA.readObject();
-		oisA.close();
-		
-		ObjectInputStream oisC = new ObjectInputStream(new FileInputStream(CUSTOMERS_FILE_NAME));
-		customers = (ArrayList<Customer>)oisC.readObject();
-		oisC.close();
-		
-		ObjectInputStream oisOR = new ObjectInputStream(new FileInputStream(ORDERS_FILE_NAME));
-		orders = (ArrayList<Order>)oisOR.readObject();
-		oisOR.close();
-		
-		ObjectInputStream oisP = new ObjectInputStream(new FileInputStream(PRODUCTS_FILE_NAME));
-		products = (ArrayList<Product>)oisP.readObject();
-		oisP.close();
-		
-		ObjectInputStream oisT = new ObjectInputStream(new FileInputStream(TYPES_PRODUCTS_FILE_NAME));
-		types = (ArrayList<Type>)oisT.readObject();
-		oisT.close();
-		
-		ObjectInputStream oisI = new ObjectInputStream(new FileInputStream(INGREDIENTS_FILE_NAME));
-		ingredients = (ArrayList<Ingredient>)oisI.readObject();
-		oisI.close();
-	}
+
 	
 	//IMPORT CUSTOMERS
 	
@@ -726,7 +630,6 @@ public class Restaurant {
 			line = br.readLine();
 		}
 		br.close();
-		saveRestaurantData();
 
 	}
 	
@@ -766,7 +669,6 @@ public class Restaurant {
 			line = br.readLine();
 		}
 		br.close();
-		saveRestaurantData();
 	}
 	
 	//IMPORT ADMINS
@@ -791,7 +693,6 @@ public class Restaurant {
 			ingredients.add(new Ingredient(name, availability, id, admins.get(indexUser)));
 		}
 		br.close();
-		saveRestaurantData();
 
 	}
 	
@@ -830,7 +731,6 @@ public class Restaurant {
 			line = br.readLine();
 		}
 		br.close();
-		saveRestaurantData();
 
 	}
 	
@@ -881,7 +781,6 @@ public class Restaurant {
 			line = br.readLine();
 		}
 		br.close();
-		saveRestaurantData();
 
 	}
 	//EXPORT PRODUCTS
