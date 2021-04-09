@@ -1,6 +1,12 @@
 package model;
 
-public class Type {
+import java.io.Serializable;
+
+public class Type implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String name;
 	private boolean availability;
 	private User creator;
