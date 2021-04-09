@@ -38,7 +38,7 @@ public class AdminGUI {
     }
     
     public void initialize() {
-    	usersGUI.injectAdminGUI(restaurant);
+    	usersGUI.injectAdminGUI(restaurant, welcomeGUI);
     	inventoryGUI.injectAdminGUI(restaurant);
     }
     
