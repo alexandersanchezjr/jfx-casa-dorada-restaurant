@@ -1,6 +1,12 @@
 package ui;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
@@ -18,10 +24,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import model.Customer;
+import model.Employee;
+import model.Ingredient;
+import model.Order;
+import model.Product;
 import model.Restaurant;
+import model.Type;
 import model.User;
 
 public class WelcomeGUI {
+	
+	public final String RESTAURANT_FILE_NAME = "data/restaurant.cdr";
 	
 	@FXML
     private AnchorPane mainWelcomePane;
@@ -88,17 +102,12 @@ public class WelcomeGUI {
     
     public WelcomeGUI(Restaurant restaurant) {
     	this.restaurant = restaurant;
-    	try {
-			restaurant.loadRestaurantData();
-		} catch (ClassNotFoundException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    	
     	employeeGUI = new EmployeeGUI();
     	adminGUI = new AdminGUI();
     	initialize();
     	try {
-			restaurant.loadRestaurantData();
+			loadRestaurantData();
 		} catch (ClassNotFoundException cnfe) {
 			// TODO Auto-generated catch block
 			cnfe.printStackTrace();
@@ -107,6 +116,21 @@ public class WelcomeGUI {
 			ioe.printStackTrace();
 		}
     }
+	//Serialization 
+	
+	public void saveRestaurantData() throws IOException {
+		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(RESTAURANT_FILE_NAME));
+		oos.writeObject(restaurant);
+		oos.close();
+	
+	}
+	
+	public void loadRestaurantData() throws IOException, ClassNotFoundException {
+		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(RESTAURANT_FILE_NAME));
+		restaurant = (Restaurant) ois.readObject();
+		ois.close();
+
+	}
   
 	public void initialize() {
     	//the method (initialize) is called several times by different fxml files loads
@@ -282,6 +306,7 @@ public class WelcomeGUI {
 		    	restaurant.getAdmins().get(0).setCreator(firstAdmin);
 		    	restaurant.getAdmins().get(0).setModifier(firstAdmin);
 		    	restaurant.setLoggedUser(firstAdmin);
+		    	saveRestaurantData();
     		}
     	}
     }
