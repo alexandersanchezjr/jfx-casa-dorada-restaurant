@@ -285,12 +285,15 @@ public class UsersGUI {
     
     private Restaurant restaurant;
     
+    private WelcomeGUI welcomeGUI;
+    
     public UsersGUI() {
     	
     }
     
-     public void injectAdminGUI(Restaurant restaurant) {
+     public void injectAdminGUI(Restaurant restaurant, WelcomeGUI welcomeGUI) {
     	this.restaurant = restaurant;
+    	this.welcomeGUI = welcomeGUI;
     }
     
     
@@ -519,7 +522,7 @@ public class UsersGUI {
     	if (input.equals("SI")) {
     		restaurant.getCustomers().clear();
     		try {
-				restaurant.saveRestaurantData();
+				welcomeGUI.saveRestaurantData();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -614,11 +617,18 @@ public class UsersGUI {
         if (file != null) {
         	try {
 				restaurant.importCustomers(file.getAbsolutePath(), importClientSeparatorTxt.getText());
+				initializeClientTableView();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
         }
+        try {
+			welcomeGUI.saveRestaurantData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
     @FXML
@@ -863,7 +873,7 @@ public class UsersGUI {
 		 if (input.equals("SI")) {
 			restaurant.getEmployees().clear();
 			try {
-				restaurant.saveRestaurantData();
+				welcomeGUI.saveRestaurantData();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
