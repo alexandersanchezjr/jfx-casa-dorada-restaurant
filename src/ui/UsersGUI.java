@@ -607,7 +607,7 @@ public class UsersGUI {
     }
 
     @FXML
-    void importClientList(ActionEvent event) {
+    void importClientList(ActionEvent event) {	// TODO check the separator exception
     	FileChooser fileChooser = new FileChooser();
       	 
         //Set extension filter for text files
@@ -621,7 +621,7 @@ public class UsersGUI {
 				restaurant.importCustomers(file.getAbsolutePath(), importClientSeparatorTxt.getText());
 				initializeClientTableView();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
         }
@@ -660,7 +660,7 @@ public class UsersGUI {
     }
    
      @FXML
-    void updateClient(ActionEvent event) {
+    void updateClient(ActionEvent event) {	//TODO implement java sort
     	 Customer thisCustomer = tvClients.getSelectionModel().getSelectedItem();
 
  		
@@ -685,7 +685,7 @@ public class UsersGUI {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
- 			initializeClientTableView();
+ 			tvClients.refresh();
      			
      	}
     }
