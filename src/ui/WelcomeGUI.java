@@ -116,7 +116,8 @@ public class WelcomeGUI {
 			ioe.printStackTrace();
 		}
     }
-	//Serialization 
+	
+    //Serialization 
 	
 	public void saveRestaurantData() throws IOException {
 		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(RESTAURANT_FILE_NAME));
