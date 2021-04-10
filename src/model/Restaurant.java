@@ -551,7 +551,9 @@ public class Restaurant implements Serializable{
 		boolean added = false;
 		Customer thisCustomer = new Customer(name, surname, address, phoneNumber, comments, loggedUser);
 		thisCustomer.setId(id);
-		if(!customers.contains(thisCustomer)) {
+		if (customers.size() == 0)
+			added = customers.add(thisCustomer);
+		else if(!customers.contains(thisCustomer)) {
 			for(int i = 0; i<customers.size() && !added; i++) {
 				if((thisCustomer.getName().compareToIgnoreCase(customers.get(i).getName()) > 0) || thisCustomer.getName().compareToIgnoreCase(customers.get(i).getName()) == 0) {
 					customers.add(i, thisCustomer);
@@ -562,7 +564,7 @@ public class Restaurant implements Serializable{
 					added = true;
 				}
 			}
-			added = customers.add(thisCustomer);
+			
 		}
 
 		return added;
