@@ -140,10 +140,10 @@ public class InventoryGUI {
     private TextField newProductNameTxt;
 
     @FXML
-    private ComboBox<?> cbTypeForNewProduct;
+    private ComboBox<String> cbTypeForNewProduct;
 
     @FXML
-    private ComboBox<?> cbIngredientForNewProduct;
+    private ComboBox<String> cbIngredientForNewProduct;
 
     @FXML
     private TableView<?> tvIngredientsForNewProduct;
@@ -458,6 +458,7 @@ public class InventoryGUI {
 	public void handleMouseClick(MouseEvent arg0) {
 		int index = lvProducts.getSelectionModel().getSelectedIndex();
 		productNameTxt.setText(restaurant.getProducts().get(index).getName());
+		
 		if(restaurant.getProducts().get(index).isAvailability()) {
 			tbAvailability.setText("Habilitado");
 		}
@@ -474,6 +475,7 @@ public class InventoryGUI {
 		}
 		ObservableList<String> typesEnable = FXCollections.observableArrayList(types);
 		cbCategoryInProducts.setItems(typesEnable);
+		cbTypeForNewProduct.setItems(typesEnable);
 		cbCategoryInProducts.setPromptText(restaurant.getProducts().get(index).getType().getName());
 		
 		loadIngredientsProduct(index);
@@ -488,7 +490,7 @@ public class InventoryGUI {
 		}
 		ObservableList<String> ingredientsEnable = FXCollections.observableArrayList(ingredients);
 		cbIngredients.setItems(ingredientsEnable);
-		
+		cbIngredientForNewProduct.setItems(ingredientsEnable);
 		labProductId.setText(Long.toString(restaurant.getProducts().get(index).getId()));
 	}
     
