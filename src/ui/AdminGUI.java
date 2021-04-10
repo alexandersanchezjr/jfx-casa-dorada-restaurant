@@ -111,6 +111,9 @@ public class AdminGUI {
 		AnchorPane.setBottomAnchor(clientPane, 0.0);
 		AnchorPane.setLeftAnchor(clientPane, 0.0);
 		AnchorPane.setRightAnchor(clientPane, 0.0);
+		
+		usersGUI.initializeClientTableView();
+
     }
 
     @FXML
