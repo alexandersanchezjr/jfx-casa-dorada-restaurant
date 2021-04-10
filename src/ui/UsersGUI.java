@@ -574,6 +574,8 @@ public class UsersGUI {
     		
     		labClientComments.setText(null);
     	    updateClientButton.setDisable(true);;
+    	    
+    	    welcomeGUI.saveRestaurantData();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -605,7 +607,7 @@ public class UsersGUI {
     }
 
     @FXML
-    void importClientList(ActionEvent event) {
+    void importClientList(ActionEvent event) {	// TODO check the separator exception
     	FileChooser fileChooser = new FileChooser();
       	 
         //Set extension filter for text files
@@ -619,7 +621,7 @@ public class UsersGUI {
 				restaurant.importCustomers(file.getAbsolutePath(), importClientSeparatorTxt.getText());
 				initializeClientTableView();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
         }
@@ -658,7 +660,7 @@ public class UsersGUI {
     }
    
      @FXML
-    void updateClient(ActionEvent event) {
+    void updateClient(ActionEvent event) {	//TODO implement java sort
     	 Customer thisCustomer = tvClients.getSelectionModel().getSelectedItem();
 
  		
@@ -678,11 +680,12 @@ public class UsersGUI {
      		
  			try {
 				restaurant.updateCustomer(thisCustomer, clientNameTxt.getText(), clientSurnameTxt.getText(), clientIdTxt.getText(), clientAddressTxt.getText(), clientPhoneTxt.getText(), labClientComments.getText());
-			} catch (IOException e) {
+				welcomeGUI.saveRestaurantData();
+ 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
- 			initializeClientTableView();
+ 			tvClients.refresh();
      			
      	}
     }
@@ -856,6 +859,11 @@ public class UsersGUI {
      		tbEmployeeAvailability.setText("DESHABILITADO");
      		thisEmployee.setAvailability(false);
      	}
+     	try{
+     		welcomeGUI.saveRestaurantData();
+     	}catch (IOException ioe) {
+     		ioe.printStackTrace();
+     	}
      }
      
      @FXML
@@ -907,7 +915,8 @@ public class UsersGUI {
 	  	  	    	alert.setHeaderText(null);
 	  	  	    	alert.setContentText("El empleado ha sido creado exitosamente.");
 	  	  	    	alert.showAndWait();
-	  	  			initializeEmployeeTableView ();
+	  	     		welcomeGUI.saveRestaurantData();
+	  	     		initializeEmployeeTableView ();
 
   				}else {
   					Alert alert = new Alert(AlertType.ERROR);
@@ -935,6 +944,8 @@ public class UsersGUI {
   	    	alert.setHeaderText(null);
   	    	alert.setContentText("El empleado ha sido eliminado exitosamente.");
   	    	alert.showAndWait();
+	     	welcomeGUI.saveRestaurantData();
+
   	    	initializeEmployeeTableView();
   	    	tbEmployeeAvailability.setDisable(true);
   	    	employeeNameTxt.setDisable(true);
@@ -989,6 +1000,8 @@ public class UsersGUI {
          if (file != null) {
          	try {
  				restaurant.importEmployees(file.getAbsolutePath(), employeeImportSeparatorTxt.getText());
+  	     		welcomeGUI.saveRestaurantData();
+
  				initializeEmployeeTableView();
  			} catch (IOException e) {
  				// TODO Auto-generated catch block
@@ -1050,6 +1063,8 @@ public class UsersGUI {
 	  	  	    	alert.setHeaderText(null);
 	  	  	    	alert.setContentText("El empleado ha sido actualizado exitosamente.");
 	  	  	    	alert.showAndWait();
+	  	     		welcomeGUI.saveRestaurantData();
+
 	  	  	    	tvAdminEmployees.refresh();
 		  	  	    tbEmployeeAvailability.setDisable(true);
 		  	    	employeeNameTxt.setDisable(true);
