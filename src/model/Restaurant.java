@@ -551,19 +551,15 @@ public class Restaurant implements Serializable{
 		boolean added = false;
 		Customer thisCustomer = new Customer(name, surname, address, phoneNumber, comments, loggedUser);
 		thisCustomer.setId(id);
-		if (customers.size() == 0)
+		if (customers.isEmpty())
 			added = customers.add(thisCustomer);
 		else if(!customers.contains(thisCustomer)) {
-			for(int i = 0; i<customers.size() && !added; i++) {
-				if((thisCustomer.getName().compareToIgnoreCase(customers.get(i).getName()) > 0) || thisCustomer.getName().compareToIgnoreCase(customers.get(i).getName()) == 0) {
-					customers.add(i, thisCustomer);
-					added = true;
+				int i = 0;
+				while (i < customers.size() && (thisCustomer.getName().compareToIgnoreCase(customers.get(i).getName()) < 0)) {
+					i++;
 				}
-				else {
-					customers.add(i+1, thisCustomer);
-					added = true;
-				}
-			}
+				customers.add(i, thisCustomer);
+				added = true;
 			
 		}
 
