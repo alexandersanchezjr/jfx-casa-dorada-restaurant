@@ -113,7 +113,11 @@ public class Order implements Serializable {
 	 * @return the status
 	 */
 	public String getStatus() {
-		return status.toString();
+		if(status.toString().equals("EN_PROCESO")) {
+			return "EN PROCESO";
+		} else {
+			return status.toString();
+		}
 	}
 
 	/**
