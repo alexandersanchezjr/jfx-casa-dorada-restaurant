@@ -1,15 +1,19 @@
 package ui;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 /*import javafx.fxml.FXMLLoader;
 import model.Restaurant;
@@ -25,11 +29,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import model.DetailProduct;
 import model.Ingredient;
+import model.Order;
 import model.PriceBySize;
 import model.Restaurant;
 
@@ -59,22 +67,22 @@ public class InventoryGUI {
     private Label labOrderEmployeeName;
 
     @FXML
-    private TableView<?> tvProducts;
+    private TableView<DetailProduct> tvProducts;
 
     @FXML
     private TableColumn<?, ?> tcOrderProductName1;
 
     @FXML
-    private TableColumn<?, ?> tcOrderProductName;
+    private TableColumn<DetailProduct, String> tcOrderProductName;
 
     @FXML
-    private TableColumn<?, ?> tcOrderProductType;
+    private TableColumn<DetailProduct, String> tcOrderProductType;
 
     @FXML
-    private TableColumn<?, ?> tcOrderProductSize;
+    private TableColumn<DetailProduct, String> tcOrderProductSize;
 
     @FXML
-    private TableColumn<?, ?> tcOrderProductPrice;
+    private TableColumn<DetailProduct, String> tcOrderProductPrice;
 
     @FXML
     private Label labOrderComments;
@@ -92,13 +100,19 @@ public class InventoryGUI {
     private DatePicker datePicker;
 
     @FXML
-    private ChoiceBox<?> timePicker;
+    private ChoiceBox<String> timePicker;
     
     @FXML
     private DatePicker datePicker1;
 
     @FXML
-    private ChoiceBox<?> timePicker1;
+    private ChoiceBox<String> timePicker1;
+    
+    @FXML
+    private Button bttFilter;
+    
+    private String[] timesStart = {"00:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "23:59"};
+	private String[] timesEnd = {"00:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "23:59"};
 
     
     //products_pane.fxml attributes
@@ -268,28 +282,104 @@ public class InventoryGUI {
     	lvOrders.setItems(orders);
     }
     
+    public void loadOrderProducts(int index) {
+    	ObservableList<DetailProduct> observableList = FXCollections.observableArrayList(restaurant.getOrders().get(index).getProducts());
+    	tvProducts.setItems(observableList);
+    	tcOrderProductName.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("productName"));
+    	tcOrderProductType.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("category"));
+    	tcOrderProductSize.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("size"));
+    	tcOrderProductPrice.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("price"));
+    }
+    
+    public ArrayList<String> getOrdersIds() {
+    	List<String> ids = new ArrayList<String>();
+    	ids = lvOrders.getItems().subList(0, lvOrders.getItems().size());
+    	return (ArrayList<String>) ids;
+    }
+    
+    @FXML
+    public void selectedTime(MouseEvent event) {
+    	int index = timePicker.getSelectionModel().getSelectedIndex();
+    	ArrayList<String> tempList = new ArrayList<>();
+    	for(int i = index; i<timesEnd.length; i++) {
+    		tempList.add(timesEnd[i]);
+    	}
+    	ObservableList<String> listTimesEnd = FXCollections.observableArrayList(tempList);
+    	timePicker1.setItems(listTimesEnd);
+    }
+    
+    @FXML
+    public void handleMouseClickOrders(MouseEvent event) {
+    	int index = lvOrders.getSelectionModel().getSelectedIndex();
+    	if(restaurant.getOrders().get(index) != null) {
+	    	labOrderClientName.setText(restaurant.getOrders().get(index).getCustomer().getName());
+	    	labOrderEmployeeName.setText(restaurant.getOrders().get(index).getEmployee().getName());
+	    	labOrderId.setText(Integer.toString(index));
+	    	labOrderStatus.setText(restaurant.getOrders().get(index).getStatus());
+	    	labOrderTotalPrice.setText(Integer.toString(restaurant.getOrders().get(index).getTotal()));
+	    	labOrderComments.setText(restaurant.getOrders().get(index).getComments());
+	    	labClientComments.setText(restaurant.getOrders().get(index).getCustomer().getComments());
+	    	
+	    	//Load Products
+	    	loadOrderProducts(index);
+	    	
+	    	//Enable and fill ChoiceBoxs Time and DatePickers
+	    	datePicker.setDisable(false);
+	    	timePicker.setDisable(false);
+	    	datePicker1.setDisable(false);
+	    	timePicker1.setDisable(false);
+	    	bttFilter.setDisable(false);
+	    	
+	    	timePicker.setValue("00:00");
+	    	timePicker.getItems().addAll(timesStart);
+	    	timePicker1.setValue("23:59");
+	    	timePicker1.getItems().addAll(timesEnd);
+	    	
+    	}
+    }
+    
     @FXML
     public void exportOrdersList(ActionEvent event) {
-    	FileChooser chooser = new FileChooser();
-	    chooser.setTitle("Choose location To Save Report");
-	    File selectedFile = null;
-	    while(selectedFile== null){
-	        selectedFile = chooser.showSaveDialog(null);
-	    }
-	    File file = new File(selectedFile.getAbsolutePath());
-	    String separator = ordersExportSeparatorTxt.getText();
-	    String listViewId = "";
-	    /*try {
-			restaurant.exportOrders(file.getName(), separator, listViewId);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
+    	FileChooser fileChooser = new FileChooser();
+      	 
+        //Set extension filter for text files
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv");
+        fileChooser.getExtensionFilters().add(extFilter);
+        fileChooser.setInitialFileName("Reporte-Pedidos.csv");
+
+
+        //Show save file dialog
+        
+        File file = fileChooser.showSaveDialog((Stage)((Node)event.getSource()).getScene().getWindow());
+
+        if (file != null) {
+        	try {
+				restaurant.exportOrders(file.getAbsolutePath(), ordersExportSeparatorTxt.getText(), getOrdersIds());
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
     }
 
     @FXML
-    public void filterOrders(ActionEvent event) {
-
+    public void filterOrders(ActionEvent event) throws ParseException {
+    	String start = datePicker.getValue().toString()+" "+timePicker.getValue();
+    	String end = datePicker1.getValue().toString()+" "+timePicker1.getValue();
+    	
+    	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    	Date startDate = df.parse(start);
+    	Date endDate = df.parse(end);
+    	
+    	ArrayList<String> filteredIds = new ArrayList<String>();
+    	for(Order orders:restaurant.getOrders()) {
+    		if(orders.getDate().after(startDate) && orders.getDate().before(endDate)) {
+    			filteredIds.add(orders.getId());
+    		}
+    	}
+    	ObservableList<String> filteredOrders = FXCollections.observableArrayList(filteredIds);
+    	lvOrders.setItems(filteredOrders);
+    	lvOrders.refresh();
     }
 
     @FXML
