@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 import javafx.application.Platform;
@@ -13,7 +14,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -24,6 +28,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
@@ -182,76 +187,11 @@ public class EmployeeGUI {
     	  }
     	}, 0, 1000);
     }
-
-    @FXML
-    public void addProductToList(ActionEvent event) {
-    	ArrayList<DetailProduct> products = new ArrayList<> ();
-    	int i = typeChooser.getSelectionModel().getSelectedIndex();
-    	products.add(new DetailProduct(restaurant.getProducts().get(i), amountChooser.getValue(), restaurant.getProducts().get(i).getPricesBySizes().get(i)));
-    	
-    	ObservableList<DetailProduct> observableList = FXCollections.observableArrayList(products);
-    	//Have to do the tvMenuProductsList.setItems(observableList
-    	tcOrderProductName.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("productName"));
-    	tcOrderProductType.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("category"));
-    	tcOrderProductSize.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("size"));
-    	tcOrderProductPrice.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("totalPrice"));
-    	tcAmount.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("amountToString"));
     
-    }
-
-    @FXML
-    public void changeStatusToDelivered(ActionEvent event) {
-    	labOrderStatus.setText("ENTREGADO");
-    }
-
-    @FXML
-    public void changeStatusToInProcess(ActionEvent event) {
-    	labOrderStatus.setText("EN PROCESO");
-    	bttEnviado.setDisable(false);
-    	bttEnProceso.setDisable(true);
-    }
-
-    @FXML
-    public void changeStatusToSent(ActionEvent event) {
-    	labOrderStatus.setText("ENVIADO");
-    }
-
-    @FXML
-    public void cleanProductsLists(ActionEvent event) {
-
-    }
-
-    @FXML
-    public void createOrder(ActionEvent event) {
-
-    }
-
-    @FXML
-    public void deleteProduct(ActionEvent event) {
-
-    }
-
-    @FXML
-    public void filterOrders(ActionEvent event) {
-
-    }
-
-    @FXML
-    public void goBackFromEmployee(ActionEvent event) throws IOException {
-    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("welcome.fxml"));
-		
-		fxmlLoader.setController(welcomeGUI);
-		Parent WelcomeWindow = fxmlLoader.load();
-		menuAndOrderPane.getChildren().setAll(WelcomeWindow);
-		Stage st = (Stage)WelcomeWindow.getScene().getWindow();
-		st.setHeight(600);
-		st.setWidth(850);
-		welcomeGUI.firstAdmin();
-    }
-
     @FXML
     public void showMenuPane(ActionEvent event) {
-
+    	menuPane.setVisible(true);
+    	orderPane.setVisible(false);
     }
 
     @FXML
@@ -261,7 +201,7 @@ public class EmployeeGUI {
     	ObservableList<String> orders = FXCollections.observableArrayList(restaurant.getIdOrders());
     	lvOrders.setItems(orders);
     	
-    	int indexOrder = lvOrders.getSelectionModel().getSelectedIndex();
+    	/*int indexOrder = lvOrders.getSelectionModel().getSelectedIndex();
     	if(restaurant.getOrders().get(indexOrder).getStatus().equalsIgnoreCase("SOLICITADO")) {
     		bttEnviado.setDisable(true);
     		bttEntregado.setDisable(true);
@@ -279,13 +219,145 @@ public class EmployeeGUI {
     		bttEnviado.setDisable(true);
     		bttEntregado.setDisable(true);
     	}
+    	
+    	txtAreaCommentsOrder.setText(restaurant.getOrders().get(indexOrder).getComments());
+    	txtAreaCommentsCustomer.setText(restaurant.getOrders().get(indexOrder).getCustomer().getComments());*/
     }
+    
+    //ActionEvent methods of Menu AnchorPane
+    
+    public void loadProductsList() {
+    	//Verificar si se necesita este método, para cargar la lista de productos de la orden que se está creando.
+    }
+    
+    @FXML
+    public void handleMouseClickedType(MouseEvent event) { //Method to fill the comboBox of products according to the chosen category
+    	Type selectedType = typeChooser.getSelectionModel().getSelectedItem();
+    	ArrayList<Product> productsEnabled = new ArrayList<Product>();
+    	for(int i = 0; i<restaurant.getProducts().size(); i++) {
+    		if(restaurant.getProducts().get(i).isAvailability() && restaurant.getProducts().get(i).getType().equals(selectedType)) {
+    			productsEnabled.add(restaurant.getProducts().get(i));
+    		}
+    	}
+    	ObservableList<Product> productsList = FXCollections.observableArrayList(productsEnabled);
+    	productChooser.setItems(productsList);
+    }
+    
+    @FXML
+    public void addProductToList(ActionEvent event) {
+    	ArrayList<DetailProduct> products = new ArrayList<>();
+    	int i = typeChooser.getSelectionModel().getSelectedIndex();
+    	products.add(new DetailProduct(restaurant.getProducts().get(i), amountChooser.getValue(), restaurant.getProducts().get(i).getPricesBySizes().get(i)));
+    	
+    	ObservableList<DetailProduct> observableList = FXCollections.observableArrayList(products);
+    	//Have to do the tvMenuProductsList.setItems(observableList
+    	tcOrderProductName.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("productName"));
+    	tcOrderProductType.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("category"));
+    	tcOrderProductSize.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("size"));
+    	tcOrderProductPrice.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("totalPrice"));
+    	tcAmount.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("amountToString"));
+    
+    }
+    
+    @FXML
+    public void cleanProductsLists(ActionEvent event) {
+    	Alert alert = new Alert(AlertType.CONFIRMATION);
+    	alert.setTitle("Confirmación limpiar lista");
+    	alert.setHeaderText("Limpiar Lista de Productos");
+    	alert.setContentText("¿Estás seguro de limpiar toda la lista de productos?");
+
+    	Optional<ButtonType> result = alert.showAndWait();
+    	if (result.get() == ButtonType.OK){
+    		tvMenuProductsList.getItems().clear();
+    		tvMenuProductsList.refresh();
+    	}
+    }
+
+    @FXML
+    public void createOrder(ActionEvent event) {
+
+    }
+
+    @FXML
+    public void deleteProduct(ActionEvent event) {
+
+    }
+    
+    //ActionEvent methods of Orders AnchorPane
+    
+    @FXML
+    public void changeStatusToInProcess(ActionEvent event) {
+    	labOrderStatus.setText("EN PROCESO");
+    	bttEnviado.setDisable(false);
+    	bttEnProceso.setDisable(true);
+    }
+
+    @FXML
+    public void changeStatusToSent(ActionEvent event) {
+    	labOrderStatus.setText("ENVIADO");
+    }
+
+    @FXML
+    public void changeStatusToDelivered(ActionEvent event) {
+    	labOrderStatus.setText("ENTREGADO");
+    }
+
+    @FXML
+    public void filterOrders(ActionEvent event) {
+
+    }
+
+    @FXML
+    public void logOutFromEmployee(ActionEvent event) throws IOException {
+    	Alert alert = new Alert(AlertType.CONFIRMATION);
+    	alert.setTitle("Confirmación Cerrar Sesión");
+    	alert.setHeaderText("Cerrando Sesión");
+    	alert.setContentText("¿Estás seguro de cerrar sesión?");
+
+    	Optional<ButtonType> result = alert.showAndWait();
+    	if (result.get() == ButtonType.OK){
+    		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("welcome.fxml"));
+			
+			fxmlLoader.setController(welcomeGUI);
+			Parent WelcomeWindow = fxmlLoader.load();
+			menuAndOrderPane.getChildren().setAll(WelcomeWindow);
+			Stage st = (Stage)WelcomeWindow.getScene().getWindow();
+			st.setHeight(600);
+			st.setWidth(850);
+			welcomeGUI.firstAdmin();
+    	}
+    }
+
     
     @FXML 
     public void handleMouseClick(MouseEvent arg0) {
-    	int index = lvOrders.getSelectionModel().getSelectedIndex();
-    	txtAreaCommentsOrder.setText(restaurant.getOrders().get(index).getComments());
-    	txtAreaCommentsCustomer.setText(restaurant.getOrders().get(index).getCustomer().getComments());
+    	int indexOrder = lvOrders.getSelectionModel().getSelectedIndex();
+    	if(restaurant.getOrders().get(indexOrder) != null) {
+	    	if(restaurant.getOrders().get(indexOrder).getStatus().equalsIgnoreCase("SOLICITADO")) {
+	    		bttEnviado.setDisable(true);
+	    		bttEntregado.setDisable(true);
+	    	}
+	    	else if(restaurant.getOrders().get(indexOrder).getStatus().equalsIgnoreCase("EN_PROCESO")) {
+	    		bttEnProceso.setDisable(true);
+	    		bttEntregado.setDisable(true);
+	    	}
+	    	else if(restaurant.getOrders().get(indexOrder).getStatus().equalsIgnoreCase("ENVIADO")) {
+	    		bttEnviado.setDisable(true);
+	    		bttEnProceso.setDisable(true);
+	    	}
+	    	else if(restaurant.getOrders().get(indexOrder).getStatus().equalsIgnoreCase("ENTREGADO")) {
+	    		bttEnProceso.setDisable(true);
+	    		bttEnviado.setDisable(true);
+	    		bttEntregado.setDisable(true);
+	    	}
+	    	
+	    	labOrderId.setText(restaurant.getOrders().get(indexOrder).getId());
+	    	labOrderStatus.setText(restaurant.getOrders().get(indexOrder).getStatus());
+	    	labOrderTotalPrice.setText(Integer.toString(restaurant.getOrders().get(indexOrder).getTotal()));
+	    	
+	    	txtAreaCommentsOrder.setText(restaurant.getOrders().get(indexOrder).getComments());
+	    	txtAreaCommentsCustomer.setText(restaurant.getOrders().get(indexOrder).getCustomer().getComments());
+    	}
     }
     
     @FXML
