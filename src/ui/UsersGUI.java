@@ -508,7 +508,7 @@ public class UsersGUI {
 
     
     @FXML
-    void cleanList(ActionEvent event) {
+    public void cleanList(ActionEvent event) {
     	TextInputDialog dialog = new TextInputDialog();
     	dialog.setTitle("Confirme borrado de datos");
     	dialog.setHeaderText("Por favor, escriba 'SI' si desea limpiar la lista de clientes ");
