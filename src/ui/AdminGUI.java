@@ -39,7 +39,7 @@ public class AdminGUI {
     
     public void initialize() {
     	usersGUI.injectAdminGUI(restaurant, welcomeGUI);
-    	inventoryGUI.injectAdminGUI(restaurant);
+    	inventoryGUI.injectAdminGUI(restaurant, welcomeGUI);
     }
     
     public void injectWelcomeGUI(WelcomeGUI welcomeGUI, Restaurant restaurant) {
@@ -170,6 +170,7 @@ public class AdminGUI {
 		AnchorPane.setLeftAnchor(productPane, 0.0);
 		AnchorPane.setRightAnchor(productPane, 0.0);
 		inventoryGUI.loadProducts();
+		inventoryGUI.loadIngredientsAndTypes();
     }
 
     @FXML
