@@ -40,6 +40,7 @@ import model.Ingredient;
 import model.Order;
 import model.PriceBySize;
 import model.Restaurant;
+import model.Type;
 
 public class InventoryGUI {
 
@@ -160,22 +161,22 @@ public class InventoryGUI {
     private ComboBox<String> cbIngredientForNewProduct;
 
     @FXML
-    private TableView<?> tvIngredientsForNewProduct;
+    private TableView<Ingredient> tvIngredientsForNewProduct;
 
     @FXML
-    private TableColumn<?, ?> tcIngredientsNameNewProduct;
+    private TableColumn<Ingredient, String> tcIngredientsNameNewProduct;
 
     @FXML
-    private TableColumn<?, ?> tcIngredientsCodeNewProduct;
+    private TableColumn<Ingredient, String> tcIngredientsCodeNewProduct;
 
     @FXML
-    private TableView<?> tvSizesForNewProduct;
+    private TableView<PriceBySize> tvSizesForNewProduct;
 
     @FXML
-    private TableColumn<?, ?> tcSizeNameNewProduct;
+    private TableColumn<PriceBySize, String> tcSizeNameNewProduct;
 
     @FXML
-    private TableColumn<?, ?> tcSizePriceNewProduct;
+    private TableColumn<PriceBySize, String> tcSizePriceNewProduct;
 
     @FXML
     private TextField newSizePriceTxt;
@@ -266,13 +267,15 @@ public class InventoryGUI {
     private TableView<?> tvIngredientsPane;
 
 	private Restaurant restaurant;
+	private WelcomeGUI welcomeGUI;
     
     public InventoryGUI() {
- 
+    	
     }
     
-    public void injectAdminGUI(Restaurant restaurant) {
+    public void injectAdminGUI(Restaurant restaurant, WelcomeGUI welcomeGUI) {
     	this.restaurant = restaurant;
+    	this.welcomeGUI = welcomeGUI;
     }
     
     //Orders Pane ActionEvent methods
@@ -402,7 +405,7 @@ public class InventoryGUI {
     		    alert.showAndWait();
     		    loadOrders();
     		} catch(IOException io) {
-    			Alert alert = new Alert(AlertType.ERROR);
+    			Alert alert = new Alert(AlertType.INFORMATION);
     		    alert.setTitle("Importar pedidos");
     		    alert.setHeaderText(null);
     		    alert.setContentText("Los pedidos no han podido ser importados");
@@ -414,18 +417,137 @@ public class InventoryGUI {
     //Products Pane ActionEvent methods
     
     public void loadProducts() {
-    	ObservableList<String> products = FXCollections.observableArrayList(restaurant.getIdProducts());
-    	lvOrders.setItems(products);
+    	lvProducts = new ListView<String>();
+		ObservableList<String> products = FXCollections.observableArrayList(restaurant.getIdProducts());
+		lvProducts.setItems(products);
     }
+    
+    public void loadIngredientsAndTypes() {
+    	//Separating types enable
+		ArrayList<String> types = new ArrayList<>();
+		for(int i = 0; i<restaurant.getTypes().size(); i++) {
+			if(restaurant.getTypes().get(i).isAvailability()) {
+				types.add(restaurant.getTypes().get(i).getName());
+			}
+		}
+		ObservableList<String> typesEnable = FXCollections.observableArrayList(types);
+		cbTypeForNewProduct.setItems(typesEnable);
+		//cbCategoryInProducts.setItems(typesEnable);
+		//Separating ingredients enable
+		ArrayList<String> ingredients = new ArrayList<>();
+		for(int i = 0; i<restaurant.getIngredients().size(); i++) {
+			if(restaurant.getIngredients().get(i).isAvailability()) {
+				ingredients.add(restaurant.getIngredients().get(i).getName());
+			}
+		}
+		ObservableList<String> ingredientsEnable = FXCollections.observableArrayList(ingredients);
+		cbIngredientForNewProduct.setItems(ingredientsEnable);
+    }
+    
+    private void loadIngredientsAndTypesToUpdate() {
+    	ArrayList<String> types = new ArrayList<>();
+		for(int i = 0; i<restaurant.getTypes().size(); i++) {
+			if(restaurant.getTypes().get(i).isAvailability()) {
+				types.add(restaurant.getTypes().get(i).getName());
+			}
+		}
+		ObservableList<String> typesEnable = FXCollections.observableArrayList(types);
+		cbCategoryInProducts.setItems(typesEnable);
+		
+		//Separating ingredients enable
+		ArrayList<String> ingredients = new ArrayList<>();
+		for(int i = 0; i<restaurant.getIngredients().size(); i++) {
+			if(restaurant.getIngredients().get(i).isAvailability()) {
+				ingredients.add(restaurant.getIngredients().get(i).getName());
+			}
+		}
+		ObservableList<String> ingredientsEnable = FXCollections.observableArrayList(ingredients);
+		cbIngredients.setItems(ingredientsEnable);
+    }
+    
+    ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
     
     @FXML
     public void addIIngredientToNewProduct(ActionEvent event) {
-    	
+    	String ingredientSelected = cbIngredientForNewProduct.getValue();
+    	int indexIngredient = 0;
+    	for(int i = 0; i<restaurant.getIngredients().size(); i++) {
+    		if(restaurant.getIngredients().get(i).getName().equals(ingredientSelected)) {
+    			indexIngredient = i;
+    		}
+    	}
+    	ingredients.add(restaurant.getIngredients().get(indexIngredient));
+    	loadIngredientsNewProduct();
+    	tvIngredientsForNewProduct.refresh();
     }
 
     @FXML
     public void addISizeToNewProduct(ActionEvent event) {
-
+    	if(newSizeTxt.getText().isEmpty() && newSizePriceTxt.getText().isEmpty()) {
+    		Alert alert = new Alert(AlertType.WARNING);
+		    alert.setTitle("Agregar tamaño");
+		    alert.setHeaderText(null);
+		    alert.setContentText("¡Ups! no has ingresado el tamaño o el precio");
+		    alert.showAndWait();
+    	} else {
+    		
+    	}
+    }
+    
+    public void loadIngredientsNewProduct() {
+    	ObservableList<Ingredient> ingredientsNewProduct = FXCollections.observableArrayList(ingredients);
+    	tvIngredientsForNewProduct.setItems(ingredientsNewProduct);
+    	tcIngredientsNameNewProduct.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("name"));
+    	tcIngredientsCodeNewProduct.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("id"));
+    }
+    
+    public void loadPricesBySizeNewProduct(int indexProduct) {
+    	ObservableList<PriceBySize> pricesBySize = FXCollections.observableArrayList(restaurant.getProducts().get(indexProduct).getPricesBySizes());
+		tvSizes.setItems(pricesBySize);
+		tcProductSizeName.setCellValueFactory(new PropertyValueFactory<PriceBySize,String>("size"));
+		tcProductSizePrice.setCellValueFactory(new PropertyValueFactory<PriceBySize,Integer>("price"));
+    }
+    
+    @FXML
+    public void createNewProduct(ActionEvent event) {
+    	if(newProductNameTxt.getText().isEmpty() || cbTypeForNewProduct.getPromptText().equals("Categoría")) {
+    		Alert alert = new Alert(AlertType.WARNING);
+	    	alert.setTitle("Crear producto");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("No has ingresado un nombre para el producto o no has seleccionado la categoria");
+	    	alert.showAndWait();
+    	}
+    	else if(tvIngredientsForNewProduct.getItems().isEmpty()) {
+    		Alert alert = new Alert(AlertType.WARNING);
+	    	alert.setTitle("Crear producto");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("No has agregado ningun ingrediente");
+	    	alert.showAndWait();
+    	}
+    	else {
+			List<Ingredient> ingredientsList = (List<Ingredient>) tvIngredientsForNewProduct.getItems();
+    	    ArrayList<Ingredient> ingredients;
+    	    if (ingredientsList instanceof ArrayList<?>) {
+    	        ingredients = (ArrayList<Ingredient>) ingredientsList;
+    	    } else {
+    	        ingredients = new ArrayList<Ingredient>(ingredientsList);
+    	    }
+    	    String type = cbTypeForNewProduct.getPromptText();
+    	    Type t = null;
+    	    boolean found = false;
+    	    for(int i = 0; i<restaurant.getTypes().size() && !found; i++) {
+    	    	if(restaurant.getTypes().get(i).getName().equals(type)) {
+    	    		t = restaurant.getTypes().get(i);
+    	    		found = true;
+    	    	}
+    	    }
+    		try {
+				restaurant.addProduct(newProductNameTxt.getText(), ingredients, t);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
     }
 
     @FXML
@@ -467,50 +589,6 @@ public class InventoryGUI {
     		restaurant.getProducts().get(index).setAvailability(true);
     		tbAvailability.setText("Habilitado");
     	}
-    }
-
-    @FXML
-    public void createNewProduct(ActionEvent event) {
-    	if(newProductNameTxt.getText().isEmpty() || cbTypeForNewProduct.getPromptText().equals("Categoría") || tvIngredientsForNewProduct.getItems().isEmpty() || tvSizesForNewProduct.getItems().isEmpty()) {
-    		Alert alert = new Alert(AlertType.ERROR);
-	    	alert.setTitle("");
-	    	alert.setHeaderText(null);
-	    	alert.setContentText("¡Ups! Llena todos los campos para crear un producto");
-	    	alert.showAndWait();
-    	}
-    	else {
-    		@SuppressWarnings("unchecked")
-			List<Ingredient> ingredientsList = (List<Ingredient>) tvIngredientsForNewProduct.getItems();
-    	    ArrayList<Ingredient> ingredients;
-    	    if (ingredientsList instanceof ArrayList<?>) {
-    	        ingredients = (ArrayList<Ingredient>) ingredientsList;
-    	    } else {
-    	        ingredients = new ArrayList<>(ingredientsList);
-    	    }
-    	    String type = cbTypeForNewProduct.getPromptText();
-    	    int indexType = 0;
-    	    for(int i = 0; i<restaurant.getTypes().size(); i++) {
-    	    	if(restaurant.getTypes().get(i).getName().equals(type)) {
-    	    		indexType = i;
-    	    	}
-    	    }
-    		try {
-				restaurant.addProduct(newProductNameTxt.getText(), ingredients, type, restaurant.getTypes().get(indexType).isAvailability(), restaurant.getTypes().get(indexType).getCreator());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-    	}
-    }
-
-    @FXML
-    public void exportProductsList(ActionEvent event) {
-
-    }
-
-    @FXML
-    public void importProductsList(ActionEvent event) {
-
     }
 
     @FXML
@@ -556,33 +634,45 @@ public class InventoryGUI {
 			tbAvailability.setText("Deshabilitado");
 		}
 		
-		//Separating types enable
-		ArrayList<String> types = new ArrayList<>();
-		for(int i = 0; i<restaurant.getTypes().size(); i++) {
-			if(restaurant.getTypes().get(i).isAvailability()) {
-				types.add(restaurant.getTypes().get(i).getName());
-			}
-		}
-		ObservableList<String> typesEnable = FXCollections.observableArrayList(types);
-		cbCategoryInProducts.setItems(typesEnable);
-		cbTypeForNewProduct.setItems(typesEnable);
+		loadIngredientsAndTypesToUpdate(); //Ingredients and Types available are added in cbCategoryInProducts and cbIngredients comboBoxs 
 		cbCategoryInProducts.setPromptText(restaurant.getProducts().get(index).getType().getName());
 		
 		loadIngredientsProduct(index);
 		loadPricesBySizeProduct(index);
-		
-		//Separating ingredients enable
-		ArrayList<String> ingredients = new ArrayList<>();
-		for(int i = 0; i<restaurant.getIngredients().size(); i++) {
-			if(restaurant.getIngredients().get(i).isAvailability()) {
-				ingredients.add(restaurant.getIngredients().get(i).getName());
-			}
-		}
-		ObservableList<String> ingredientsEnable = FXCollections.observableArrayList(ingredients);
-		cbIngredients.setItems(ingredientsEnable);
-		cbIngredientForNewProduct.setItems(ingredientsEnable);
 		labProductId.setText(Long.toString(restaurant.getProducts().get(index).getId()));
 	}
+	
+	@FXML
+    public void exportProductsList(ActionEvent event) {
+
+    }
+
+    @FXML
+    public void importProductsList(ActionEvent event) {
+    	FileChooser fileChooser = new FileChooser();
+     	 
+        //Set extension filter for text files
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv");
+        fileChooser.getExtensionFilters().add(extFilter);
+        
+        File file = fileChooser.showOpenDialog((Stage)((Node)event.getSource()).getScene().getWindow());
+        
+        if (file != null) {
+        	try {
+				restaurant.importProducts(file.getAbsolutePath(), productsImportSeparatorTxt.getText());
+				loadProducts();
+			} catch (IOException e) {
+				
+				e.printStackTrace();
+			}
+        }
+        try {
+			welcomeGUI.saveRestaurantData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
     
 	//Type of Product ActionEvent methods
     
