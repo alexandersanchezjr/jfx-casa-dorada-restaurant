@@ -191,9 +191,9 @@ public class Restaurant implements Serializable{
 	
 	//Product MANAGEMENT
 
-	public boolean addProduct(String name, ArrayList<Ingredient> ingredients, String selectedType, boolean typeAvailability, User typeCreator) throws IOException {
+	public boolean addProduct(String name, ArrayList<Ingredient> ingredients, Type t) throws IOException {
 		boolean added = false;
-		Product newProduct = new Product(name,(identifier++), ingredients, selectedType, typeAvailability, typeCreator, loggedUser);
+		Product newProduct = new Product(name,(identifier++), ingredients, t, loggedUser);
 		if(!products.contains(newProduct)) {	
 			added = products.add(newProduct);
 
@@ -694,23 +694,27 @@ public class Restaurant implements Serializable{
 	
 	public void importProducts(String fileName, String separator) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(fileName));
-		String line = br.readLine();
-		while(line!=null) {
+		String firstLine = br.readLine();
+		while(firstLine!=null) {
+			String line = br.readLine();
 			String[] parts = line.split(separator);
 			String name = parts[0];
 			long id = Long.parseLong(parts[1]);
 			boolean availability = Boolean.parseBoolean(parts[2]);
 			String selectedType = parts[3];
-			int indexType = 0;
+			Type t = null;
 			ArrayList<Ingredient> ingredientsProduct = new ArrayList<Ingredient>();
-			for(int i = 0; i<types.size(); i++) {
+			//Search the Object Type with the name (selectedType)
+			boolean found = false; 
+			for(int i = 0; i<types.size() && !found; i++) {
 				if(types.get(i).getName().equals(selectedType)) {
-					indexType = i;
+					t = types.get(i);
+					found = true;
 				}
 			}
 			
 			int k = 4;
-			while(!(parts[k].equalsIgnoreCase("false") || parts[k].equalsIgnoreCase("true"))) {
+			while(k < parts.length) {
 				long idIngredient = Long.parseLong(parts[k]);
 				for(int i = 0; i<ingredients.size(); i++) {
 					if(ingredients.get(i).getId() == idIngredient) {
@@ -719,7 +723,12 @@ public class Restaurant implements Serializable{
 				}
 				k++;
 			}
-			Product p = new Product(name, id, ingredients, selectedType, types.get(indexType).isAvailability(), types.get(indexType).getCreator(), loggedUser);
+			
+			if(t == null) {
+				addTypeProduct(selectedType, true);
+			}
+			
+			Product p = new Product(name, id, ingredients, t, loggedUser);
 			p.setAvailability(availability);
 			products.add(p);
 			line = br.readLine();
