@@ -19,13 +19,13 @@ public class Product implements Serializable {
 	 * @param name
 	 * @param availability
 	 */
-	public Product(String name, long id, ArrayList<Ingredient> ingredients, String selectedType, boolean typeAvailability, User typeCreator, User creator) {  //selectedType = getValue del choiceBox
+	public Product(String name, long id, ArrayList<Ingredient> ingredients, Type t, User creator) {  //selectedType = getValue del choiceBox
 		this.name = name;
 		this.id = id;
 		this.ingredients = ingredients;
 		this.pricesBySizes = new ArrayList<PriceBySize>();
 		this.availability = true;
-		type = new Type(selectedType, typeAvailability, typeCreator);
+		type = t;
 		this.creator = creator;
 		modifier = creator;
 	}
@@ -104,6 +104,14 @@ public class Product implements Serializable {
 	 */
 	public ArrayList<PriceBySize> getPricesBySizes() {
 		return pricesBySizes;
+	}
+	
+	public ArrayList<String> getSizes() {
+		ArrayList<String> sizes = new ArrayList<String>();
+		for(int i = 0; i<pricesBySizes.size(); i++) {
+			sizes.add(pricesBySizes.get(i).getSize());
+		}
+		return sizes;
 	}
 	
 	public boolean addPriceBySize(PriceBySize pbs) {
