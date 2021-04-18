@@ -28,7 +28,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
@@ -61,7 +60,7 @@ public class EmployeeGUI {
     private ComboBox<String> sizeChooser;
 
     @FXML
-    private TableView<Product> tvMenuProductsList;
+    private TableView<DetailProduct> tvMenuProductsList;
 
     @FXML
     private TableColumn<?, ?> tcMenuProductName;
@@ -168,6 +167,8 @@ public class EmployeeGUI {
     private WelcomeGUI welcomeGUI;
     private Restaurant restaurant;
     
+    private ArrayList<DetailProduct> productsList = new ArrayList<DetailProduct>();
+    
     public EmployeeGUI() {
     	injectWelcomeGUI(welcomeGUI, restaurant);
     }
@@ -200,39 +201,23 @@ public class EmployeeGUI {
     	orderPane.setVisible(true);
     	ObservableList<String> orders = FXCollections.observableArrayList(restaurant.getIdOrders());
     	lvOrders.setItems(orders);
-    	
-    	/*int indexOrder = lvOrders.getSelectionModel().getSelectedIndex();
-    	if(restaurant.getOrders().get(indexOrder).getStatus().equalsIgnoreCase("SOLICITADO")) {
-    		bttEnviado.setDisable(true);
-    		bttEntregado.setDisable(true);
-    	}
-    	else if(restaurant.getOrders().get(indexOrder).getStatus().equalsIgnoreCase("EN_PROCESO")) {
-    		bttEnProceso.setDisable(true);
-    		bttEntregado.setDisable(true);
-    	}
-    	else if(restaurant.getOrders().get(indexOrder).getStatus().equalsIgnoreCase("ENVIADO")) {
-    		bttEnviado.setDisable(true);
-    		bttEnProceso.setDisable(true);
-    	}
-    	else if(restaurant.getOrders().get(indexOrder).getStatus().equalsIgnoreCase("ENTREGADO")) {
-    		bttEnProceso.setDisable(true);
-    		bttEnviado.setDisable(true);
-    		bttEntregado.setDisable(true);
-    	}
-    	
-    	txtAreaCommentsOrder.setText(restaurant.getOrders().get(indexOrder).getComments());
-    	txtAreaCommentsCustomer.setText(restaurant.getOrders().get(indexOrder).getCustomer().getComments());*/
     }
     
     //ActionEvent methods of Menu AnchorPane
     
     public void loadProductsList() {
-    	//Verificar si se necesita este método, para cargar la lista de productos de la orden que se está creando.
+    	ObservableList<DetailProduct> observableList = FXCollections.observableArrayList(productsList);
+    	tvMenuProductsList.setItems(observableList);
+    	tcOrderProductName.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("productName"));
+    	tcOrderProductType.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("category"));
+    	tcOrderProductSize.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("size"));
+    	tcOrderProductPrice.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("totalPrice"));
+    	tcAmount.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("amountToString"));
     }
     
     @FXML
-    public void handleMouseClickedType(MouseEvent event) { //Method to fill the comboBox of products according to the chosen category
-    	Type selectedType = typeChooser.getSelectionModel().getSelectedItem();
+    public void categoryChosen(ActionEvent event) { //Method to fill the comboBox of products according to the chosen category
+    	Type selectedType = typeChooser.getValue();
     	ArrayList<Product> productsEnabled = new ArrayList<Product>();
     	for(int i = 0; i<restaurant.getProducts().size(); i++) {
     		if(restaurant.getProducts().get(i).isAvailability() && restaurant.getProducts().get(i).getType().equals(selectedType)) {
@@ -244,19 +229,20 @@ public class EmployeeGUI {
     }
     
     @FXML
-    public void addProductToList(ActionEvent event) {
-    	ArrayList<DetailProduct> products = new ArrayList<>();
-    	int i = typeChooser.getSelectionModel().getSelectedIndex();
-    	products.add(new DetailProduct(restaurant.getProducts().get(i), amountChooser.getValue(), restaurant.getProducts().get(i).getPricesBySizes().get(i)));
-    	
-    	ObservableList<DetailProduct> observableList = FXCollections.observableArrayList(products);
-    	//Have to do the tvMenuProductsList.setItems(observableList
-    	tcOrderProductName.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("productName"));
-    	tcOrderProductType.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("category"));
-    	tcOrderProductSize.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("size"));
-    	tcOrderProductPrice.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("totalPrice"));
-    	tcAmount.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("amountToString"));
+    public void productChosen(ActionEvent event) { //Method to fill the comboBox of sizes according to the chosen product
+    	Product p = productChooser.getValue();
+    	ObservableList<String> productsList = FXCollections.observableArrayList(p.getSizes());
+    	sizeChooser.setItems(productsList);
+    }
     
+    @FXML
+    public void addProductToList(ActionEvent event) {
+    	//Searching the selected product in the List of Products of the Restaurant
+    	int indexProduct = restaurant.getProducts().indexOf(productChooser.getValue()); 
+    	//Searching the selected size in the list of product selected's sizes
+    	int indexSize = restaurant.getProducts().get(indexProduct).getSizes().indexOf(sizeChooser.getValue());
+    	productsList.add(new DetailProduct(restaurant.getProducts().get(indexProduct), amountChooser.getValue(), restaurant.getProducts().get(indexProduct).getPricesBySizes().get(indexSize)));
+    	loadProductsList();
     }
     
     @FXML
@@ -274,8 +260,9 @@ public class EmployeeGUI {
     }
 
     @FXML
-    public void createOrder(ActionEvent event) {
-
+    public void createOrder(ActionEvent event) throws IOException {
+    	//Verifications of comboBox
+    	restaurant.addOrder("SOLICITADO", productsList, restaurant.getLoggedUser(), null, null, null, null, null, null, null);
     }
 
     @FXML
@@ -295,11 +282,14 @@ public class EmployeeGUI {
     @FXML
     public void changeStatusToSent(ActionEvent event) {
     	labOrderStatus.setText("ENVIADO");
+    	bttEnviado.setDisable(true);
+    	bttEntregado.setDisable(false);
     }
 
     @FXML
     public void changeStatusToDelivered(ActionEvent event) {
     	labOrderStatus.setText("ENTREGADO");
+    	bttEntregado.setDisable(true);
     }
 
     @FXML
@@ -357,6 +347,8 @@ public class EmployeeGUI {
 	    	
 	    	txtAreaCommentsOrder.setText(restaurant.getOrders().get(indexOrder).getComments());
 	    	txtAreaCommentsCustomer.setText(restaurant.getOrders().get(indexOrder).getCustomer().getComments());
+	    	txtAreaCommentsOrder.setEditable(true);
+	    	txtAreaCommentsCustomer.setEditable(true);
     	}
     }
     
