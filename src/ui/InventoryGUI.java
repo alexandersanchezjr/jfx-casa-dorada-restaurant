@@ -265,6 +265,18 @@ public class InventoryGUI {
 
     @FXML
     private TableView<Ingredient> tvIngredientsPane;
+    
+    @FXML
+    private TableColumn<Ingredient, String> tcIngredientName;
+
+    @FXML
+    private TableColumn<Ingredient, String> tcIngredientId;
+
+    @FXML
+    private TableColumn<Ingredient, String> tcIngredientAvailability;
+
+    @FXML
+    private TableColumn<Ingredient, String> tcIngredientCreator;
 
 	private Restaurant restaurant;
 	private WelcomeGUI welcomeGUI;
@@ -799,37 +811,83 @@ public class InventoryGUI {
     //Ingredients ActionEvent methods
     
     public void loadIngredientsList() {
-    	
+    	ObservableList<Ingredient> ingredientsList = FXCollections.observableArrayList(restaurant.getIngredients());
+		tvIngredientsPane.setItems(ingredientsList);
+		tcIngredientName.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("name"));
+		tcIngredientId.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("id"));
+		tcIngredientAvailability.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("availabilityText"));
+		tcIngredientCreator.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("creatorName"));
     }
     
     @FXML
     public void ingredientSelected(MouseEvent event) {
+    	int indexIngredient = tvIngredientsPane.getSelectionModel().getSelectedIndex();
+    	ingredientNameTxt.setText(restaurant.getIngredients().get(indexIngredient).getName());
+    	labIngredientId.setText("# " + Long.toString(restaurant.getIngredients().get(indexIngredient).getId()));
+    	tbIngredientAvailability.setText(restaurant.getIngredients().get(indexIngredient).getAvailabilityText());
     	
     }
     
     @FXML
-    public void createNewIngredient(ActionEvent event) {
-
+    public void createNewIngredient(ActionEvent event) throws IOException {
+    	boolean added = false;
+    	if(newIngredientName.getText().isEmpty()) {
+    		Alert alert = new Alert(AlertType.WARNING);
+	    	alert.setTitle("Crear nuevo ingrediente");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("No has ingresado un nombre para el nuevo ingrediente");
+	    	alert.showAndWait();
+    	}
+    	else {
+    		boolean availability = true;
+    		if(tbNewIngredientAvailability.getText().equals("Deshabilitado")) {
+    			availability = false;
+        	}
+    		added = restaurant.addIngredient(newIngredientName.getText(), availability);
+    	}
+    	if(added) {
+    		Alert alert = new Alert(AlertType.INFORMATION);
+	    	alert.setTitle("Ingrediente creado");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("El ingrediente ha sido creado y agregado a la lista de ingredientes");
+	    	alert.showAndWait();
+    	}
     }
     
     @FXML
     public void changeNewIngredientAvailability(ActionEvent event) {
-
+    	if(tbNewIngredientAvailability.getText().equals("Habilitado")) {
+    		tbNewIngredientAvailability.setText("Deshabilitado");
+    	}
+    	else {
+    		tbNewIngredientAvailability.setText("Habilitado");
+    	}
     }
     
     @FXML
-    public void changeIngredientAvailability(ActionEvent event) {
-
+    public void changeIngredientAvailability(ActionEvent event) throws IOException {
+    	int index = tvIngredientsPane.getSelectionModel().getSelectedIndex();
+    	if(tbIngredientAvailability.getText().equals("Habilitado")) {
+    		restaurant.disableIngredient(restaurant.getIngredients().get(index));
+    		tbIngredientAvailability.setText("Deshabilitado");
+    	}
+    	else {
+    		restaurant.enableIngredient(restaurant.getIngredients().get(index));
+    		tbIngredientAvailability.setText("Habilitado");
+    	}
     }
 
     @FXML
-    public void updateIngredient(ActionEvent event) {
-
+    public void updateIngredient(ActionEvent event) throws IOException {
+    	int index = tvIngredientsPane.getSelectionModel().getSelectedIndex();
+    	restaurant.updateIngredient(restaurant.getIngredients().get(index), ingredientNameTxt.getText());
+    	loadIngredientsList();
+    	tvIngredientsPane.refresh();
     }
     
     @FXML
     public void deleteIngredient(ActionEvent event) {
-
+    	
     }
     
     @FXML
