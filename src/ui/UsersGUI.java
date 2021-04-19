@@ -316,11 +316,31 @@ public class UsersGUI {
     	
     	if (tbAdminAvailability.isSelected()) {
     		tbAdminAvailability.setText("HABILITADO");
-    		thisAdmin.setAvailability(true);
+    		boolean changed = false;
+			for (int i = 0; i < restaurant.getAdmins().size() && !changed; i++) {
+				if (restaurant.getAdmins().get(i) == thisAdmin) {
+					restaurant.getAdmins().get(i).setAvailability(true);
+					changed = true;
+				}
+    		}
+    		
     	}else {
     		tbAdminAvailability.setText("DESHABILITADO");
-    		thisAdmin.setAvailability(false);
+    		boolean changed = false;
+			for (int i = 0; i < restaurant.getAdmins().size() && !changed; i++) {
+				if (restaurant.getAdmins().get(i) == thisAdmin) {
+					restaurant.getAdmins().get(i).setAvailability(false);
+					changed = true;
+				}
+    		}
     	}
+	    try {
+			welcomeGUI.saveRestaurantData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
     		
     }
     
@@ -338,6 +358,12 @@ public class UsersGUI {
     	}
     	if (input.equals("SI")) {
     		restaurant.getAdmins().clear();
+    	    try {
+				welcomeGUI.saveRestaurantData();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
     		initializeAdminTableView();
     		tvAdmins.refresh();
     	}
@@ -387,7 +413,8 @@ public class UsersGUI {
     		if (newPasswordTxt.getText().equals(newHiddenPasswordTxt.getText())) {
     			try {
     				restaurant.addAdminUser(newAdminNameTxt.getText(), newAdminSurnameTxt.getText(), newAdminIdTxt.getText(), null, newAdminUsernameTxt.getText(), newPasswordTxt.getText(), null);
-    			} catch (IOException e) {
+    	    	    welcomeGUI.saveRestaurantData();
+			} catch (IOException e) {
     				// TODO Auto-generated catch block
     				e.printStackTrace();
     			}
@@ -404,6 +431,7 @@ public class UsersGUI {
     	
     	try {
 			restaurant.deletedAdminUser(thisAdmin);
+    	    welcomeGUI.saveRestaurantData();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
