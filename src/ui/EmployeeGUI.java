@@ -241,7 +241,10 @@ public class EmployeeGUI {
     	int indexProduct = restaurant.getProducts().indexOf(productChooser.getValue()); 
     	//Searching the selected size in the list of product selected's sizes
     	int indexSize = restaurant.getProducts().get(indexProduct).getSizes().indexOf(sizeChooser.getValue());
-    	productsList.add(new DetailProduct(restaurant.getProducts().get(indexProduct), amountChooser.getValue(), restaurant.getProducts().get(indexProduct).getPricesBySizes().get(indexSize)));
+    	DetailProduct detailProduct = new DetailProduct(restaurant.getProducts().get(indexProduct), amountChooser.getValue(), restaurant.getProducts().get(indexProduct).getPricesBySizes().get(indexSize));
+    	productsList.add(detailProduct);
+    	detailProduct.getProduct().setCont(amountChooser.getValue());
+    	detailProduct.getProduct().setTotal(Integer.parseInt(detailProduct.getTotalPrice()));
     	loadProductsList();
     }
     
