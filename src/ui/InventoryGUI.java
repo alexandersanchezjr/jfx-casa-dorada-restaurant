@@ -208,7 +208,7 @@ public class InventoryGUI {
     private AnchorPane typePane;
 
     @FXML
-    private ListView<?> lvTypes;
+    private ListView<String> lvTypes;
 
     @FXML
     private Label labTypeId;
@@ -264,7 +264,7 @@ public class InventoryGUI {
     private TextField ingredientsExportSeparatorTxt;
 
     @FXML
-    private TableView<?> tvIngredientsPane;
+    private TableView<Ingredient> tvIngredientsPane;
 
 	private Restaurant restaurant;
 	private WelcomeGUI welcomeGUI;
@@ -466,6 +466,7 @@ public class InventoryGUI {
     }
     
     ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
+    ArrayList<PriceBySize> pricesBySize = new ArrayList<PriceBySize>();
     
     @FXML
     public void addIIngredientToNewProduct(ActionEvent event) {
@@ -490,7 +491,7 @@ public class InventoryGUI {
 		    alert.setContentText("¡Ups! no has ingresado el tamaño o el precio");
 		    alert.showAndWait();
     	} else {
-    		
+    		pricesBySize.add(new PriceBySize(newSizeTxt.getText(), Integer.parseInt(newSizePriceTxt.getText())));
     	}
     }
     
@@ -501,15 +502,16 @@ public class InventoryGUI {
     	tcIngredientsCodeNewProduct.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("id"));
     }
     
-    public void loadPricesBySizeNewProduct(int indexProduct) {
-    	ObservableList<PriceBySize> pricesBySize = FXCollections.observableArrayList(restaurant.getProducts().get(indexProduct).getPricesBySizes());
-		tvSizes.setItems(pricesBySize);
+    public void loadPricesBySizeNewProduct() {
+    	ObservableList<PriceBySize> pricesBySizeList = FXCollections.observableArrayList(pricesBySize);
+		tvSizes.setItems(pricesBySizeList);
 		tcProductSizeName.setCellValueFactory(new PropertyValueFactory<PriceBySize,String>("size"));
 		tcProductSizePrice.setCellValueFactory(new PropertyValueFactory<PriceBySize,Integer>("price"));
     }
     
     @FXML
     public void createNewProduct(ActionEvent event) {
+    	boolean added = false;
     	if(newProductNameTxt.getText().isEmpty() || cbTypeForNewProduct.getPromptText().equals("Categoría")) {
     		Alert alert = new Alert(AlertType.WARNING);
 	    	alert.setTitle("Crear producto");
@@ -542,11 +544,25 @@ public class InventoryGUI {
     	    	}
     	    }
     		try {
-				restaurant.addProduct(newProductNameTxt.getText(), ingredients, t);
+				added = restaurant.addProduct(newProductNameTxt.getText(), ingredients, t);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				Alert alert = new Alert(AlertType.WARNING);
+		    	alert.setTitle("Crear producto");
+		    	alert.setHeaderText(null);
+		    	alert.setContentText("No ha sido posible crear el producto");
+		    	alert.showAndWait();
 			}
+    		if(added) {
+    			Alert alert = new Alert(AlertType.INFORMATION);
+		    	alert.setTitle("Crear producto");
+		    	alert.setHeaderText(null);
+		    	alert.setContentText("El producto ha sido creado y agregado a la lista de productos");
+		    	alert.showAndWait();
+		    	
+		    	restaurant.getProducts().subList(restaurant.getProducts().size()-1, restaurant.getProducts().size()).get(0).setPricesBySizes(pricesBySize);
+    		}
     	}
     }
 
@@ -676,65 +692,148 @@ public class InventoryGUI {
     
 	//Type of Product ActionEvent methods
     
+    public void loadCategories() {
+    	ArrayList<String> typesNames = new ArrayList<String>();
+    	for(int i = 0; i<restaurant.getTypes().size(); i++) {
+    		if(restaurant.getTypes().get(i) != null) {
+    			typesNames.add(restaurant.getTypes().get(i).getName());
+    		}
+    	}
+		ObservableList<String> types = FXCollections.observableArrayList(typesNames);
+		lvTypes.setItems(types);
+    }
+    
+    @FXML
+    public void categorySelected(MouseEvent event) {
+    	String typeSelected = lvTypes.getSelectionModel().getSelectedItem();
+    	if(typeSelected != null) {
+    		typeNameTxt.setEditable(true);
+			int indexType = 0;
+			for(int i = 0; i<restaurant.getTypes().size(); i++) {
+				if(restaurant.getTypes().get(i) != null && restaurant.getTypes().get(i).getName().equals(typeSelected)) {
+					indexType = i;
+				}
+			}
+    		typeNameTxt.setText(restaurant.getTypes().get(indexType).getName());
+			labTypeId.setText("# " + Long.toString(restaurant.getTypes().get(indexType).getId()));
+			if(restaurant.getTypes().get(indexType).isAvailability()) {
+				tbTypeAvailability.setText("Habilitado");
+			}
+			else {
+				tbTypeAvailability.setText("Deshabilitado");
+			}
+    	}
+    }
+    
+    @FXML
+    public void updateType(ActionEvent event) { //Update Type Name
+    	int index = lvTypes.getSelectionModel().getSelectedIndex();
+    	restaurant.getTypes().get(index).setName(typeNameTxt.getText());
+    	loadCategories();
+    	lvTypes.refresh();
+    }
+
+    @FXML
+    public void changeTypeAvailability(ActionEvent event) throws IOException {
+    	int index = lvTypes.getSelectionModel().getSelectedIndex();
+    	if(tbTypeAvailability.getText().equals("Habilitado")) {
+    		restaurant.disableType(restaurant.getTypes().get(index));
+    		tbTypeAvailability.setText("Deshabilitado");
+    	}
+    	else {
+    		restaurant.enableType(restaurant.getTypes().get(index));
+    		tbTypeAvailability.setText("Habilitado");
+    	}
+    }
+
+    @FXML
+    public void createNewType(ActionEvent event) throws IOException {
+    	boolean added = false;
+    	if(newTypeNameTxt.getText().isEmpty()) {
+    		Alert alert = new Alert(AlertType.WARNING);
+	    	alert.setTitle("Crear nueva categoria");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("No has ingresado un nombre para la nueva categoria");
+	    	alert.showAndWait();
+    	}
+    	else {
+    		boolean availability = tbNewTypeAvailability.getText().equals("Habilitado")? true : false;
+    		added = restaurant.addTypeProduct(newTypeNameTxt.getText(), availability);
+    	}
+    	
+    	if(added) {
+    		Alert alert = new Alert(AlertType.INFORMATION);
+	    	alert.setTitle("Categoria creada");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("La categoria ha sido creada y agregada a la lista de categorias");
+	    	alert.showAndWait();
+	    	
+	    	newTypeNameTxt.clear();
+	    	tbNewTypeAvailability.setText("Habilitado");
+	    	
+	    	loadCategories();
+	    	lvTypes.refresh();
+    	}
+    }
+    
     @FXML
     public void changeNewTypeAvailability(ActionEvent event) {
+    	if(tbNewTypeAvailability.getText().equals("Habilitado")) {
+    		tbNewTypeAvailability.setText("Deshabilitado");
+    	}
+    	else {
+    		tbNewTypeAvailability.setText("Habilitado");
+    	}
+    }
+    
+    @FXML
+    void clearTypesList(ActionEvent event) {
 
     }
-
+    
     @FXML
-    public void changeTypeAvailability(ActionEvent event) {
-
-    }
-
-    @FXML
-    public void createNewType(ActionEvent event) {
-
-    }
-
-    @FXML
-    public void exportTypeList(ActionEvent event) {
-
-    }
-
-    @FXML
-    public void importTypeList(ActionEvent event) {
-
-    }
-
-    @FXML
-    public void updateType(ActionEvent event) {
+    void deleteType(ActionEvent event) {
 
     }
     
     //Ingredients ActionEvent methods
     
+    public void loadIngredientsList() {
+    	
+    }
+    
     @FXML
-    void changeIngredientAvailability(ActionEvent event) {
+    public void ingredientSelected(MouseEvent event) {
+    	
+    }
+    
+    @FXML
+    public void createNewIngredient(ActionEvent event) {
+
+    }
+    
+    @FXML
+    public void changeNewIngredientAvailability(ActionEvent event) {
+
+    }
+    
+    @FXML
+    public void changeIngredientAvailability(ActionEvent event) {
 
     }
 
     @FXML
-    void changeNewIngredientAvailability(ActionEvent event) {
+    public void updateIngredient(ActionEvent event) {
 
     }
-
+    
     @FXML
-    void createNewIngredient(ActionEvent event) {
+    public void deleteIngredient(ActionEvent event) {
 
     }
-
+    
     @FXML
-    void exportIngredientsList(ActionEvent event) {
-
-    }
-
-    @FXML
-    void importIngredientsList(ActionEvent event) {
-
-    }
-
-    @FXML
-    void updateIngredient(ActionEvent event) {
+    public void clearIngredientsList(ActionEvent event) {
 
     }
     
