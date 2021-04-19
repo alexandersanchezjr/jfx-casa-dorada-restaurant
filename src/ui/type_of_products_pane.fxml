@@ -6,23 +6,21 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="typePane" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="typePane" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ListView fx:id="lvTypes" layoutY="45.0" prefHeight="394.0" prefWidth="162.0" AnchorPane.bottomAnchor="161.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="45.0">
+      <ListView fx:id="lvTypes" layoutX="23.0" layoutY="117.0" onMouseClicked="#categorySelected" prefHeight="394.0" prefWidth="325.0" AnchorPane.bottomAnchor="89.0" AnchorPane.leftAnchor="23.0" AnchorPane.topAnchor="117.0">
          <contextMenu>
             <ContextMenu>
               <items>
-                <MenuItem mnemonicParsing="false" text="Borrar Producto" />
+                <MenuItem mnemonicParsing="false" onAction="#deleteType" text="Borrar Categoria" />
               </items>
             </ContextMenu>
          </contextMenu>
@@ -43,7 +41,7 @@
                   <Font name="Gill Sans MT" size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="typeNameTxt" editable="false" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="169.0" text="Entradas" GridPane.rowIndex="1" />
+            <TextField fx:id="typeNameTxt" editable="false" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="169.0" promptText="Nombre de categoría..." GridPane.rowIndex="1" />
             <ToggleButton fx:id="tbTypeAvailability" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#changeTypeAvailability" text="Habilitado" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
             <Button mnemonicParsing="false" onAction="#updateType" text="Actualizar" GridPane.rowIndex="2" />
          </children>
@@ -51,25 +49,25 @@
             <Insets bottom="10.0" />
          </padding>
       </GridPane>
-      <Label layoutY="10.0" text="Categorías">
+      <Label layoutX="11.0" layoutY="18.0" text="Categorías">
          <font>
             <Font name="Gill Sans MT Bold" size="30.0" />
          </font>
       </Label>
-      <GridPane hgap="10.0" layoutX="181.0" layoutY="117.0" prefHeight="73.0" prefWidth="505.0" style="-fx-border-color: black; -fx-border-width: 2px 0px 0px 2px; -fx-border-radius: 12;" vgap="5.0" AnchorPane.bottomAnchor="252.0" AnchorPane.leftAnchor="181.0" AnchorPane.rightAnchor="14.0">
+      <GridPane hgap="10.0" layoutX="361.0" layoutY="117.0" prefHeight="160.0" prefWidth="325.0" style="-fx-border-color: black; -fx-border-width: 2px 0px 0px 2px; -fx-border-radius: 12px 0px 0px 0px;" vgap="5.0" AnchorPane.bottomAnchor="293.0" AnchorPane.leftAnchor="361.0" AnchorPane.rightAnchor="14.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="77.0" minHeight="57.0" prefHeight="77.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="20.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label maxWidth="1.7976931348623157E308" minWidth="-Infinity" text="Crea una nueva categoría">
+            <Label maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="52.0" prefWidth="303.0" text="Crea una nueva categoría" GridPane.columnSpan="2">
                <font>
                   <Font name="Gill Sans MT Bold" size="18.0" />
                </font>
@@ -82,20 +80,10 @@
             <Insets left="10.0" top="10.0" />
          </padding>
       </GridPane>
-      <VBox layoutY="454.0" spacing="10.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="0.0">
-         <children>
-            <Separator prefHeight="0.0" prefWidth="162.0" />
-            <Button layoutX="10.0" layoutY="13.0" maxWidth="-Infinity" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#importTypeList" prefHeight="25.0" prefWidth="162.0" text="Importar Lista">
-               <graphic>
-                  <TextField fx:id="typeImportSeparatorTxt" alignment="CENTER" maxWidth="30.0" nodeOrientation="LEFT_TO_RIGHT" text=";" />
-               </graphic>
-            </Button>
-            <Button layoutX="10.0" layoutY="13.0" maxWidth="-Infinity" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#exportTypeList" prefHeight="25.0" prefWidth="162.0" text="Exportar Lista">
-               <graphic>
-                  <TextField fx:id="typeExportSeparator" alignment="CENTER" maxWidth="30.0" nodeOrientation="LEFT_TO_RIGHT" text=";" />
-               </graphic>
-            </Button>
-         </children>
-      </VBox>
+      <Button layoutX="101.0" layoutY="531.0" mnemonicParsing="false" onAction="#clearTypesList" prefHeight="29.0" prefWidth="161.0" text="Limpiar lista" textAlignment="CENTER" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="101.0">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
