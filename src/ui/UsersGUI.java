@@ -338,6 +338,8 @@ public class UsersGUI {
     	}
     	if (input.equals("SI")) {
     		restaurant.getAdmins().clear();
+    		initializeAdminTableView();
+    		tvAdmins.refresh();
     	}
     }
 
