@@ -16,7 +16,7 @@
 
 <AnchorPane fx:id="typePane" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ListView fx:id="lvTypes" layoutX="23.0" layoutY="117.0" onMouseClicked="#categorySelected" prefHeight="394.0" prefWidth="325.0" AnchorPane.bottomAnchor="89.0" AnchorPane.leftAnchor="23.0" AnchorPane.topAnchor="117.0">
+      <ListView fx:id="lvTypes" layoutX="23.0" layoutY="117.0" onMouseClicked="#categorySelected" prefHeight="453.0" prefWidth="325.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="23.0" AnchorPane.topAnchor="117.0">
          <contextMenu>
             <ContextMenu>
               <items>
@@ -80,10 +80,5 @@
             <Insets left="10.0" top="10.0" />
          </padding>
       </GridPane>
-      <Button layoutX="101.0" layoutY="531.0" mnemonicParsing="false" onAction="#clearTypesList" prefHeight="29.0" prefWidth="161.0" text="Limpiar lista" textAlignment="CENTER" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="101.0">
-         <font>
-            <Font size="13.0" />
-         </font>
-      </Button>
    </children>
 </AnchorPane>
