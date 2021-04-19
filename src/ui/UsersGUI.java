@@ -917,19 +917,21 @@ public class UsersGUI {
      @FXML
      void changeEmployeeAvailability(ActionEvent event) {
     	 Employee thisEmployee = tvAdminEmployees.getSelectionModel().getSelectedItem();
-     	
-     	if (tbEmployeeAvailability.isSelected()) {
-     		tbEmployeeAvailability.setText("HABILITADO");
-     		thisEmployee.setAvailability(true);
-     	}else {
-     		tbEmployeeAvailability.setText("DESHABILITADO");
-     		thisEmployee.setAvailability(false);
-     	}
-     	try{
-     		welcomeGUI.saveRestaurantData();
-     	}catch (IOException ioe) {
-     		ioe.printStackTrace();
-     	}
+		try {
+			if (tbEmployeeAvailability.isSelected()) {
+		 		tbEmployeeAvailability.setText("HABILITADO");
+		 		restaurant.enableEmployee(thisEmployee);
+		 		thisEmployee.setAvailability(true);
+		 	}else {
+		 		tbEmployeeAvailability.setText("DESHABILITADO");
+		 		restaurant.enableEmployee(thisEmployee);
+		 		thisEmployee.setAvailability(false);
+		 	}
+	 		welcomeGUI.saveRestaurantData();
+		
+		}catch (IOException ioe){
+			
+		}
      }
      
      @FXML
