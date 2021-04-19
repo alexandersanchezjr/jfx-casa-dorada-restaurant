@@ -53,7 +53,7 @@ public class AdminGUI {
     	  @Override
     	  public void run() {
     	   Date date = new Date ();
-    	   SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+    	   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy HH:mm:ss");
     	   Platform.runLater(() -> labTime.setText(sdf.format(date)));
     	  }
     	}, 0, 1000);
@@ -184,5 +184,6 @@ public class AdminGUI {
 		AnchorPane.setBottomAnchor(typesPane, 0.0);
 		AnchorPane.setLeftAnchor(typesPane, 0.0);
 		AnchorPane.setRightAnchor(typesPane, 0.0);
+		inventoryGUI.loadCategories();
     }
 }
