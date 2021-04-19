@@ -9,15 +9,17 @@ public class Type implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private String name;
 	private boolean availability;
+	private long id;
 	private User creator;
 	private User modifier;
 	/**
 	 * @param name
 	 * @param availability
 	 */
-	public Type(String name, boolean availability, User creator) {
+	public Type(String name, boolean availability, long id, User creator) {
 		this.name = name;
 		this.setAvailability(availability);
+		this.setId(id);
 		this.creator = creator;
 		modifier = creator;
 	}
@@ -44,6 +46,18 @@ public class Type implements Serializable{
 	 */
 	public void setAvailability(boolean availability) {
 		this.availability = availability;
+	}
+	/**
+	 * @return the id
+	 */
+	public long getId() {
+		return id;
+	}
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(long id) {
+		this.id = id;
 	}
 	/**
 	 * @return the creator
