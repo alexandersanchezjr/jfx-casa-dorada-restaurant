@@ -406,10 +406,13 @@ public class Restaurant implements Serializable{
 	
 	public boolean disableUser(User u) throws IOException {
 		boolean disabled = false;
-		if(u.isAvailability()) {
-			u.setAvailability(false);
-			disabled = true;
-
+		boolean changed = false;
+		for (int i = 0; i < getOperatorsUsers().size() && !changed; i++) {
+			if (getOperatorsUsers().get(i) == u) {
+				getOperatorsUsers().get(i).setAvailability(false);
+				changed = true;
+				disabled = true;
+			}
 		}
 		return disabled;
 	}
