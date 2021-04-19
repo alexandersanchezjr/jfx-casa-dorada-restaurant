@@ -81,10 +81,12 @@
             <Insets left="10.0" top="10.0" />
          </padding>
       </GridPane>
-      <TableView fx:id="tvIngredientsPane" layoutX="57.0" layoutY="117.0" onMouseClicked="#ingredientSelected" prefHeight="334.0" prefWidth="586.0" AnchorPane.bottomAnchor="149.0" AnchorPane.leftAnchor="57.0" AnchorPane.rightAnchor="57.0" AnchorPane.topAnchor="117.0">
+      <TableView fx:id="tvIngredientsPane" layoutX="30.0" layoutY="117.0" onMouseClicked="#ingredientSelected" prefHeight="334.0" prefWidth="643.0" AnchorPane.bottomAnchor="149.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="117.0">
         <columns>
-          <TableColumn prefWidth="252.0" text="Nombre" />
-            <TableColumn prefWidth="252.0" text="Codigo" />
+          <TableColumn fx:id="tcIngredientName" prefWidth="159.0" text="Nombre" />
+            <TableColumn fx:id="tcIngredientId" prefWidth="163.0" text="Codigo" />
+            <TableColumn fx:id="tcIngredientAvailability" prefWidth="165.0" text="Disponibilidad" />
+            <TableColumn fx:id="tcIngredientCreator" prefWidth="167.0" text="Creador" />
         </columns>
          <contextMenu>
             <ContextMenu>
