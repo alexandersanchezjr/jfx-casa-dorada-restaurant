@@ -775,6 +775,13 @@ public class UsersGUI {
     	 }
     	 if (input.equals("SI")) {
     		 restaurant.getOperatorsUsers().clear();
+    		 try {
+				welcomeGUI.saveRestaurantData();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
     	 }
      }
 
@@ -817,6 +824,7 @@ public class UsersGUI {
      		if (newOperatorPasswordTxt.getText().equals(newHiddenPasswordTxct.getText())) {
      			try {
      				restaurant.addUser(newOperatorNameTxt.getText(), newOperatorSurnameTxt.getText(), newOperatorIdTxt.getText(), null, newOperatorUsernameTxt.getText(), newOperatorPasswordTxt.getText(), null);
+     	    	    welcomeGUI.saveRestaurantData();
      			} catch (IOException e) {
      				// TODO Auto-generated catch block
      				e.printStackTrace();
@@ -833,6 +841,7 @@ public class UsersGUI {
      	
      	try {
  			restaurant.deleteUser(thisOperator);
+     		welcomeGUI.saveRestaurantData();
  		} catch (IOException e) {
  			// TODO Auto-generated catch block
  			e.printStackTrace();
@@ -868,12 +877,24 @@ public class UsersGUI {
  	    	alert.showAndWait();
      	}else {
      		if (adminHiddenPasswordTxt.getText().equals(adminPasswordTxt.getText())) {
-     			
-     			thisOperator.setName(operatorNameTxt.getText());
-     			thisOperator.setSurname(operatorSurnameTxt.getText());
-     			thisOperator.setId(operatorIdTxt.getText());
-     			thisOperator.setUsername(operatorUsernameTxt.getText());
-     			thisOperator.setPassword(operatorHiddenPasswordTxt.getText());
+     			boolean changed = false;
+				for (int i = 0; i < restaurant.getOperatorsUsers().size() && !changed; i++) {
+     				if (restaurant.getOperatorsUsers().get(i) == thisOperator) {
+     					restaurant.getOperatorsUsers().get(i).setName(operatorNameTxt.getText());
+     					restaurant.getOperatorsUsers().get(i).setSurname(operatorSurnameTxt.getText());
+     					restaurant.getOperatorsUsers().get(i).setId(operatorIdTxt.getText());
+     					restaurant.getOperatorsUsers().get(i).setUsername(operatorUsernameTxt.getText());
+     					restaurant.getOperatorsUsers().get(i).setPassword(operatorHiddenPasswordTxt.getText());     					
+     	     			changed = true;
+     				}
+     			}
+	    	    try {
+					welcomeGUI.saveRestaurantData();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
      			initializeOperatorsTableView();
      		}
      			
