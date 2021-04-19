@@ -12,6 +12,8 @@ public class Product implements Serializable {
 	private ArrayList<PriceBySize> pricesBySizes;
 	private boolean availability;
 	private Type type;
+	private int cont;
+	private int total;
 	private User creator;
 	private User modifier;
 	
@@ -75,6 +77,34 @@ public class Product implements Serializable {
 		type.setName(newType);
 	}
 	/**
+	 * @return the cont
+	 */
+	public int getCont() {
+		return cont;
+	}
+
+	/**
+	 * @param cont the cont to set
+	 */
+	public void setCont(int amount) {
+		cont += amount;
+	}
+
+	/**
+	 * @return the total
+	 */
+	public int getTotal() {
+		return total;
+	}
+
+	/**
+	 * @param total the total to set
+	 */
+	public void setTotal(int total) {
+		this.total += total;
+	}
+
+	/**
 	 * @return the creator
 	 */
 	public User getCreator() {
@@ -106,6 +136,13 @@ public class Product implements Serializable {
 		return pricesBySizes;
 	}
 	
+	/**
+	 * @param pricesBySizes the pricesBySizes to set
+	 */
+	public void setPricesBySizes(ArrayList<PriceBySize> pricesBySizes) {
+		this.pricesBySizes = pricesBySizes;
+	}
+
 	public ArrayList<String> getSizes() {
 		ArrayList<String> sizes = new ArrayList<String>();
 		for(int i = 0; i<pricesBySizes.size(); i++) {
