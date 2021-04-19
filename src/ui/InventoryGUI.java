@@ -8,7 +8,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -799,13 +798,36 @@ public class InventoryGUI {
     }
     
     @FXML
-    void clearTypesList(ActionEvent event) {
-
-    }
-    
-    @FXML
-    void deleteType(ActionEvent event) {
-
+    public void deleteType(ActionEvent event) throws IOException {
+    	boolean deleted = false;
+    	String t = lvTypes.getSelectionModel().getSelectedItem();
+    	boolean found = false;
+    	for(int i = 0; i<restaurant.getTypes().size() && !found; i++) {
+    		if(restaurant.getTypes().get(i).getName().equals(t)) {
+    			deleted = restaurant.deleteTypeProduct(restaurant.getTypes().get(i));
+    			found = true;
+    		}
+    	}
+    	if(deleted) {
+    		Alert alert = new Alert(AlertType.INFORMATION);
+	    	alert.setTitle("Eliminar Categoría");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("La categoría " + t + " ha sido borrada del sistema");
+	    	alert.showAndWait();
+	    	
+	    	loadIngredientsList();
+	    	tvIngredientsPane.refresh();
+    	}
+    	else {
+    		Alert alert = new Alert(AlertType.INFORMATION);
+	    	alert.setTitle("Eliminar Categoría");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("No es posible borrar la categoría " + t + ", existen productos que pertenecen a esta");
+	    	alert.showAndWait();
+	    	
+	    	loadIngredientsList();
+	    	tvIngredientsPane.refresh();
+    	}
     }
     
     //Ingredients ActionEvent methods
@@ -886,13 +908,30 @@ public class InventoryGUI {
     }
     
     @FXML
-    public void deleteIngredient(ActionEvent event) {
-    	
-    }
-    
-    @FXML
-    public void clearIngredientsList(ActionEvent event) {
-
+    public void deleteIngredient(ActionEvent event) throws IOException {
+    	boolean deleted = false;
+    	Ingredient ingredient = tvIngredientsPane.getSelectionModel().getSelectedItem();
+    	deleted = restaurant.deleteIngredient(ingredient);
+    	if(deleted) {
+    		Alert alert = new Alert(AlertType.INFORMATION);
+	    	alert.setTitle("Eliminar ingrediente");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("El ingrediente " + ingredient.getName() + " ha sido borrado del sistema");
+	    	alert.showAndWait();
+	    	
+	    	loadIngredientsList();
+	    	tvIngredientsPane.refresh();
+    	}
+    	else {
+    		Alert alert = new Alert(AlertType.INFORMATION);
+	    	alert.setTitle("Eliminar ingrediente");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("No es posible borrar el ingrediente " + ingredient.getName() + ", existe(n) producto(s) que contienen el ingrediente");
+	    	alert.showAndWait();
+	    	
+	    	loadIngredientsList();
+	    	tvIngredientsPane.refresh();
+    	}
     }
     
 }
