@@ -78,7 +78,9 @@ public class Restaurant implements Serializable{
 	public ArrayList<String> getIdProducts() {
 		ArrayList<String> ids = new ArrayList<>();
 		for(int i = 0; i<products.size(); i++) {
-			ids.add(Long.toString(products.get(i).getId()));
+			if(products.get(i) != null) {
+				ids.add(Long.toString(products.get(i).getId()));
+			}
 		}
 		return ids;
 	}
@@ -191,9 +193,9 @@ public class Restaurant implements Serializable{
 	
 	//Product MANAGEMENT
 
-	public boolean addProduct(String name, ArrayList<Ingredient> ingredients, String selectedType, boolean typeAvailability, User typeCreator) throws IOException {
+	public boolean addProduct(String name, ArrayList<Ingredient> ingredients, Type t) throws IOException {
 		boolean added = false;
-		Product newProduct = new Product(name,(identifier++), ingredients, selectedType, typeAvailability, typeCreator, loggedUser);
+		Product newProduct = new Product(name,(identifier++), ingredients, t, loggedUser);
 		if(!products.contains(newProduct)) {	
 			added = products.add(newProduct);
 
@@ -251,7 +253,7 @@ public class Restaurant implements Serializable{
 	
 	public boolean addTypeProduct(String name, boolean availability) throws IOException {
 		boolean added = false;
-		Type thisType = new Type(name, availability, loggedUser);
+		Type thisType = new Type(name, availability, (identifier++), loggedUser);
 		if(!types.contains(thisType)) {
 			added = types.add(thisType);
 
@@ -472,7 +474,6 @@ public class Restaurant implements Serializable{
 		for(int i = 0; i<products.size(); i++) {
 			if(!products.get(i).getIngredients().contains(ingredient)) {
 				deleted = ingredients.remove(ingredient);
-
 			}
 		}
 		return deleted;
@@ -602,9 +603,6 @@ public class Restaurant implements Serializable{
 		}
 		return disabled;
 	}
-	
-
-	
 
 	
 	//IMPORT CUSTOMERS
@@ -665,52 +663,31 @@ public class Restaurant implements Serializable{
 		br.close();
 	}
 	
-	//IMPORT ADMINS
-	
-	//IMPORT INGREDIENTS
-	
-	public void importIngredients(String fileName, String separator) throws IOException {
-		BufferedReader br = new BufferedReader(new FileReader(fileName));
-		String line = br.readLine();
-		while(line!=null) {
-			String[] parts = line.split(separator);
-			String name = parts[0];
-			boolean availability = Boolean.parseBoolean(parts[1]);
-			long id = Long.parseLong(parts[2]);
-			String idUser = parts[3];
-			int indexUser = 0;
-			for(int i = 0; i<admins.size(); i++) {
-				if(admins.get(i).getId().equals(idUser)) {
-					indexUser = i;
-				}
-			}
-			ingredients.add(new Ingredient(name, availability, id, admins.get(indexUser)));
-		}
-		br.close();
-
-	}
-	
 	//IMPORT PRODUCTS
 	
 	public void importProducts(String fileName, String separator) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(fileName));
-		String line = br.readLine();
-		while(line!=null) {
+		String firstLine = br.readLine();
+		while(firstLine!=null) {
+			String line = br.readLine();
 			String[] parts = line.split(separator);
 			String name = parts[0];
 			long id = Long.parseLong(parts[1]);
 			boolean availability = Boolean.parseBoolean(parts[2]);
 			String selectedType = parts[3];
-			int indexType = 0;
+			Type t = null;
 			ArrayList<Ingredient> ingredientsProduct = new ArrayList<Ingredient>();
-			for(int i = 0; i<types.size(); i++) {
+			//Search the Object Type with the name (selectedType)
+			boolean found = false; 
+			for(int i = 0; i<types.size() && !found; i++) {
 				if(types.get(i).getName().equals(selectedType)) {
-					indexType = i;
+					t = types.get(i);
+					found = true;
 				}
 			}
 			
 			int k = 4;
-			while(!(parts[k].equalsIgnoreCase("false") || parts[k].equalsIgnoreCase("true"))) {
+			while(k < parts.length) {
 				long idIngredient = Long.parseLong(parts[k]);
 				for(int i = 0; i<ingredients.size(); i++) {
 					if(ingredients.get(i).getId() == idIngredient) {
@@ -719,7 +696,12 @@ public class Restaurant implements Serializable{
 				}
 				k++;
 			}
-			Product p = new Product(name, id, ingredients, selectedType, types.get(indexType).isAvailability(), types.get(indexType).getCreator(), loggedUser);
+			
+			if(t == null) {
+				addTypeProduct(selectedType, true);
+			}
+			
+			Product p = new Product(name, id, ingredients, t, loggedUser);
 			p.setAvailability(availability);
 			products.add(p);
 			line = br.readLine();
@@ -779,11 +761,19 @@ public class Restaurant implements Serializable{
 	}
 	//EXPORT PRODUCTS
 	public void exportProduct (String fileName, String separator) throws FileNotFoundException {
-		//PrintWriter pw = new PrintWriter (fileName);
-		//int total = 0;
-		//TODO finished this method
+		PrintWriter pw = new PrintWriter (fileName);
+		pw.println("Nombre" + separator + "ID" + separator + "Disponibilidad" + separator + "Categoria");
 		
+		for(int i = 0; i<products.size(); i++) {
+			String ingredientString = "";
+			for(int j = 0; j<products.get(i).getIngredients().size(); j++) {
+				String previous = separator;
+				ingredientString += previous + products.get(i).getIngredients().get(j).getName();
+			}
+			pw.println(products.get(i).getName() + separator + products.get(i).getId() + separator + products.get(i).isAvailability() + separator + ingredientString);
+		}
 		
+		pw.close();
 	}
 	
 	//EXPORT EMPLOYEES

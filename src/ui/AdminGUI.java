@@ -39,7 +39,7 @@ public class AdminGUI {
     
     public void initialize() {
     	usersGUI.injectAdminGUI(restaurant, welcomeGUI);
-    	inventoryGUI.injectAdminGUI(restaurant);
+    	inventoryGUI.injectAdminGUI(restaurant, welcomeGUI);
     }
     
     public void injectWelcomeGUI(WelcomeGUI welcomeGUI, Restaurant restaurant) {
@@ -53,7 +53,7 @@ public class AdminGUI {
     	  @Override
     	  public void run() {
     	   Date date = new Date ();
-    	   SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+    	   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy HH:mm:ss");
     	   Platform.runLater(() -> labTime.setText(sdf.format(date)));
     	  }
     	}, 0, 1000);
@@ -142,6 +142,7 @@ public class AdminGUI {
 		AnchorPane.setBottomAnchor(ingredientsPane, 0.0);
 		AnchorPane.setLeftAnchor(ingredientsPane, 0.0);
 		AnchorPane.setRightAnchor(ingredientsPane, 0.0);
+		inventoryGUI.loadIngredientsList();
     }
 
     @FXML
@@ -170,6 +171,7 @@ public class AdminGUI {
 		AnchorPane.setLeftAnchor(productPane, 0.0);
 		AnchorPane.setRightAnchor(productPane, 0.0);
 		inventoryGUI.loadProducts();
+		inventoryGUI.loadIngredientsAndTypes();
     }
 
     @FXML
@@ -183,5 +185,6 @@ public class AdminGUI {
 		AnchorPane.setBottomAnchor(typesPane, 0.0);
 		AnchorPane.setLeftAnchor(typesPane, 0.0);
 		AnchorPane.setRightAnchor(typesPane, 0.0);
+		inventoryGUI.loadCategories();
     }
 }

@@ -23,14 +23,14 @@
 
 <AnchorPane fx:id="menuAndOrderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <AnchorPane fx:id="menuPane" layoutY="53.0" prefHeight="347.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="53.0">
+      <AnchorPane fx:id="menuPane" layoutY="53.0" prefHeight="347.0" prefWidth="600.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="53.0">
          <children>
             <Spinner fx:id="amountChooser" disable="true" layoutX="26.0" layoutY="124.0" prefHeight="25.0" prefWidth="100.0" AnchorPane.leftAnchor="12.0" />
             <Button disable="true" layoutX="146.0" layoutY="124.0" mnemonicParsing="false" onAction="#addProductToList" prefHeight="25.0" prefWidth="90.0" text="Agregar" AnchorPane.leftAnchor="146.0" />
             <TextArea fx:id="orderCommentTxt" layoutX="28.0" layoutY="181.0" prefHeight="319.0" prefWidth="222.0" promptText="Escribe aquí..." AnchorPane.bottomAnchor="47.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="181.0" />
             <Label layoutX="28.0" layoutY="153.0" text="Comentario:" AnchorPane.leftAnchor="14.0" />
-            <ComboBox fx:id="typeChooser" layoutX="14.0" layoutY="14.0" onMouseClicked="#handleMouseClickedType" prefHeight="25.0" prefWidth="222.0" promptText="Elige una categoría..." AnchorPane.leftAnchor="14.0" />
-            <ComboBox fx:id="productChooser" disable="true" layoutX="14.0" layoutY="49.0" prefHeight="25.0" prefWidth="222.0" promptText="Elige un producto..." AnchorPane.leftAnchor="14.0" />
+            <ComboBox fx:id="typeChooser" layoutX="14.0" layoutY="14.0" onAction="#categoryChosen" prefHeight="25.0" prefWidth="222.0" promptText="Elige una categoría..." AnchorPane.leftAnchor="14.0" />
+            <ComboBox fx:id="productChooser" disable="true" layoutX="14.0" layoutY="49.0" onAction="#productChosen" prefHeight="25.0" prefWidth="222.0" promptText="Elige un producto..." AnchorPane.leftAnchor="14.0" />
             <ComboBox fx:id="sizeChooser" disable="true" layoutX="14.0" layoutY="87.0" prefHeight="25.0" prefWidth="222.0" promptText="Elige un tamaño..." AnchorPane.leftAnchor="14.0" />
             <ButtonBar layoutX="255.0" layoutY="300.0" prefHeight="40.0" prefWidth="331.0" AnchorPane.bottomAnchor="7.0" AnchorPane.rightAnchor="14.0">
               <buttons>
@@ -48,6 +48,7 @@
                   <TableColumn fx:id="tcMenuProductType" prefWidth="75.0" text="Categoría" />
                   <TableColumn fx:id="tcMenuProductSize" prefWidth="75.0" text="Tamaño" />
                   <TableColumn fx:id="tcMenuProductPrice" minWidth="-1.0" prefWidth="-1.0" text="Precio" />
+                  <TableColumn prefWidth="75.0" text="Cantidad" />
                </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -83,7 +84,7 @@
             </GridPane>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="orderPane" layoutX="16.0" layoutY="53.0" prefHeight="312.0" prefWidth="568.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="53.0">
+      <AnchorPane fx:id="orderPane" layoutX="16.0" layoutY="53.0" prefHeight="312.0" prefWidth="568.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="53.0">
          <children>
             <ListView fx:id="lvOrders" layoutY="43.0" onMouseClicked="#handleMouseClick" prefHeight="115.0" prefWidth="162.0" />
             <TableView fx:id="tvProducts" layoutX="195.0" layoutY="164.0" prefHeight="134.0" prefWidth="373.0" AnchorPane.bottomAnchor="49.0" AnchorPane.leftAnchor="195.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="164.0">
@@ -151,7 +152,7 @@
                         <Font name="Gill Sans MT" size="12.0" />
                      </font>
                   </Label>
-                  <TextArea fx:id="txtAreaCommentsOrder" prefWidth="200.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam dapibus velit sagittis, gravida dui semper, fermentum sapien. Morbi venenatis velit sit amet diam aliquet, in bibendum justo sagittis. Aenean blandit, lorem id ornare varius, felis velit facilisis leo, maximus placerat velit nibh sit amet tortor. Nulla facilisi. Suspendisse ut mattis enim. Curabitur eget euismod turpis. Quisque aliquam posuere est et pellentesque. Fusce gravida risus quis ex efficitur posuere. Pellentesque pulvinar lorem nunc, quis facilisis ipsum pellentesque eget. Sed ut blandit ipsum. Vestibulum at interdum massa. Etiam eleifend pretium neque, nec porttitor nulla malesuada ac. Sed porta tellus sit amet semper finibus. Nullam faucibus dolor vitae magna auctor auctor." wrapText="true">
+                  <TextArea fx:id="txtAreaCommentsOrder" editable="false" prefWidth="200.0" wrapText="true">
                      <font>
                         <Font name="Gill Sans MT" size="12.0" />
                      </font>
@@ -165,7 +166,7 @@
                         <Font name="Gill Sans MT" size="12.0" />
                      </font>
                   </Label>
-                  <TextArea fx:id="txtAreaCommentsCustomer" prefWidth="200.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam dapibus velit sagittis, gravida dui semper, fermentum sapien. Morbi venenatis velit sit amet diam aliquet, in bibendum justo sagittis. Aenean blandit, lorem id ornare varius, felis velit facilisis leo, maximus placerat velit nibh sit amet tortor. Nulla facilisi. Suspendisse ut mattis enim. Curabitur eget euismod turpis. Quisque aliquam posuere est et pellentesque. Fusce gravida risus quis ex efficitur posuere. Pellentesque pulvinar lorem nunc, quis facilisis ipsum pellentesque eget. Sed ut blandit ipsum. Vestibulum at interdum massa. Etiam eleifend pretium neque, nec porttitor nulla malesuada ac. Sed porta tellus sit amet semper finibus. Nullam faucibus dolor vitae magna auctor auctor." wrapText="true">
+                  <TextArea fx:id="txtAreaCommentsCustomer" editable="false" prefWidth="200.0" wrapText="true">
                      <font>
                         <Font name="Gill Sans MT" size="12.0" />
                      </font>

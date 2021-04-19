@@ -8,7 +8,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -40,6 +39,7 @@ import model.Ingredient;
 import model.Order;
 import model.PriceBySize;
 import model.Restaurant;
+import model.Type;
 
 public class InventoryGUI {
 
@@ -160,22 +160,22 @@ public class InventoryGUI {
     private ComboBox<String> cbIngredientForNewProduct;
 
     @FXML
-    private TableView<?> tvIngredientsForNewProduct;
+    private TableView<Ingredient> tvIngredientsForNewProduct;
 
     @FXML
-    private TableColumn<?, ?> tcIngredientsNameNewProduct;
+    private TableColumn<Ingredient, String> tcIngredientsNameNewProduct;
 
     @FXML
-    private TableColumn<?, ?> tcIngredientsCodeNewProduct;
+    private TableColumn<Ingredient, String> tcIngredientsCodeNewProduct;
 
     @FXML
-    private TableView<?> tvSizesForNewProduct;
+    private TableView<PriceBySize> tvSizesForNewProduct;
 
     @FXML
-    private TableColumn<?, ?> tcSizeNameNewProduct;
+    private TableColumn<PriceBySize, String> tcSizeNameNewProduct;
 
     @FXML
-    private TableColumn<?, ?> tcSizePriceNewProduct;
+    private TableColumn<PriceBySize, String> tcSizePriceNewProduct;
 
     @FXML
     private TextField newSizePriceTxt;
@@ -207,7 +207,7 @@ public class InventoryGUI {
     private AnchorPane typePane;
 
     @FXML
-    private ListView<?> lvTypes;
+    private ListView<String> lvTypes;
 
     @FXML
     private Label labTypeId;
@@ -263,16 +263,30 @@ public class InventoryGUI {
     private TextField ingredientsExportSeparatorTxt;
 
     @FXML
-    private TableView<?> tvIngredientsPane;
+    private TableView<Ingredient> tvIngredientsPane;
+    
+    @FXML
+    private TableColumn<Ingredient, String> tcIngredientName;
+
+    @FXML
+    private TableColumn<Ingredient, String> tcIngredientId;
+
+    @FXML
+    private TableColumn<Ingredient, String> tcIngredientAvailability;
+
+    @FXML
+    private TableColumn<Ingredient, String> tcIngredientCreator;
 
 	private Restaurant restaurant;
+	private WelcomeGUI welcomeGUI;
     
     public InventoryGUI() {
- 
+    	
     }
     
-    public void injectAdminGUI(Restaurant restaurant) {
+    public void injectAdminGUI(Restaurant restaurant, WelcomeGUI welcomeGUI) {
     	this.restaurant = restaurant;
+    	this.welcomeGUI = welcomeGUI;
     }
     
     //Orders Pane ActionEvent methods
@@ -402,7 +416,7 @@ public class InventoryGUI {
     		    alert.showAndWait();
     		    loadOrders();
     		} catch(IOException io) {
-    			Alert alert = new Alert(AlertType.ERROR);
+    			Alert alert = new Alert(AlertType.INFORMATION);
     		    alert.setTitle("Importar pedidos");
     		    alert.setHeaderText(null);
     		    alert.setContentText("Los pedidos no han podido ser importados");
@@ -414,18 +428,153 @@ public class InventoryGUI {
     //Products Pane ActionEvent methods
     
     public void loadProducts() {
-    	ObservableList<String> products = FXCollections.observableArrayList(restaurant.getIdProducts());
-    	lvOrders.setItems(products);
+    	lvProducts = new ListView<String>();
+		ObservableList<String> products = FXCollections.observableArrayList(restaurant.getIdProducts());
+		lvProducts.setItems(products);
     }
+    
+    public void loadIngredientsAndTypes() {
+    	//Separating types enable
+		ArrayList<String> types = new ArrayList<>();
+		for(int i = 0; i<restaurant.getTypes().size(); i++) {
+			if(restaurant.getTypes().get(i).isAvailability()) {
+				types.add(restaurant.getTypes().get(i).getName());
+			}
+		}
+		ObservableList<String> typesEnable = FXCollections.observableArrayList(types);
+		cbTypeForNewProduct.setItems(typesEnable);
+		//cbCategoryInProducts.setItems(typesEnable);
+		//Separating ingredients enable
+		ArrayList<String> ingredients = new ArrayList<>();
+		for(int i = 0; i<restaurant.getIngredients().size(); i++) {
+			if(restaurant.getIngredients().get(i).isAvailability()) {
+				ingredients.add(restaurant.getIngredients().get(i).getName());
+			}
+		}
+		ObservableList<String> ingredientsEnable = FXCollections.observableArrayList(ingredients);
+		cbIngredientForNewProduct.setItems(ingredientsEnable);
+    }
+    
+    private void loadIngredientsAndTypesToUpdate() {
+    	ArrayList<String> types = new ArrayList<>();
+		for(int i = 0; i<restaurant.getTypes().size(); i++) {
+			if(restaurant.getTypes().get(i).isAvailability()) {
+				types.add(restaurant.getTypes().get(i).getName());
+			}
+		}
+		ObservableList<String> typesEnable = FXCollections.observableArrayList(types);
+		cbCategoryInProducts.setItems(typesEnable);
+		
+		//Separating ingredients enable
+		ArrayList<String> ingredients = new ArrayList<>();
+		for(int i = 0; i<restaurant.getIngredients().size(); i++) {
+			if(restaurant.getIngredients().get(i).isAvailability()) {
+				ingredients.add(restaurant.getIngredients().get(i).getName());
+			}
+		}
+		ObservableList<String> ingredientsEnable = FXCollections.observableArrayList(ingredients);
+		cbIngredients.setItems(ingredientsEnable);
+    }
+    
+    ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
+    ArrayList<PriceBySize> pricesBySize = new ArrayList<PriceBySize>();
     
     @FXML
     public void addIIngredientToNewProduct(ActionEvent event) {
-    	
+    	String ingredientSelected = cbIngredientForNewProduct.getValue();
+    	int indexIngredient = 0;
+    	for(int i = 0; i<restaurant.getIngredients().size(); i++) {
+    		if(restaurant.getIngredients().get(i).getName().equals(ingredientSelected)) {
+    			indexIngredient = i;
+    		}
+    	}
+    	ingredients.add(restaurant.getIngredients().get(indexIngredient));
+    	loadIngredientsNewProduct();
+    	tvIngredientsForNewProduct.refresh();
     }
 
     @FXML
     public void addISizeToNewProduct(ActionEvent event) {
-
+    	if(newSizeTxt.getText().isEmpty() && newSizePriceTxt.getText().isEmpty()) {
+    		Alert alert = new Alert(AlertType.WARNING);
+		    alert.setTitle("Agregar tamaño");
+		    alert.setHeaderText(null);
+		    alert.setContentText("¡Ups! no has ingresado el tamaño o el precio");
+		    alert.showAndWait();
+    	} else {
+    		pricesBySize.add(new PriceBySize(newSizeTxt.getText(), Integer.parseInt(newSizePriceTxt.getText())));
+    	}
+    }
+    
+    public void loadIngredientsNewProduct() {
+    	ObservableList<Ingredient> ingredientsNewProduct = FXCollections.observableArrayList(ingredients);
+    	tvIngredientsForNewProduct.setItems(ingredientsNewProduct);
+    	tcIngredientsNameNewProduct.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("name"));
+    	tcIngredientsCodeNewProduct.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("id"));
+    }
+    
+    public void loadPricesBySizeNewProduct() {
+    	ObservableList<PriceBySize> pricesBySizeList = FXCollections.observableArrayList(pricesBySize);
+		tvSizes.setItems(pricesBySizeList);
+		tcProductSizeName.setCellValueFactory(new PropertyValueFactory<PriceBySize,String>("size"));
+		tcProductSizePrice.setCellValueFactory(new PropertyValueFactory<PriceBySize,Integer>("price"));
+    }
+    
+    @FXML
+    public void createNewProduct(ActionEvent event) {
+    	boolean added = false;
+    	if(newProductNameTxt.getText().isEmpty() || cbTypeForNewProduct.getPromptText().equals("Categoría")) {
+    		Alert alert = new Alert(AlertType.WARNING);
+	    	alert.setTitle("Crear producto");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("No has ingresado un nombre para el producto o no has seleccionado la categoria");
+	    	alert.showAndWait();
+    	}
+    	else if(tvIngredientsForNewProduct.getItems().isEmpty()) {
+    		Alert alert = new Alert(AlertType.WARNING);
+	    	alert.setTitle("Crear producto");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("No has agregado ningun ingrediente");
+	    	alert.showAndWait();
+    	}
+    	else {
+			List<Ingredient> ingredientsList = (List<Ingredient>) tvIngredientsForNewProduct.getItems();
+    	    ArrayList<Ingredient> ingredients;
+    	    if (ingredientsList instanceof ArrayList<?>) {
+    	        ingredients = (ArrayList<Ingredient>) ingredientsList;
+    	    } else {
+    	        ingredients = new ArrayList<Ingredient>(ingredientsList);
+    	    }
+    	    String type = cbTypeForNewProduct.getPromptText();
+    	    Type t = null;
+    	    boolean found = false;
+    	    for(int i = 0; i<restaurant.getTypes().size() && !found; i++) {
+    	    	if(restaurant.getTypes().get(i).getName().equals(type)) {
+    	    		t = restaurant.getTypes().get(i);
+    	    		found = true;
+    	    	}
+    	    }
+    		try {
+				added = restaurant.addProduct(newProductNameTxt.getText(), ingredients, t);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				Alert alert = new Alert(AlertType.WARNING);
+		    	alert.setTitle("Crear producto");
+		    	alert.setHeaderText(null);
+		    	alert.setContentText("No ha sido posible crear el producto");
+		    	alert.showAndWait();
+			}
+    		if(added) {
+    			Alert alert = new Alert(AlertType.INFORMATION);
+		    	alert.setTitle("Crear producto");
+		    	alert.setHeaderText(null);
+		    	alert.setContentText("El producto ha sido creado y agregado a la lista de productos");
+		    	alert.showAndWait();
+		    	
+		    	restaurant.getProducts().subList(restaurant.getProducts().size()-1, restaurant.getProducts().size()).get(0).setPricesBySizes(pricesBySize);
+    		}
+    	}
     }
 
     @FXML
@@ -467,50 +616,6 @@ public class InventoryGUI {
     		restaurant.getProducts().get(index).setAvailability(true);
     		tbAvailability.setText("Habilitado");
     	}
-    }
-
-    @FXML
-    public void createNewProduct(ActionEvent event) {
-    	if(newProductNameTxt.getText().isEmpty() || cbTypeForNewProduct.getPromptText().equals("Categoría") || tvIngredientsForNewProduct.getItems().isEmpty() || tvSizesForNewProduct.getItems().isEmpty()) {
-    		Alert alert = new Alert(AlertType.ERROR);
-	    	alert.setTitle("");
-	    	alert.setHeaderText(null);
-	    	alert.setContentText("¡Ups! Llena todos los campos para crear un producto");
-	    	alert.showAndWait();
-    	}
-    	else {
-    		@SuppressWarnings("unchecked")
-			List<Ingredient> ingredientsList = (List<Ingredient>) tvIngredientsForNewProduct.getItems();
-    	    ArrayList<Ingredient> ingredients;
-    	    if (ingredientsList instanceof ArrayList<?>) {
-    	        ingredients = (ArrayList<Ingredient>) ingredientsList;
-    	    } else {
-    	        ingredients = new ArrayList<>(ingredientsList);
-    	    }
-    	    String type = cbTypeForNewProduct.getPromptText();
-    	    int indexType = 0;
-    	    for(int i = 0; i<restaurant.getTypes().size(); i++) {
-    	    	if(restaurant.getTypes().get(i).getName().equals(type)) {
-    	    		indexType = i;
-    	    	}
-    	    }
-    		try {
-				restaurant.addProduct(newProductNameTxt.getText(), ingredients, type, restaurant.getTypes().get(indexType).isAvailability(), restaurant.getTypes().get(indexType).getCreator());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-    	}
-    }
-
-    @FXML
-    public void exportProductsList(ActionEvent event) {
-
-    }
-
-    @FXML
-    public void importProductsList(ActionEvent event) {
-
     }
 
     @FXML
@@ -556,96 +661,277 @@ public class InventoryGUI {
 			tbAvailability.setText("Deshabilitado");
 		}
 		
-		//Separating types enable
-		ArrayList<String> types = new ArrayList<>();
-		for(int i = 0; i<restaurant.getTypes().size(); i++) {
-			if(restaurant.getTypes().get(i).isAvailability()) {
-				types.add(restaurant.getTypes().get(i).getName());
-			}
-		}
-		ObservableList<String> typesEnable = FXCollections.observableArrayList(types);
-		cbCategoryInProducts.setItems(typesEnable);
-		cbTypeForNewProduct.setItems(typesEnable);
+		loadIngredientsAndTypesToUpdate(); //Ingredients and Types available are added in cbCategoryInProducts and cbIngredients comboBoxs 
 		cbCategoryInProducts.setPromptText(restaurant.getProducts().get(index).getType().getName());
 		
 		loadIngredientsProduct(index);
 		loadPricesBySizeProduct(index);
-		
-		//Separating ingredients enable
-		ArrayList<String> ingredients = new ArrayList<>();
-		for(int i = 0; i<restaurant.getIngredients().size(); i++) {
-			if(restaurant.getIngredients().get(i).isAvailability()) {
-				ingredients.add(restaurant.getIngredients().get(i).getName());
-			}
-		}
-		ObservableList<String> ingredientsEnable = FXCollections.observableArrayList(ingredients);
-		cbIngredients.setItems(ingredientsEnable);
-		cbIngredientForNewProduct.setItems(ingredientsEnable);
 		labProductId.setText(Long.toString(restaurant.getProducts().get(index).getId()));
 	}
+	
+	@FXML
+    public void exportProductsList(ActionEvent event) {
+
+    }
+
+    @FXML
+    public void importProductsList(ActionEvent event) {
+    	FileChooser fileChooser = new FileChooser();
+     	 
+        //Set extension filter for text files
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv");
+        fileChooser.getExtensionFilters().add(extFilter);
+        
+        File file = fileChooser.showOpenDialog((Stage)((Node)event.getSource()).getScene().getWindow());
+        
+        if (file != null) {
+        	try {
+				restaurant.importProducts(file.getAbsolutePath(), productsImportSeparatorTxt.getText());
+				loadProducts();
+			} catch (IOException e) {
+				
+				e.printStackTrace();
+			}
+        }
+        try {
+			welcomeGUI.saveRestaurantData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
     
 	//Type of Product ActionEvent methods
     
+    public void loadCategories() {
+    	ArrayList<String> typesNames = new ArrayList<String>();
+    	for(int i = 0; i<restaurant.getTypes().size(); i++) {
+    		if(restaurant.getTypes().get(i) != null) {
+    			typesNames.add(restaurant.getTypes().get(i).getName());
+    		}
+    	}
+		ObservableList<String> types = FXCollections.observableArrayList(typesNames);
+		lvTypes.setItems(types);
+    }
+    
+    @FXML
+    public void categorySelected(MouseEvent event) {
+    	String typeSelected = lvTypes.getSelectionModel().getSelectedItem();
+    	if(typeSelected != null) {
+    		typeNameTxt.setEditable(true);
+			int indexType = 0;
+			for(int i = 0; i<restaurant.getTypes().size(); i++) {
+				if(restaurant.getTypes().get(i) != null && restaurant.getTypes().get(i).getName().equals(typeSelected)) {
+					indexType = i;
+				}
+			}
+    		typeNameTxt.setText(restaurant.getTypes().get(indexType).getName());
+			labTypeId.setText("# " + Long.toString(restaurant.getTypes().get(indexType).getId()));
+			if(restaurant.getTypes().get(indexType).isAvailability()) {
+				tbTypeAvailability.setText("Habilitado");
+			}
+			else {
+				tbTypeAvailability.setText("Deshabilitado");
+			}
+    	}
+    }
+    
+    @FXML
+    public void updateType(ActionEvent event) { //Update Type Name
+    	int index = lvTypes.getSelectionModel().getSelectedIndex();
+    	restaurant.getTypes().get(index).setName(typeNameTxt.getText());
+    	loadCategories();
+    	lvTypes.refresh();
+    }
+
+    @FXML
+    public void changeTypeAvailability(ActionEvent event) throws IOException {
+    	int index = lvTypes.getSelectionModel().getSelectedIndex();
+    	if(tbTypeAvailability.getText().equals("Habilitado")) {
+    		restaurant.disableType(restaurant.getTypes().get(index));
+    		tbTypeAvailability.setText("Deshabilitado");
+    	}
+    	else {
+    		restaurant.enableType(restaurant.getTypes().get(index));
+    		tbTypeAvailability.setText("Habilitado");
+    	}
+    }
+
+    @FXML
+    public void createNewType(ActionEvent event) throws IOException {
+    	boolean added = false;
+    	if(newTypeNameTxt.getText().isEmpty()) {
+    		Alert alert = new Alert(AlertType.WARNING);
+	    	alert.setTitle("Crear nueva categoria");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("No has ingresado un nombre para la nueva categoria");
+	    	alert.showAndWait();
+    	}
+    	else {
+    		boolean availability = tbNewTypeAvailability.getText().equals("Habilitado")? true : false;
+    		added = restaurant.addTypeProduct(newTypeNameTxt.getText(), availability);
+    	}
+    	
+    	if(added) {
+    		Alert alert = new Alert(AlertType.INFORMATION);
+	    	alert.setTitle("Categoria creada");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("La categoria ha sido creada y agregada a la lista de categorias");
+	    	alert.showAndWait();
+	    	
+	    	newTypeNameTxt.clear();
+	    	tbNewTypeAvailability.setText("Habilitado");
+	    	
+	    	loadCategories();
+	    	lvTypes.refresh();
+    	}
+    }
+    
     @FXML
     public void changeNewTypeAvailability(ActionEvent event) {
-
+    	if(tbNewTypeAvailability.getText().equals("Habilitado")) {
+    		tbNewTypeAvailability.setText("Deshabilitado");
+    	}
+    	else {
+    		tbNewTypeAvailability.setText("Habilitado");
+    	}
     }
-
+    
     @FXML
-    public void changeTypeAvailability(ActionEvent event) {
-
-    }
-
-    @FXML
-    public void createNewType(ActionEvent event) {
-
-    }
-
-    @FXML
-    public void exportTypeList(ActionEvent event) {
-
-    }
-
-    @FXML
-    public void importTypeList(ActionEvent event) {
-
-    }
-
-    @FXML
-    public void updateType(ActionEvent event) {
-
+    public void deleteType(ActionEvent event) throws IOException {
+    	boolean deleted = false;
+    	String t = lvTypes.getSelectionModel().getSelectedItem();
+    	boolean found = false;
+    	for(int i = 0; i<restaurant.getTypes().size() && !found; i++) {
+    		if(restaurant.getTypes().get(i).getName().equals(t)) {
+    			deleted = restaurant.deleteTypeProduct(restaurant.getTypes().get(i));
+    			found = true;
+    		}
+    	}
+    	if(deleted) {
+    		Alert alert = new Alert(AlertType.INFORMATION);
+	    	alert.setTitle("Eliminar Categoría");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("La categoría " + t + " ha sido borrada del sistema");
+	    	alert.showAndWait();
+	    	
+	    	loadIngredientsList();
+	    	tvIngredientsPane.refresh();
+    	}
+    	else {
+    		Alert alert = new Alert(AlertType.INFORMATION);
+	    	alert.setTitle("Eliminar Categoría");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("No es posible borrar la categoría " + t + ", existen productos que pertenecen a esta");
+	    	alert.showAndWait();
+	    	
+	    	loadIngredientsList();
+	    	tvIngredientsPane.refresh();
+    	}
     }
     
     //Ingredients ActionEvent methods
     
+    public void loadIngredientsList() {
+    	ObservableList<Ingredient> ingredientsList = FXCollections.observableArrayList(restaurant.getIngredients());
+		tvIngredientsPane.setItems(ingredientsList);
+		tcIngredientName.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("name"));
+		tcIngredientId.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("id"));
+		tcIngredientAvailability.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("availabilityText"));
+		tcIngredientCreator.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("creatorName"));
+    }
+    
     @FXML
-    void changeIngredientAvailability(ActionEvent event) {
-
+    public void ingredientSelected(MouseEvent event) {
+    	int indexIngredient = tvIngredientsPane.getSelectionModel().getSelectedIndex();
+    	ingredientNameTxt.setText(restaurant.getIngredients().get(indexIngredient).getName());
+    	labIngredientId.setText("# " + Long.toString(restaurant.getIngredients().get(indexIngredient).getId()));
+    	tbIngredientAvailability.setText(restaurant.getIngredients().get(indexIngredient).getAvailabilityText());
+    	
+    }
+    
+    @FXML
+    public void createNewIngredient(ActionEvent event) throws IOException {
+    	boolean added = false;
+    	if(newIngredientName.getText().isEmpty()) {
+    		Alert alert = new Alert(AlertType.WARNING);
+	    	alert.setTitle("Crear nuevo ingrediente");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("No has ingresado un nombre para el nuevo ingrediente");
+	    	alert.showAndWait();
+    	}
+    	else {
+    		boolean availability = true;
+    		if(tbNewIngredientAvailability.getText().equals("Deshabilitado")) {
+    			availability = false;
+        	}
+    		added = restaurant.addIngredient(newIngredientName.getText(), availability);
+    	}
+    	if(added) {
+    		Alert alert = new Alert(AlertType.INFORMATION);
+	    	alert.setTitle("Ingrediente creado");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("El ingrediente ha sido creado y agregado a la lista de ingredientes");
+	    	alert.showAndWait();
+    	}
+    }
+    
+    @FXML
+    public void changeNewIngredientAvailability(ActionEvent event) {
+    	if(tbNewIngredientAvailability.getText().equals("Habilitado")) {
+    		tbNewIngredientAvailability.setText("Deshabilitado");
+    	}
+    	else {
+    		tbNewIngredientAvailability.setText("Habilitado");
+    	}
+    }
+    
+    @FXML
+    public void changeIngredientAvailability(ActionEvent event) throws IOException {
+    	int index = tvIngredientsPane.getSelectionModel().getSelectedIndex();
+    	if(tbIngredientAvailability.getText().equals("Habilitado")) {
+    		restaurant.disableIngredient(restaurant.getIngredients().get(index));
+    		tbIngredientAvailability.setText("Deshabilitado");
+    	}
+    	else {
+    		restaurant.enableIngredient(restaurant.getIngredients().get(index));
+    		tbIngredientAvailability.setText("Habilitado");
+    	}
     }
 
     @FXML
-    void changeNewIngredientAvailability(ActionEvent event) {
-
+    public void updateIngredient(ActionEvent event) throws IOException {
+    	int index = tvIngredientsPane.getSelectionModel().getSelectedIndex();
+    	restaurant.updateIngredient(restaurant.getIngredients().get(index), ingredientNameTxt.getText());
+    	loadIngredientsList();
+    	tvIngredientsPane.refresh();
     }
-
+    
     @FXML
-    void createNewIngredient(ActionEvent event) {
-
-    }
-
-    @FXML
-    void exportIngredientsList(ActionEvent event) {
-
-    }
-
-    @FXML
-    void importIngredientsList(ActionEvent event) {
-
-    }
-
-    @FXML
-    void updateIngredient(ActionEvent event) {
-
+    public void deleteIngredient(ActionEvent event) throws IOException {
+    	boolean deleted = false;
+    	Ingredient ingredient = tvIngredientsPane.getSelectionModel().getSelectedItem();
+    	deleted = restaurant.deleteIngredient(ingredient);
+    	if(deleted) {
+    		Alert alert = new Alert(AlertType.INFORMATION);
+	    	alert.setTitle("Eliminar ingrediente");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("El ingrediente " + ingredient.getName() + " ha sido borrado del sistema");
+	    	alert.showAndWait();
+	    	
+	    	loadIngredientsList();
+	    	tvIngredientsPane.refresh();
+    	}
+    	else {
+    		Alert alert = new Alert(AlertType.INFORMATION);
+	    	alert.setTitle("Eliminar ingrediente");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("No es posible borrar el ingrediente " + ingredient.getName() + ", existe(n) producto(s) que contienen el ingrediente");
+	    	alert.showAndWait();
+	    	
+	    	loadIngredientsList();
+	    	tvIngredientsPane.refresh();
+    	}
     }
     
 }
