@@ -510,11 +510,18 @@ public class UsersGUI {
     	}else {
     		if (adminHiddenPasswordTxt.getText().equals(adminPasswordTxt.getText())) {
     			
-    			thisAdmin.setName(adminNameTxt.getText());
-    			thisAdmin.setSurname(adminSurnameTxt.getText());
-    			thisAdmin.setId(adminIdTxt.getText());
-    			thisAdmin.setUsername(adminUsernameTxt.getText());
-    			thisAdmin.setPassword(adminHiddenPasswordTxt.getText());
+    			boolean changed = false;
+    			for (int i = 0; i < restaurant.getAdmins().size() && !changed; i++) {
+    				if (restaurant.getAdmins().get(i) == thisAdmin) {
+    					restaurant.getAdmins().get(i).setName(adminNameTxt.getText());
+    					restaurant.getAdmins().get(i).setSurname(adminSurnameTxt.getText());
+    					restaurant.getAdmins().get(i).setId(adminIdTxt.getText());
+    					restaurant.getAdmins().get(i).setUsername(adminUsernameTxt.getText());
+    					restaurant.getAdmins().get(i).setPassword(adminHiddenPasswordTxt.getText());
+    					changed = true;
+    				}
+        		}
+    			
     			initializeAdminTableView();
     		}
     			
@@ -735,14 +742,22 @@ public class UsersGUI {
      @FXML
      void changeOperatorAvailability(ActionEvent event) {
     	 User thisOperator = (User) tvOperatorsList.getSelectionModel().getSelectedItem();
-     	
-     	if (operatorAvailability.isSelected()) {
-     		operatorAvailability.setText("HABILITADO");
-     		thisOperator.setAvailability(true);
-     	}else {
-     		operatorAvailability.setText("DESHABILITADO");
-     		thisOperator.setAvailability(false);
+     	try {
+     		if (operatorAvailability.isSelected()) {
+	     		operatorAvailability.setText("HABILITADO");
+	     		restaurant.enableUser(thisOperator);
+	     		thisOperator.setAvailability(true);
+	     	}else {
+	     		operatorAvailability.setText("DESHABILITADO");
+	     		restaurant.disableUser(thisOperator);
+	
+	     		thisOperator.setAvailability(false);
+	     	}
+     		welcomeGUI.saveRestaurantData();
+     	} catch (IOException ioe) {
+     		ioe.printStackTrace();
      	}
+	     
      		
      }
 
