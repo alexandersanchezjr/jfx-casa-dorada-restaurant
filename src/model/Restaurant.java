@@ -474,7 +474,6 @@ public class Restaurant implements Serializable{
 		for(int i = 0; i<products.size(); i++) {
 			if(!products.get(i).getIngredients().contains(ingredient)) {
 				deleted = ingredients.remove(ingredient);
-
 			}
 		}
 		return deleted;
