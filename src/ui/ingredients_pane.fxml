@@ -92,7 +92,6 @@
             <ContextMenu>
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#deleteIngredient" text="Borrar Ingrediente" />
-                  <MenuItem mnemonicParsing="false" onAction="#clearIngredientsList" text="Limpiar lista" />
               </items>
             </ContextMenu>
          </contextMenu>
