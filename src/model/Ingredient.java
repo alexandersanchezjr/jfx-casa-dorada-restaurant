@@ -35,6 +35,17 @@ public class Ingredient implements Serializable{
 	public boolean isAvailability() {
 		return availability;
 	}
+	
+	public String getAvailabilityText() {
+		String txt = "";
+		if(availability) {
+			txt = "Habilitado";
+		}
+		else {
+			txt = "Deshabilitado";
+		}
+		return txt;
+	}
 
 	/**
 	 * @param availability the availability to set
@@ -62,6 +73,10 @@ public class Ingredient implements Serializable{
 	 */
 	public User getCreator() {
 		return creator;
+	}
+	
+	public String getCreatorName() {
+		return creator.getName();
 	}
 
 	/**
