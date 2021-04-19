@@ -78,7 +78,9 @@ public class Restaurant implements Serializable{
 	public ArrayList<String> getIdProducts() {
 		ArrayList<String> ids = new ArrayList<>();
 		for(int i = 0; i<products.size(); i++) {
-			ids.add(Long.toString(products.get(i).getId()));
+			if(products.get(i) != null) {
+				ids.add(Long.toString(products.get(i).getId()));
+			}
 		}
 		return ids;
 	}
@@ -251,7 +253,7 @@ public class Restaurant implements Serializable{
 	
 	public boolean addTypeProduct(String name, boolean availability) throws IOException {
 		boolean added = false;
-		Type thisType = new Type(name, availability, loggedUser);
+		Type thisType = new Type(name, availability, (identifier++), loggedUser);
 		if(!types.contains(thisType)) {
 			added = types.add(thisType);
 
@@ -602,9 +604,6 @@ public class Restaurant implements Serializable{
 		}
 		return disabled;
 	}
-	
-
-	
 
 	
 	//IMPORT CUSTOMERS
@@ -663,31 +662,6 @@ public class Restaurant implements Serializable{
 			line = br.readLine();
 		}
 		br.close();
-	}
-	
-	//IMPORT ADMINS
-	
-	//IMPORT INGREDIENTS
-	
-	public void importIngredients(String fileName, String separator) throws IOException {
-		BufferedReader br = new BufferedReader(new FileReader(fileName));
-		String line = br.readLine();
-		while(line!=null) {
-			String[] parts = line.split(separator);
-			String name = parts[0];
-			boolean availability = Boolean.parseBoolean(parts[1]);
-			long id = Long.parseLong(parts[2]);
-			String idUser = parts[3];
-			int indexUser = 0;
-			for(int i = 0; i<admins.size(); i++) {
-				if(admins.get(i).getId().equals(idUser)) {
-					indexUser = i;
-				}
-			}
-			ingredients.add(new Ingredient(name, availability, id, admins.get(indexUser)));
-		}
-		br.close();
-
 	}
 	
 	//IMPORT PRODUCTS
@@ -788,11 +762,19 @@ public class Restaurant implements Serializable{
 	}
 	//EXPORT PRODUCTS
 	public void exportProduct (String fileName, String separator) throws FileNotFoundException {
-		//PrintWriter pw = new PrintWriter (fileName);
-		//int total = 0;
-		//TODO finished this method
+		PrintWriter pw = new PrintWriter (fileName);
+		pw.println("Nombre" + separator + "ID" + separator + "Disponibilidad" + separator + "Categoria");
 		
+		for(int i = 0; i<products.size(); i++) {
+			String ingredientString = "";
+			for(int j = 0; j<products.get(i).getIngredients().size(); j++) {
+				String previous = separator;
+				ingredientString += previous + products.get(i).getIngredients().get(j).getName();
+			}
+			pw.println(products.get(i).getName() + separator + products.get(i).getId() + separator + products.get(i).isAvailability() + separator + ingredientString);
+		}
 		
+		pw.close();
 	}
 	
 	//EXPORT EMPLOYEES
