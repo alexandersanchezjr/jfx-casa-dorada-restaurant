@@ -142,6 +142,7 @@ public class AdminGUI {
 		AnchorPane.setBottomAnchor(ingredientsPane, 0.0);
 		AnchorPane.setLeftAnchor(ingredientsPane, 0.0);
 		AnchorPane.setRightAnchor(ingredientsPane, 0.0);
+		inventoryGUI.loadIngredientsList();
     }
 
     @FXML
