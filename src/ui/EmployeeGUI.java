@@ -33,9 +33,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.DetailProduct;
-import model.Product;
 import model.Restaurant;
-import model.Type;
 
 public class EmployeeGUI {
 	@FXML
@@ -51,10 +49,10 @@ public class EmployeeGUI {
     private TextArea orderCommentTxt;
 
     @FXML
-    private ComboBox<Type> typeChooser;
+    private ComboBox<String> typeChooser;
 
     @FXML
-    private ComboBox<Product> productChooser;
+    private ComboBox<String> productChooser;
 
     @FXML
     private ComboBox<String> sizeChooser;
@@ -170,11 +168,12 @@ public class EmployeeGUI {
     private ArrayList<DetailProduct> productsList = new ArrayList<DetailProduct>();
     
     public EmployeeGUI() {
-    	injectWelcomeGUI(welcomeGUI, restaurant);
+
     }
     
     public void injectWelcomeGUI(WelcomeGUI welcomeGUI, Restaurant restaurant) {
     	this.welcomeGUI = welcomeGUI;
+    	this.restaurant = restaurant;
     }
     
     public void timer() {
@@ -193,6 +192,14 @@ public class EmployeeGUI {
     public void showMenuPane(ActionEvent event) {
     	menuPane.setVisible(true);
     	orderPane.setVisible(false);
+    	ArrayList<String> typesStringList = new ArrayList<String>();
+    	for(int i = 0; i<restaurant.getTypes().size(); i++) {
+    		if(restaurant.getTypes().get(i).isAvailability()) {
+    			typesStringList.add(restaurant.getTypes().get(i).getName());
+    		}
+    	}
+    	ObservableList<String> categoryList = FXCollections.observableArrayList(typesStringList);
+    	typeChooser.getItems().addAll(categoryList);
     }
 
     @FXML
@@ -217,22 +224,29 @@ public class EmployeeGUI {
     
     @FXML
     public void categoryChosen(ActionEvent event) { //Method to fill the comboBox of products according to the chosen category
-    	Type selectedType = typeChooser.getValue();
-    	ArrayList<Product> productsEnabled = new ArrayList<Product>();
+    	String selectedType = typeChooser.getSelectionModel().getSelectedItem();
+    	ArrayList<String> productsEnabled = new ArrayList<String>();
     	for(int i = 0; i<restaurant.getProducts().size(); i++) {
-    		if(restaurant.getProducts().get(i).isAvailability() && restaurant.getProducts().get(i).getType().equals(selectedType)) {
-    			productsEnabled.add(restaurant.getProducts().get(i));
+    		if(restaurant.getProducts().get(i).isAvailability() && restaurant.getProducts().get(i).getType().getName().equals(selectedType)) {
+    			productsEnabled.add(restaurant.getProducts().get(i).getName());
     		}
     	}
-    	ObservableList<Product> productsList = FXCollections.observableArrayList(productsEnabled);
+    	ObservableList<String> productsList = FXCollections.observableArrayList(productsEnabled);
     	productChooser.setItems(productsList);
     }
     
     @FXML
     public void productChosen(ActionEvent event) { //Method to fill the comboBox of sizes according to the chosen product
-    	Product p = productChooser.getValue();
-    	ObservableList<String> productsList = FXCollections.observableArrayList(p.getSizes());
-    	sizeChooser.setItems(productsList);
+    	String p = productChooser.getSelectionModel().getSelectedItem();
+      	boolean exit = false;
+		for(int i = 0; i<restaurant.getProducts().size() && !exit; i++) {
+    		if(restaurant.getProducts().get(i).isAvailability() && restaurant.getProducts().get(i).getName().equals(p)) {
+    	    	ObservableList<String> productsList = FXCollections.observableArrayList(restaurant.getProducts().get(i).getSizes());
+    	    	sizeChooser.setItems(productsList);
+    	    	exit = true;
+    		}
+    	}
+
     }
     
     @FXML
