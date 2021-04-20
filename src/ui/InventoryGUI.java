@@ -175,7 +175,7 @@ public class InventoryGUI {
     private TableColumn<PriceBySize, String> tcSizeNameNewProduct;
 
     @FXML
-    private TableColumn<PriceBySize, String> tcSizePriceNewProduct;
+    private TableColumn<PriceBySize, Integer> tcSizePriceNewProduct;
 
     @FXML
     private TextField newSizePriceTxt;
@@ -437,6 +437,7 @@ public class InventoryGUI {
     	}
 		ObservableList<String> products = FXCollections.observableArrayList(productsNames);
 		lvProducts.setItems(products);
+		lvProducts.refresh();
     }
     
     public void loadIngredientsAndTypes() {
@@ -503,7 +504,7 @@ public class InventoryGUI {
     }
 
     @FXML
-    public void addISizeToNewProduct(ActionEvent event) {
+    public void addSizeToNewProduct(ActionEvent event) {
     	if(newSizeTxt.getText().isEmpty() && newSizePriceTxt.getText().isEmpty()) {
     		Alert alert = new Alert(AlertType.WARNING);
 		    alert.setTitle("Agregar tamaño");
@@ -518,8 +519,8 @@ public class InventoryGUI {
     	newSizeTxt.setPromptText("Tamaño");
     	newSizePriceTxt.setText(""); 
     	newSizePriceTxt.setPromptText("Precio $");
-    	loadIngredientsNewProduct();
-    	tvIngredientsForNewProduct.refresh();
+    	loadPricesBySizeNewProduct();
+    	tvSizesForNewProduct.refresh();
     }
     
     public void loadIngredientsNewProduct() {
@@ -531,9 +532,9 @@ public class InventoryGUI {
     
     public void loadPricesBySizeNewProduct() {
     	ObservableList<PriceBySize> pricesBySizeList = FXCollections.observableArrayList(pricesBySize);
-		tvSizes.setItems(pricesBySizeList);
-		tcProductSizeName.setCellValueFactory(new PropertyValueFactory<PriceBySize,String>("size"));
-		tcProductSizePrice.setCellValueFactory(new PropertyValueFactory<PriceBySize,Integer>("price"));
+    	tvSizesForNewProduct.setItems(pricesBySizeList);
+    	tcSizeNameNewProduct.setCellValueFactory(new PropertyValueFactory<PriceBySize,String>("size"));
+    	tcSizePriceNewProduct.setCellValueFactory(new PropertyValueFactory<PriceBySize,Integer>("price"));
     }
     
     @FXML
@@ -561,7 +562,8 @@ public class InventoryGUI {
     	    } else {
     	        ingredients = new ArrayList<Ingredient>(ingredientsList);
     	    }
-    	    String type = cbTypeForNewProduct.getPromptText();
+    	    String type = cbTypeForNewProduct.getSelectionModel().getSelectedItem();
+    	    System.out.println(type);
     	    Type t = null;
     	    boolean found = false;
     	    for(int i = 0; i<restaurant.getTypes().size() && !found; i++) {
@@ -572,6 +574,7 @@ public class InventoryGUI {
     	    }
     		try {
 				added = restaurant.addProduct(newProductNameTxt.getText(), ingredients, t);
+				System.out.println(t);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -589,12 +592,70 @@ public class InventoryGUI {
 		    	alert.showAndWait();
 		    	restaurant.getProducts().subList(restaurant.getProducts().size()-1, restaurant.getProducts().size()).get(0).setPricesBySizes(pricesBySize);
 		    	
+		    	newProductNameTxt.clear();
+		    	cbTypeForNewProduct.getSelectionModel().clearSelection();
+		    	cbIngredientForNewProduct.getSelectionModel().clearSelection();
+		    	tvIngredientsForNewProduct.getItems().clear();
+		    	tvSizesForNewProduct.getItems().clear();
+		    	
 		    	loadProducts();
 		    	lvProducts.refresh();
     		}
     	}
     	welcomeGUI.saveRestaurantData();
     }
+    
+    @FXML
+    public void deleteProduct(ActionEvent event) {
+    	String thisProduct = lvProducts.getSelectionModel().getSelectedItem();
+    	int indexProduct = 0;
+    	boolean found = false;
+    	boolean deleted = false;
+    	for(int i = 0; i<restaurant.getProducts().size() && !found; i++) {
+    		if(restaurant.getProducts().get(i).getName().equals(thisProduct)) {
+    			indexProduct = i;
+    			found = true;
+    		}
+    	}
+    	
+    	try {
+			deleted = restaurant.deleteProduct(restaurant.getProducts().get(indexProduct));
+    	    welcomeGUI.saveRestaurantData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	if(deleted) {
+    		Alert alert = new Alert(AlertType.INFORMATION);
+	    	alert.setTitle("Eliminar producto");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("El producto ha sido borrado");
+	    	alert.showAndWait();
+	    	
+	    	productNameTxt.clear();
+	    	labProductId.setText("#0000");
+	    	cbCategoryInProducts.getSelectionModel().clearSelection();
+	    	tvIngredients.getItems().clear();
+	    	tvSizes.getItems().clear();
+	    	
+	    	cbIngredients.getSelectionModel().clearSelection();
+	    	sizeNameTxt.clear();
+	    	sizePriceTxt.clear();
+	    	
+	    	loadProducts();
+	    	lvProducts.refresh();
+    	} else {
+    		Alert alert = new Alert(AlertType.INFORMATION);
+	    	alert.setTitle("Eliminar producto");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("No es posible eliminar este producto, esta referenciado por un pedido");
+	    	alert.showAndWait();
+	    	
+	    	loadProducts();
+	    	lvProducts.refresh();
+    	}
+	}
 
     @FXML
     public void addIngredient(ActionEvent event) throws IOException {
@@ -675,9 +736,10 @@ public class InventoryGUI {
     
 	@FXML 
 	public void handleMouseClick(MouseEvent arg0) {
-		if(!lvProducts.getSelectionModel().isEmpty() || lvProducts.getSelectionModel().getSelectedItem().isEmpty()) {
-			int index = lvProducts.getSelectionModel().getSelectedIndex();
+		if(lvProducts.getSelectionModel().getSelectedItem() != null) {
+			int index = 0;
 			productNameTxt.setText(restaurant.getProducts().get(index).getName());
+			productNameTxt.setEditable(true);
 			if(restaurant.getProducts().get(index).isAvailability()) {
 				tbAvailability.setText("Habilitado");
 			}
@@ -685,7 +747,15 @@ public class InventoryGUI {
 				tbAvailability.setText("Deshabilitado");
 			}
 			
-			loadIngredientsAndTypesToUpdate(); //Ingredients and Types available are added in cbCategoryInProducts and cbIngredients comboBoxs 
+			for(int i = 0; i<restaurant.getProducts().size(); i++) {
+				if(restaurant.getProducts().get(i).getName().equals(productNameTxt.getText())) {
+					index = i;
+				}
+			}
+			loadIngredientsAndTypesToUpdate(); //Ingredients and Types available are added in cbCategoryInProducts and cbIngredients comboBoxs
+			if(restaurant.getProducts().get(index).getType() == null) {
+				System.out.println("El producto tiene la categoria null");
+			}
 			cbCategoryInProducts.setPromptText(restaurant.getProducts().get(index).getType().getName());
 			
 			loadIngredientsProduct(index);
@@ -973,6 +1043,13 @@ public class InventoryGUI {
 	    	alert.setHeaderText(null);
 	    	alert.setContentText("No es posible borrar el ingrediente " + ingredient.getName() + ", existe(n) producto(s) que contienen el ingrediente");
 	    	alert.showAndWait();
+	    	boolean found = false;
+	    	for(int i = 0; i<restaurant.getProducts().size() && !found; i++) {
+	    		if(restaurant.getProducts().get(i).getIngredients().contains(ingredient)) {
+	    			found = true;
+	    			System.out.println("Este es un ingrediente del producto: " + restaurant.getProducts().get(i).getName());
+	    		}
+	    	}
 	    	
 	    	loadIngredientsList();
 	    	tvIngredientsPane.refresh();

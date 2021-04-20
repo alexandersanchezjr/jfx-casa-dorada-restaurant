@@ -1,6 +1,12 @@
 package model;
 
-public class PriceBySize {
+import java.io.Serializable;
+
+public class PriceBySize implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1;
 	private String size;
 	private int price;
 	
