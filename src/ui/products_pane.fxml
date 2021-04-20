@@ -26,9 +26,7 @@
          <contextMenu>
             <ContextMenu>
               <items>
-                <MenuItem mnemonicParsing="false" text="Borrar Producto" />
-                  <MenuItem mnemonicParsing="false" text="Importar Productos" />
-                  <MenuItem mnemonicParsing="false" text="Exportar Productos" />
+                <MenuItem mnemonicParsing="false" onAction="#deleteProduct" text="Borrar Producto" />
               </items>
             </ContextMenu>
          </contextMenu>
@@ -192,7 +190,7 @@
                         <Font name="Gill Sans MT" size="16.0" />
                      </font>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#addISizeToNewProduct" text="Agregar" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                  <Button mnemonicParsing="false" onAction="#addSizeToNewProduct" text="Agregar" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                      <font>
                         <Font name="Gill Sans MT" size="16.0" />
                      </font>
@@ -236,7 +234,7 @@
                <font>
                   <Font name="Gill Sans MT" size="16.0" />
                </font></TextField>
-            <ToggleButton fx:id="tbAvailability" mnemonicParsing="false" onAction="#changeAvailability" text="Habilitado" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+            <ToggleButton fx:id="tbAvailability" mnemonicParsing="false" onAction="#changeAvailability" text="Disponibilidad" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
                <font>
                   <Font name="Gill Sans MT" size="16.0" />
                </font>
