@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 public class Restaurant implements Serializable{
@@ -834,4 +836,32 @@ public class Restaurant implements Serializable{
 	    }
 	    pw.close();
 	}
+	
+	public Customer binarySearchCustomer(String firstName, String lastName) {
+
+        Comparator<Customer> lastNameAndFirstName = new Comparator<Customer>() {
+            @Override
+            public int compare(Customer obj1, Customer obj2) {
+                String f1 = obj1.getName().toLowerCase();
+                String l1 = obj1.getSurname().toLowerCase();
+                String f2 = obj2.getName().toLowerCase();
+                String l2 = obj2.getSurname().toLowerCase();
+
+                if (l1.compareTo(l2) == 0) {
+                    return f2.compareTo(f1);
+                } else {
+                    return l2.compareTo(l1);
+                }
+            }
+        };
+
+        Customer key = new Customer(firstName,lastName, "", "", "", null);
+        int index = Collections.binarySearch(customers, key,lastNameAndFirstName);
+        if (index <0){
+            key=null;
+        }else{
+            key=customers.get(index);
+        }
+        return key;
+    }
 }
