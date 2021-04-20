@@ -324,8 +324,8 @@ public class InventoryGUI {
     
     @FXML
     public void handleMouseClickOrders(MouseEvent event) {
-    	int index = lvOrders.getSelectionModel().getSelectedIndex();
-    	if(restaurant.getOrders().get(index) != null) {
+    	if(!lvOrders.getSelectionModel().isEmpty()) {
+    		int index = lvOrders.getSelectionModel().getSelectedIndex();
 	    	labOrderClientName.setText(restaurant.getOrders().get(index).getCustomer().getName());
 	    	labOrderEmployeeName.setText(restaurant.getOrders().get(index).getEmployee().getName());
 	    	labOrderId.setText(Integer.toString(index));
@@ -397,7 +397,7 @@ public class InventoryGUI {
     }
 
     @FXML
-    public void importOrdersList(ActionEvent event) {
+    public void importOrdersList(ActionEvent event) throws IOException {
     	FileChooser fileChooser = new FileChooser();
     	fileChooser.setTitle("Abrir archivo");
     	File file = fileChooser.showOpenDialog(orderPane.getScene().getWindow());
@@ -423,13 +423,19 @@ public class InventoryGUI {
     		    alert.showAndWait();
     		}
     	}
+    	welcomeGUI.saveRestaurantData();
     }
     
     //Products Pane ActionEvent methods
     
     public void loadProducts() {
-    	lvProducts = new ListView<String>();
-		ObservableList<String> products = FXCollections.observableArrayList(restaurant.getIdProducts());
+    	ArrayList<String> productsNames = new ArrayList<String>();
+    	for(int i = 0; i<restaurant.getProducts().size(); i++) {
+    		if(restaurant.getProducts().get(i) != null) {
+    			productsNames.add(restaurant.getProducts().get(i).getName());
+    		}
+    	}
+		ObservableList<String> products = FXCollections.observableArrayList(productsNames);
 		lvProducts.setItems(products);
     }
     
@@ -480,7 +486,7 @@ public class InventoryGUI {
     ArrayList<PriceBySize> pricesBySize = new ArrayList<PriceBySize>();
     
     @FXML
-    public void addIIngredientToNewProduct(ActionEvent event) {
+    public void addIIngredientToNewProduct(ActionEvent event) throws IOException {
     	String ingredientSelected = cbIngredientForNewProduct.getValue();
     	int indexIngredient = 0;
     	for(int i = 0; i<restaurant.getIngredients().size(); i++) {
@@ -489,8 +495,11 @@ public class InventoryGUI {
     		}
     	}
     	ingredients.add(restaurant.getIngredients().get(indexIngredient));
+    	//cbIngredientForNewProduct.setPromptText("Ingredientes");
+    	cbIngredientForNewProduct.setValue("Ingredientes");
     	loadIngredientsNewProduct();
     	tvIngredientsForNewProduct.refresh();
+    	welcomeGUI.saveRestaurantData();
     }
 
     @FXML
@@ -504,6 +513,13 @@ public class InventoryGUI {
     	} else {
     		pricesBySize.add(new PriceBySize(newSizeTxt.getText(), Integer.parseInt(newSizePriceTxt.getText())));
     	}
+    	
+    	newSizeTxt.setText(""); 
+    	newSizeTxt.setPromptText("Tamaño");
+    	newSizePriceTxt.setText(""); 
+    	newSizePriceTxt.setPromptText("Precio $");
+    	loadIngredientsNewProduct();
+    	tvIngredientsForNewProduct.refresh();
     }
     
     public void loadIngredientsNewProduct() {
@@ -521,9 +537,9 @@ public class InventoryGUI {
     }
     
     @FXML
-    public void createNewProduct(ActionEvent event) {
+    public void createNewProduct(ActionEvent event) throws IOException {
     	boolean added = false;
-    	if(newProductNameTxt.getText().isEmpty() || cbTypeForNewProduct.getPromptText().equals("Categoría")) {
+    	if(newProductNameTxt.getText().isEmpty() || cbTypeForNewProduct.getValue().isEmpty()) {
     		Alert alert = new Alert(AlertType.WARNING);
 	    	alert.setTitle("Crear producto");
 	    	alert.setHeaderText(null);
@@ -571,14 +587,17 @@ public class InventoryGUI {
 		    	alert.setHeaderText(null);
 		    	alert.setContentText("El producto ha sido creado y agregado a la lista de productos");
 		    	alert.showAndWait();
-		    	
 		    	restaurant.getProducts().subList(restaurant.getProducts().size()-1, restaurant.getProducts().size()).get(0).setPricesBySizes(pricesBySize);
+		    	
+		    	loadProducts();
+		    	lvProducts.refresh();
     		}
     	}
+    	welcomeGUI.saveRestaurantData();
     }
 
     @FXML
-    public void addIngredient(ActionEvent event) {
+    public void addIngredient(ActionEvent event) throws IOException {
     	int index = lvProducts.getSelectionModel().getSelectedIndex();
     	for(int i = 0; i<restaurant.getIngredients().size(); i++) {
     		if(restaurant.getIngredients().get(i).getName().equals(cbIngredients.getSelectionModel().getSelectedItem())) {
@@ -586,10 +605,11 @@ public class InventoryGUI {
     		}
     	}
     	loadIngredientsProduct(index);
+    	welcomeGUI.saveRestaurantData();
     }
 
     @FXML
-    public void addSize(ActionEvent event) {
+    public void addSize(ActionEvent event) throws IOException {
     	int index = lvProducts.getSelectionModel().getSelectedIndex();
     	if(sizeNameTxt.getText().isEmpty() || sizePriceTxt.getText().isEmpty()) {
     		Alert alert = new Alert(AlertType.ERROR);
@@ -603,10 +623,11 @@ public class InventoryGUI {
     		restaurant.getProducts().get(index).addPriceBySize(newPriceBySize);
     		loadPricesBySizeProduct(index);
     	}
+    	welcomeGUI.saveRestaurantData();
     }
 
     @FXML
-    public void changeAvailability(ActionEvent event) {
+    public void changeAvailability(ActionEvent event) throws IOException {
     	int index = lvProducts.getSelectionModel().getSelectedIndex();
     	if(tbAvailability.getText().equals("Habilitado")) {
     		restaurant.getProducts().get(index).setAvailability(false);
@@ -616,16 +637,18 @@ public class InventoryGUI {
     		restaurant.getProducts().get(index).setAvailability(true);
     		tbAvailability.setText("Habilitado");
     	}
+    	welcomeGUI.saveRestaurantData();
     }
 
     @FXML
-    public void updateProductName(ActionEvent event) {
+    public void updateProductName(ActionEvent event) throws IOException {
     	int index = lvProducts.getSelectionModel().getSelectedIndex();
     	restaurant.getProducts().get(index).setName(productNameTxt.getText());
+    	welcomeGUI.saveRestaurantData();
     }
     
     @FXML
-    public void updateComboBox(ActionEvent event) {
+    public void updateComboBox(ActionEvent event) throws IOException {
     	String name = cbCategoryInProducts.getSelectionModel().getSelectedItem();
     	for(int i = 0; i<restaurant.getTypes().size(); i++) {
     		if(restaurant.getTypes().get(i).getName().equals(name)) {
@@ -633,6 +656,7 @@ public class InventoryGUI {
     			cbCategoryInProducts.setPromptText(name);
     		}
     	}
+    	welcomeGUI.saveRestaurantData();
     }
     
     public void loadIngredientsProduct(int indexProduct) {
@@ -651,22 +675,25 @@ public class InventoryGUI {
     
 	@FXML 
 	public void handleMouseClick(MouseEvent arg0) {
-		int index = lvProducts.getSelectionModel().getSelectedIndex();
-		productNameTxt.setText(restaurant.getProducts().get(index).getName());
-		
-		if(restaurant.getProducts().get(index).isAvailability()) {
-			tbAvailability.setText("Habilitado");
+		if(!lvProducts.getSelectionModel().isEmpty() || lvProducts.getSelectionModel().getSelectedItem().isEmpty()) {
+			int index = lvProducts.getSelectionModel().getSelectedIndex();
+			productNameTxt.setText(restaurant.getProducts().get(index).getName());
+			if(restaurant.getProducts().get(index).isAvailability()) {
+				tbAvailability.setText("Habilitado");
+			}
+			else {
+				tbAvailability.setText("Deshabilitado");
+			}
+			
+			loadIngredientsAndTypesToUpdate(); //Ingredients and Types available are added in cbCategoryInProducts and cbIngredients comboBoxs 
+			cbCategoryInProducts.setPromptText(restaurant.getProducts().get(index).getType().getName());
+			
+			loadIngredientsProduct(index);
+			tvIngredients.refresh();
+			loadPricesBySizeProduct(index);
+			tvSizes.refresh();
+			labProductId.setText(Long.toString(restaurant.getProducts().get(index).getId()));
 		}
-		else {
-			tbAvailability.setText("Deshabilitado");
-		}
-		
-		loadIngredientsAndTypesToUpdate(); //Ingredients and Types available are added in cbCategoryInProducts and cbIngredients comboBoxs 
-		cbCategoryInProducts.setPromptText(restaurant.getProducts().get(index).getType().getName());
-		
-		loadIngredientsProduct(index);
-		loadPricesBySizeProduct(index);
-		labProductId.setText(Long.toString(restaurant.getProducts().get(index).getId()));
 	}
 	
 	@FXML
@@ -737,11 +764,12 @@ public class InventoryGUI {
     }
     
     @FXML
-    public void updateType(ActionEvent event) { //Update Type Name
+    public void updateType(ActionEvent event) throws IOException { //Update Type Name
     	int index = lvTypes.getSelectionModel().getSelectedIndex();
     	restaurant.getTypes().get(index).setName(typeNameTxt.getText());
     	loadCategories();
     	lvTypes.refresh();
+    	welcomeGUI.saveRestaurantData();
     }
 
     @FXML
@@ -755,6 +783,7 @@ public class InventoryGUI {
     		restaurant.enableType(restaurant.getTypes().get(index));
     		tbTypeAvailability.setText("Habilitado");
     	}
+    	welcomeGUI.saveRestaurantData();
     }
 
     @FXML
@@ -785,6 +814,7 @@ public class InventoryGUI {
 	    	loadCategories();
 	    	lvTypes.refresh();
     	}
+    	welcomeGUI.saveRestaurantData();
     }
     
     @FXML
@@ -815,8 +845,8 @@ public class InventoryGUI {
 	    	alert.setContentText("La categoría " + t + " ha sido borrada del sistema");
 	    	alert.showAndWait();
 	    	
-	    	loadIngredientsList();
-	    	tvIngredientsPane.refresh();
+	    	loadCategories();
+	    	lvTypes.refresh();
     	}
     	else {
     		Alert alert = new Alert(AlertType.INFORMATION);
@@ -825,9 +855,10 @@ public class InventoryGUI {
 	    	alert.setContentText("No es posible borrar la categoría " + t + ", existen productos que pertenecen a esta");
 	    	alert.showAndWait();
 	    	
-	    	loadIngredientsList();
-	    	tvIngredientsPane.refresh();
+	    	loadCategories();
+	    	lvTypes.refresh();
     	}
+    	welcomeGUI.saveRestaurantData();
     }
     
     //Ingredients ActionEvent methods
@@ -838,16 +869,17 @@ public class InventoryGUI {
 		tcIngredientName.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("name"));
 		tcIngredientId.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("id"));
 		tcIngredientAvailability.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("availabilityText"));
-		tcIngredientCreator.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("creatorName"));
+		tcIngredientCreator.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("creatorUsername"));
     }
     
     @FXML
     public void ingredientSelected(MouseEvent event) {
-    	int indexIngredient = tvIngredientsPane.getSelectionModel().getSelectedIndex();
-    	ingredientNameTxt.setText(restaurant.getIngredients().get(indexIngredient).getName());
-    	labIngredientId.setText("# " + Long.toString(restaurant.getIngredients().get(indexIngredient).getId()));
-    	tbIngredientAvailability.setText(restaurant.getIngredients().get(indexIngredient).getAvailabilityText());
-    	
+    	if(!tvIngredientsPane.getSelectionModel().isEmpty()) {
+	    	int indexIngredient = tvIngredientsPane.getSelectionModel().getSelectedIndex();
+	    	ingredientNameTxt.setText(restaurant.getIngredients().get(indexIngredient).getName());
+	    	labIngredientId.setText("# " + Long.toString(restaurant.getIngredients().get(indexIngredient).getId()));
+	    	tbIngredientAvailability.setText(restaurant.getIngredients().get(indexIngredient).getAvailabilityText());
+    	}
     }
     
     @FXML
@@ -871,9 +903,16 @@ public class InventoryGUI {
     		Alert alert = new Alert(AlertType.INFORMATION);
 	    	alert.setTitle("Ingrediente creado");
 	    	alert.setHeaderText(null);
-	    	alert.setContentText("El ingrediente ha sido creado y agregado a la lista de ingredientes");
+	    	alert.setContentText("El ingrediente ha sido creado y será agregado a la lista de ingredientes");
 	    	alert.showAndWait();
+	    	
+	    	newIngredientName.setText("");
+	    	tbNewIngredientAvailability.setText("Habilitado");
+	    	
+	    	loadIngredientsList();
+	    	tvIngredientsPane.refresh();
     	}
+    	welcomeGUI.saveRestaurantData();
     }
     
     @FXML
@@ -897,14 +936,20 @@ public class InventoryGUI {
     		restaurant.enableIngredient(restaurant.getIngredients().get(index));
     		tbIngredientAvailability.setText("Habilitado");
     	}
+    	loadIngredientsList();
+    	tvIngredientsPane.refresh();
+    	welcomeGUI.saveRestaurantData();
     }
 
     @FXML
     public void updateIngredient(ActionEvent event) throws IOException {
     	int index = tvIngredientsPane.getSelectionModel().getSelectedIndex();
     	restaurant.updateIngredient(restaurant.getIngredients().get(index), ingredientNameTxt.getText());
+    	ingredientNameTxt.setText("");
+    	tbIngredientAvailability.setText("Disponibilidad");
     	loadIngredientsList();
     	tvIngredientsPane.refresh();
+    	welcomeGUI.saveRestaurantData();
     }
     
     @FXML
@@ -932,6 +977,7 @@ public class InventoryGUI {
 	    	loadIngredientsList();
 	    	tvIngredientsPane.refresh();
     	}
+    	welcomeGUI.saveRestaurantData();
     }
     
 }

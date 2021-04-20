@@ -75,8 +75,8 @@ public class Ingredient implements Serializable{
 		return creator;
 	}
 	
-	public String getCreatorName() {
-		return creator.getName();
+	public String getCreatorUsername() {
+		return creator.getUsername();
 	}
 
 	/**
