@@ -32,6 +32,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import model.Customer;
 import model.DetailProduct;
 import model.Restaurant;
 
@@ -162,6 +163,17 @@ public class EmployeeGUI {
     @FXML
     private TextArea txtAreaCommentsCustomer;
     
+    @FXML
+    private Label searchingTime;
+
+    @FXML
+    private TextField searchCustomerName;
+
+    @FXML
+    private TextField searchCustomerLastName;
+    
+    private Customer orderCustomer;
+    
     private WelcomeGUI welcomeGUI;
     private Restaurant restaurant;
     
@@ -182,8 +194,8 @@ public class EmployeeGUI {
     	  @Override
     	  public void run() {
     	   Date date = new Date ();
-    	   SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-    	   Platform.runLater(() -> labTime.setText(sdf.format(date)));
+    	   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy HH:mm:ss");
+    	   Platform.runLater(() -> labDate.setText(sdf.format(date)));
     	  }
     	}, 0, 1000);
     }
@@ -275,6 +287,42 @@ public class EmployeeGUI {
     		tvMenuProductsList.getItems().clear();
     		tvMenuProductsList.refresh();
     	}
+    }
+    
+  //BinarySearch Customer
+
+    @FXML
+    public void searchCustomer(ActionEvent event) throws InterruptedException {
+
+        long init = System.currentTimeMillis();
+         
+        Thread.sleep(2000);
+         
+        orderCustomer = restaurant.binarySearchCustomer(searchCustomerName.getText(), searchCustomerLastName.getText());
+        long end = System.currentTimeMillis();
+         
+        double tiempo = (double) (end - init);
+        
+        String searchTime = searchingTime.getText();
+
+        searchingTime.setText(searchTime + tiempo +" Milisegundos");
+
+        if (orderCustomer != null){
+        	Alert alert = new Alert(AlertType.INFORMATION);
+	    	alert.setTitle("Busqueda de cliente");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("El cliente " + orderCustomer.getName() + " " + orderCustomer.getSurname() + " ha sido encontrado");
+	    	alert.showAndWait();
+	    	
+        	clientNameTxt.setText(orderCustomer.getName());
+        	clientSurnameTxt.setText(orderCustomer.getSurname());
+        	labClientId.setText(orderCustomer.getId());
+        	clientPhoneTxt.setText(orderCustomer.getPhoneNumber());
+        	clientAddressTxt.setText(orderCustomer.getAddress());
+        	clientCommentTxt.setText(orderCustomer.getComments());
+        	
+        }
+
     }
 
     @FXML
