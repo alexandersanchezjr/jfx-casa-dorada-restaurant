@@ -170,7 +170,7 @@ public class EmployeeGUI {
     private ArrayList<DetailProduct> productsList = new ArrayList<DetailProduct>();
     
     public EmployeeGUI() {
-    	injectWelcomeGUI(welcomeGUI, restaurant);
+
     }
     
     public void injectWelcomeGUI(WelcomeGUI welcomeGUI, Restaurant restaurant) {
