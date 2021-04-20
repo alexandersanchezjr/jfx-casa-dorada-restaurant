@@ -233,6 +233,7 @@ public class EmployeeGUI {
     	}
     	ObservableList<String> productsList = FXCollections.observableArrayList(productsEnabled);
     	productChooser.setItems(productsList);
+    	productChooser.setDisable(false);
     }
     
     @FXML
@@ -246,7 +247,7 @@ public class EmployeeGUI {
     	    	exit = true;
     		}
     	}
-
+		
     }
     
     @FXML
