@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,13 +23,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import model.Customer;
-import model.Employee;
-import model.Ingredient;
-import model.Order;
-import model.Product;
 import model.Restaurant;
-import model.Type;
 import model.User;
 
 public class WelcomeGUI {

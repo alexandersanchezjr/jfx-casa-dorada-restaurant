@@ -316,11 +316,31 @@ public class UsersGUI {
     	
     	if (tbAdminAvailability.isSelected()) {
     		tbAdminAvailability.setText("HABILITADO");
-    		thisAdmin.setAvailability(true);
+    		boolean changed = false;
+			for (int i = 0; i < restaurant.getAdmins().size() && !changed; i++) {
+				if (restaurant.getAdmins().get(i) == thisAdmin) {
+					restaurant.getAdmins().get(i).setAvailability(true);
+					changed = true;
+				}
+    		}
+    		
     	}else {
     		tbAdminAvailability.setText("DESHABILITADO");
-    		thisAdmin.setAvailability(false);
+    		boolean changed = false;
+			for (int i = 0; i < restaurant.getAdmins().size() && !changed; i++) {
+				if (restaurant.getAdmins().get(i) == thisAdmin) {
+					restaurant.getAdmins().get(i).setAvailability(false);
+					changed = true;
+				}
+    		}
     	}
+	    try {
+			welcomeGUI.saveRestaurantData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
     		
     }
     
@@ -338,6 +358,12 @@ public class UsersGUI {
     	}
     	if (input.equals("SI")) {
     		restaurant.getAdmins().clear();
+    	    try {
+				welcomeGUI.saveRestaurantData();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
     		initializeAdminTableView();
     		tvAdmins.refresh();
     	}
@@ -387,7 +413,8 @@ public class UsersGUI {
     		if (newPasswordTxt.getText().equals(newHiddenPasswordTxt.getText())) {
     			try {
     				restaurant.addAdminUser(newAdminNameTxt.getText(), newAdminSurnameTxt.getText(), newAdminIdTxt.getText(), null, newAdminUsernameTxt.getText(), newPasswordTxt.getText(), null);
-    			} catch (IOException e) {
+    	    	    welcomeGUI.saveRestaurantData();
+			} catch (IOException e) {
     				// TODO Auto-generated catch block
     				e.printStackTrace();
     			}
@@ -404,6 +431,7 @@ public class UsersGUI {
     	
     	try {
 			restaurant.deletedAdminUser(thisAdmin);
+    	    welcomeGUI.saveRestaurantData();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -482,11 +510,18 @@ public class UsersGUI {
     	}else {
     		if (adminHiddenPasswordTxt.getText().equals(adminPasswordTxt.getText())) {
     			
-    			thisAdmin.setName(adminNameTxt.getText());
-    			thisAdmin.setSurname(adminSurnameTxt.getText());
-    			thisAdmin.setId(adminIdTxt.getText());
-    			thisAdmin.setUsername(adminUsernameTxt.getText());
-    			thisAdmin.setPassword(adminHiddenPasswordTxt.getText());
+    			boolean changed = false;
+    			for (int i = 0; i < restaurant.getAdmins().size() && !changed; i++) {
+    				if (restaurant.getAdmins().get(i) == thisAdmin) {
+    					restaurant.getAdmins().get(i).setName(adminNameTxt.getText());
+    					restaurant.getAdmins().get(i).setSurname(adminSurnameTxt.getText());
+    					restaurant.getAdmins().get(i).setId(adminIdTxt.getText());
+    					restaurant.getAdmins().get(i).setUsername(adminUsernameTxt.getText());
+    					restaurant.getAdmins().get(i).setPassword(adminHiddenPasswordTxt.getText());
+    					changed = true;
+    				}
+        		}
+    			
     			initializeAdminTableView();
     		}
     			
@@ -707,14 +742,22 @@ public class UsersGUI {
      @FXML
      void changeOperatorAvailability(ActionEvent event) {
     	 User thisOperator = (User) tvOperatorsList.getSelectionModel().getSelectedItem();
-     	
-     	if (operatorAvailability.isSelected()) {
-     		operatorAvailability.setText("HABILITADO");
-     		thisOperator.setAvailability(true);
-     	}else {
-     		operatorAvailability.setText("DESHABILITADO");
-     		thisOperator.setAvailability(false);
+     	try {
+     		if (operatorAvailability.isSelected()) {
+	     		operatorAvailability.setText("HABILITADO");
+	     		restaurant.enableUser(thisOperator);
+	     		thisOperator.setAvailability(true);
+	     	}else {
+	     		operatorAvailability.setText("DESHABILITADO");
+	     		restaurant.disableUser(thisOperator);
+	
+	     		thisOperator.setAvailability(false);
+	     	}
+     		welcomeGUI.saveRestaurantData();
+     	} catch (IOException ioe) {
+     		ioe.printStackTrace();
      	}
+	     
      		
      }
 
@@ -732,6 +775,13 @@ public class UsersGUI {
     	 }
     	 if (input.equals("SI")) {
     		 restaurant.getOperatorsUsers().clear();
+    		 try {
+				welcomeGUI.saveRestaurantData();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
     	 }
      }
 
@@ -774,6 +824,7 @@ public class UsersGUI {
      		if (newOperatorPasswordTxt.getText().equals(newHiddenPasswordTxct.getText())) {
      			try {
      				restaurant.addUser(newOperatorNameTxt.getText(), newOperatorSurnameTxt.getText(), newOperatorIdTxt.getText(), null, newOperatorUsernameTxt.getText(), newOperatorPasswordTxt.getText(), null);
+     	    	    welcomeGUI.saveRestaurantData();
      			} catch (IOException e) {
      				// TODO Auto-generated catch block
      				e.printStackTrace();
@@ -790,6 +841,7 @@ public class UsersGUI {
      	
      	try {
  			restaurant.deleteUser(thisOperator);
+     		welcomeGUI.saveRestaurantData();
  		} catch (IOException e) {
  			// TODO Auto-generated catch block
  			e.printStackTrace();
@@ -825,12 +877,24 @@ public class UsersGUI {
  	    	alert.showAndWait();
      	}else {
      		if (adminHiddenPasswordTxt.getText().equals(adminPasswordTxt.getText())) {
-     			
-     			thisOperator.setName(operatorNameTxt.getText());
-     			thisOperator.setSurname(operatorSurnameTxt.getText());
-     			thisOperator.setId(operatorIdTxt.getText());
-     			thisOperator.setUsername(operatorUsernameTxt.getText());
-     			thisOperator.setPassword(operatorHiddenPasswordTxt.getText());
+     			boolean changed = false;
+				for (int i = 0; i < restaurant.getOperatorsUsers().size() && !changed; i++) {
+     				if (restaurant.getOperatorsUsers().get(i) == thisOperator) {
+     					restaurant.getOperatorsUsers().get(i).setName(operatorNameTxt.getText());
+     					restaurant.getOperatorsUsers().get(i).setSurname(operatorSurnameTxt.getText());
+     					restaurant.getOperatorsUsers().get(i).setId(operatorIdTxt.getText());
+     					restaurant.getOperatorsUsers().get(i).setUsername(operatorUsernameTxt.getText());
+     					restaurant.getOperatorsUsers().get(i).setPassword(operatorHiddenPasswordTxt.getText());     					
+     	     			changed = true;
+     				}
+     			}
+	    	    try {
+					welcomeGUI.saveRestaurantData();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
      			initializeOperatorsTableView();
      		}
      			
@@ -853,19 +917,21 @@ public class UsersGUI {
      @FXML
      void changeEmployeeAvailability(ActionEvent event) {
     	 Employee thisEmployee = tvAdminEmployees.getSelectionModel().getSelectedItem();
-     	
-     	if (tbEmployeeAvailability.isSelected()) {
-     		tbEmployeeAvailability.setText("HABILITADO");
-     		thisEmployee.setAvailability(true);
-     	}else {
-     		tbEmployeeAvailability.setText("DESHABILITADO");
-     		thisEmployee.setAvailability(false);
-     	}
-     	try{
-     		welcomeGUI.saveRestaurantData();
-     	}catch (IOException ioe) {
-     		ioe.printStackTrace();
-     	}
+		try {
+			if (tbEmployeeAvailability.isSelected()) {
+		 		tbEmployeeAvailability.setText("HABILITADO");
+		 		restaurant.enableEmployee(thisEmployee);
+		 		thisEmployee.setAvailability(true);
+		 	}else {
+		 		tbEmployeeAvailability.setText("DESHABILITADO");
+		 		restaurant.enableEmployee(thisEmployee);
+		 		thisEmployee.setAvailability(false);
+		 	}
+	 		welcomeGUI.saveRestaurantData();
+		
+		}catch (IOException ioe){
+			
+		}
      }
      
      @FXML

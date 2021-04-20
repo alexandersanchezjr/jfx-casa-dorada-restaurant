@@ -22,7 +22,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="orderPane" prefHeight="600.0" prefWidth="700.0" style="-fx-background-color: gray;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="orderPane" prefHeight="600.0" prefWidth="700.0" style="-fx-background-color: gray;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ListView fx:id="lvOrders" layoutX="5.0" layoutY="43.0" onMouseClicked="#handleMouseClickOrders" prefHeight="115.0" prefWidth="162.0">
          <contextMenu>
@@ -49,17 +49,17 @@
                   <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label fx:id="labOrderId" maxWidth="1.7976931348623157E308" text="#107373">
+                  <Label fx:id="labOrderId" maxWidth="1.7976931348623157E308" text="#000000">
                      <font>
                         <Font name="Gill Sans MT" size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="labOrderTotalPrice" maxWidth="1.7976931348623157E308" text="\$813.000" GridPane.columnIndex="2" GridPane.halignment="CENTER">
+                  <Label fx:id="labOrderTotalPrice" maxWidth="1.7976931348623157E308" text="\$0.0" GridPane.columnIndex="2" GridPane.halignment="CENTER">
                      <font>
                         <Font name="Gill Sans MT Bold" size="24.0" />
                      </font>
                   </Label>
-                  <Label fx:id="labOrderStatus" alignment="CENTER" maxWidth="1.7976931348623157E308" text="SOLICITADO" GridPane.columnIndex="1" GridPane.valignment="CENTER">
+                  <Label fx:id="labOrderStatus" alignment="CENTER" maxWidth="1.7976931348623157E308" text="ESTADO" GridPane.columnIndex="1" GridPane.valignment="CENTER">
                      <font>
                         <Font name="Gill Sans MT" size="16.0" />
                      </font>
@@ -74,12 +74,12 @@
                         <Font name="Gill Sans MT Bold" size="16.0" />
                      </font>
                   </Label>
-                  <Label fx:id="labOrderClientName" maxWidth="1.7976931348623157E308" text="Alexander Sánchez" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <Label fx:id="labOrderClientName" alignment="CENTER" maxWidth="1.7976931348623157E308" text="..." GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <font>
                         <Font name="Gill Sans MT" size="16.0" />
                      </font>
                   </Label>
-                  <Label fx:id="labOrderEmployeeName" maxWidth="1.7976931348623157E308" text="Santiago Arévalo" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <Label fx:id="labOrderEmployeeName" alignment="CENTER" maxWidth="1.7976931348623157E308" text="..." GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <font>
                         <Font name="Gill Sans MT" size="16.0" />
                      </font>
@@ -124,7 +124,7 @@
             </Label>
             <ScrollPane fitToWidth="true" maxHeight="1.7976931348623157E308" prefHeight="5000.0" prefWidth="162.0">
                <content>
-                  <Label fx:id="labOrderComments" prefWidth="147.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam dapibus velit sagittis, gravida dui semper, fermentum sapien. Morbi venenatis velit sit amet diam aliquet, in bibendum justo sagittis. Aenean blandit, lorem id ornare varius, felis velit facilisis leo, maximus placerat velit nibh sit amet tortor. Nulla facilisi. Suspendisse ut mattis enim. Curabitur eget euismod turpis. Quisque aliquam posuere est et pellentesque. Fusce gravida risus quis ex efficitur posuere. Pellentesque pulvinar lorem nunc, quis facilisis ipsum pellentesque eget. Sed ut blandit ipsum. Vestibulum at interdum massa. Etiam eleifend pretium neque, nec porttitor nulla malesuada ac. Sed porta tellus sit amet semper finibus. Nullam faucibus dolor vitae magna auctor auctor." wrapText="true">
+                  <Label fx:id="labOrderComments" prefWidth="147.0" wrapText="true">
                      <font>
                         <Font name="Gill Sans MT" size="16.0" />
                      </font></Label>
@@ -137,7 +137,7 @@
             </Label>
             <ScrollPane fitToWidth="true" maxHeight="1.7976931348623157E308" prefHeight="5000.0" prefWidth="162.0">
                <content>
-                  <Label fx:id="labClientComments" prefWidth="147.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam dapibus velit sagittis, gravida dui semper, fermentum sapien. Morbi venenatis velit sit amet diam aliquet, in bibendum justo sagittis. Aenean blandit, lorem id ornare varius, felis velit facilisis leo, maximus placerat velit nibh sit amet tortor. Nulla facilisi. Suspendisse ut mattis enim. Curabitur eget euismod turpis. Quisque aliquam posuere est et pellentesque. Fusce gravida risus quis ex efficitur posuere. Pellentesque pulvinar lorem nunc, quis facilisis ipsum pellentesque eget. Sed ut blandit ipsum. Vestibulum at interdum massa. Etiam eleifend pretium neque, nec porttitor nulla malesuada ac. Sed porta tellus sit amet semper finibus. Nullam faucibus dolor vitae magna auctor auctor." wrapText="true">
+                  <Label fx:id="labClientComments" prefWidth="147.0" wrapText="true">
                      <font>
                         <Font name="Gill Sans MT" size="16.0" />
                      </font></Label>

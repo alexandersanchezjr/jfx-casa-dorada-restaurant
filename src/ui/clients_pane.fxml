@@ -61,15 +61,15 @@
                   <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <TextField fx:id="clientNameTxt" promptText="Nombre" text="Alexander " GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                  <TextField fx:id="clientSurnameTxt" promptText="Apellido" text="Sánchez" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                  <TextField fx:id="clientIdTxt" layoutX="10.0" layoutY="33.0" promptText="Identificación" text="1006307963" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                  <TextField fx:id="clientAddressTxt" layoutX="10.0" layoutY="58.0" promptText="Dirección" text="Cra 43 #39a28" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                  <TextField fx:id="clientPhoneTxt" layoutX="134.0" layoutY="58.0" promptText="Teléfono" text="3164713990" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                  <TextField fx:id="clientNameTxt" promptText="Nombre" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                  <TextField fx:id="clientSurnameTxt" promptText="Apellido" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                  <TextField fx:id="clientIdTxt" layoutX="10.0" layoutY="33.0" promptText="Identificación" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                  <TextField fx:id="clientAddressTxt" layoutX="10.0" layoutY="58.0" promptText="Dirección" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                  <TextField fx:id="clientPhoneTxt" layoutX="134.0" layoutY="58.0" promptText="Teléfono" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
                   <Label text="Comentarios del cliente" GridPane.columnIndex="2" GridPane.valignment="CENTER" />
                   <ScrollPane fitToWidth="true" prefHeight="100.0" prefWidth="162.0" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="3" GridPane.valignment="CENTER">
                      <content>
-                        <Label fx:id="labClientComments" contentDisplay="CENTER" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam dapibus velit sagittis, gravida dui semper, fermentum sapien. Morbi venenatis velit sit amet diam aliquet, in bibendum justo sagittis. Aenean blandit, lorem id ornare varius, felis velit facilisis leo, maximus placerat velit nibh sit amet tortor. Nulla facilisi. Suspendisse ut mattis enim. Curabitur eget euismod turpis. Quisque aliquam posuere est et pellentesque. Fusce gravida risus quis ex efficitur posuere. Pellentesque pulvinar lorem nunc, quis facilisis ipsum pellentesque eget. Sed ut blandit ipsum. Vestibulum at interdum massa. Etiam eleifend pretium neque, nec porttitor nulla malesuada ac. Sed porta tellus sit amet semper finibus. Nullam faucibus dolor vitae magna auctor auctor." wrapText="true" />
+                        <Label fx:id="labClientComments" contentDisplay="CENTER" wrapText="true" />
                      </content>
                   </ScrollPane>
                   <Button fx:id="updateClientButton" mnemonicParsing="false" onAction="#updateClient" text="Actualizar" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="CENTER" />

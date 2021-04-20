@@ -334,20 +334,26 @@ public class Restaurant implements Serializable{
 	
 	public boolean enableEmployee(Employee e) throws IOException {
 		boolean disabled = false;
-		if(!e.isAvailability()) {
-			e.setAvailability(true);
-			disabled = true;
-
+		boolean changed = false;
+		for (int i = 0; i < getEmployees().size() && !changed; i++) {
+			if (getEmployees().get(i) == e) {
+				getEmployees().get(i).setAvailability(true);
+				changed = true;
+				disabled = true;
+			}
 		}
 		return disabled;
 	}
 	
 	public boolean disableEmployee(Employee e) throws IOException {
 		boolean disabled = false;
-		if(e.isAvailability()) {
-			e.setAvailability(false);
-			disabled = true;
-
+		boolean changed = false;
+		for (int i = 0; i < getEmployees().size() && !changed; i++) {
+			if (getEmployees().get(i) == e) {
+				getEmployees().get(i).setAvailability(false);
+				changed = true;
+				disabled = true;
+			}
 		}
 		return disabled;
 	}
@@ -393,20 +399,26 @@ public class Restaurant implements Serializable{
 	
 	public boolean enableUser(User u) throws IOException {
 		boolean disabled = false;
-		if(!u.isAvailability()) {
-			u.setAvailability(true);
-			disabled = true;
-
+		boolean changed = false;
+		for (int i = 0; i < getOperatorsUsers().size() && !changed; i++) {
+			if (getOperatorsUsers().get(i) == u) {
+				getOperatorsUsers().get(i).setAvailability(true);
+				changed = true;
+				disabled = true;
+			}
 		}
 		return disabled;
 	}
 	
 	public boolean disableUser(User u) throws IOException {
 		boolean disabled = false;
-		if(u.isAvailability()) {
-			u.setAvailability(false);
-			disabled = true;
-
+		boolean changed = false;
+		for (int i = 0; i < getOperatorsUsers().size() && !changed; i++) {
+			if (getOperatorsUsers().get(i) == u) {
+				getOperatorsUsers().get(i).setAvailability(false);
+				changed = true;
+				disabled = true;
+			}
 		}
 		return disabled;
 	}
