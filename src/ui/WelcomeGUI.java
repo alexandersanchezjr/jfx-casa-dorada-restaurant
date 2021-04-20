@@ -224,6 +224,7 @@ public class WelcomeGUI {
     	        
     	        window.setScene(employeeScene);
     	        window.show();
+    	        employeeGUI.loadOptions();
     	        employeeGUI.timer();
     		}       
         }

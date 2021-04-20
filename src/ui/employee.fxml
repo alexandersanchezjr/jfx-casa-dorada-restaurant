@@ -34,15 +34,15 @@
             <ComboBox fx:id="sizeChooser" disable="true" layoutX="14.0" layoutY="87.0" prefHeight="25.0" prefWidth="222.0" promptText="Elige un tamaño..." AnchorPane.leftAnchor="14.0" />
             <ButtonBar layoutX="255.0" layoutY="300.0" prefHeight="40.0" prefWidth="331.0" AnchorPane.bottomAnchor="7.0" AnchorPane.rightAnchor="14.0">
               <buttons>
-                <Button disable="true" focusTraversable="false" mnemonicParsing="false" onAction="#cleanProductsLists" prefHeight="25.0" prefWidth="262.0" text="Limpiar" />
-                  <Button disable="true" layoutX="47.0" layoutY="18.0" mnemonicParsing="false" onAction="#deleteProduct" prefHeight="25.0" prefWidth="142.0" text="Eliminar" />
+                <Button focusTraversable="false" mnemonicParsing="false" onAction="#cleanProductsLists" prefHeight="25.0" prefWidth="262.0" text="Limpiar" />
+                  <Button fx:id="bttDeleteProduct" disable="true" layoutX="47.0" layoutY="18.0" mnemonicParsing="false" onAction="#deleteProduct" prefHeight="25.0" prefWidth="142.0" text="Eliminar" />
                   <Button disable="true" layoutX="122.0" layoutY="18.0" mnemonicParsing="false" onAction="#createOrder" text="Crear" />
               </buttons>
                <padding>
                   <Insets left="-20.0" />
                </padding>
             </ButtonBar>
-            <TableView fx:id="tvMenuProductsList" layoutX="255.0" layoutY="12.0" maxHeight="1.7976931348623157E308" prefHeight="102.0" prefWidth="331.0" AnchorPane.bottomAnchor="233.0" AnchorPane.leftAnchor="255.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="12.0">
+            <TableView fx:id="tvMenuProductsList" layoutX="255.0" layoutY="12.0" maxHeight="1.7976931348623157E308" onMouseClicked="#productSelected" prefHeight="102.0" prefWidth="331.0" AnchorPane.bottomAnchor="233.0" AnchorPane.leftAnchor="255.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="12.0">
                <columns>
                   <TableColumn fx:id="tcMenuProductName" prefWidth="75.0" text="Producto" />
                   <TableColumn fx:id="tcMenuProductType" prefWidth="75.0" text="Categoría" />
@@ -82,14 +82,14 @@
                   <Insets left="5.0" right="5.0" />
                </padding>
             </GridPane>
-            <Label fx:id="searchingTime" layoutX="203.0" layoutY="453.0" prefHeight="25.0" prefWidth="199.0" text="Tiempo de búsqueda:" AnchorPane.bottomAnchor="69.0" AnchorPane.leftAnchor="203.0">
+            <Label fx:id="searchingTime" layoutX="203.0" layoutY="453.0" prefHeight="25.0" prefWidth="222.0" text="Tiempo de búsqueda" AnchorPane.bottomAnchor="69.0" AnchorPane.leftAnchor="203.0">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="searchCustomerName" layoutX="13.0" layoutY="453.0" prefHeight="25.0" prefWidth="169.0" promptText="Nombre del cliente..." />
-            <Button layoutX="203.0" layoutY="484.0" mnemonicParsing="false" onAction="#searchCustomer" prefHeight="33.0" prefWidth="104.0" text="Buscar Cliente" />
-            <TextField fx:id="searchCustomerLastName" layoutX="14.0" layoutY="485.0" prefHeight="25.0" prefWidth="169.0" promptText="Apellido del cliente..." />
+            <TextField fx:id="searchCustomerName" layoutX="13.0" layoutY="453.0" prefHeight="25.0" prefWidth="169.0" promptText="Nombre del cliente..." AnchorPane.bottomAnchor="69.0" AnchorPane.leftAnchor="13.0" />
+            <Button layoutX="203.0" layoutY="484.0" mnemonicParsing="false" onAction="#searchCustomer" prefHeight="33.0" prefWidth="104.0" text="Buscar Cliente" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="203.0" />
+            <TextField fx:id="searchCustomerLastName" layoutX="14.0" layoutY="485.0" prefHeight="25.0" prefWidth="169.0" promptText="Apellido del cliente..." AnchorPane.bottomAnchor="37.0" AnchorPane.leftAnchor="13.0" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="orderPane" layoutX="16.0" layoutY="53.0" prefHeight="312.0" prefWidth="568.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="53.0">
