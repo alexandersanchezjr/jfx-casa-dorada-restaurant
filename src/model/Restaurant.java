@@ -858,9 +858,9 @@ public class Restaurant implements Serializable{
         Customer key = new Customer(firstName,lastName, "", "", "", null);
         int index = Collections.binarySearch(customers, key,lastNameAndFirstName);
         if (index <0){
-            key=null;
+            key = null;
         }else{
-            key=customers.get(index);
+            key = customers.get(index);
         }
         return key;
     }

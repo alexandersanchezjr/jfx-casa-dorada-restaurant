@@ -164,6 +164,9 @@ public class EmployeeGUI {
     private TextArea txtAreaCommentsCustomer;
     
     @FXML
+    private Button bttDeleteProduct;
+    
+    @FXML
     private Label searchingTime;
 
     @FXML
@@ -200,6 +203,18 @@ public class EmployeeGUI {
     	}, 0, 1000);
     }
     
+    public void loadOptions() {
+    	//Separating types enable
+		ArrayList<String> types = new ArrayList<>();
+		for(int i = 0; i<restaurant.getTypes().size(); i++) {
+			if(restaurant.getTypes().get(i).isAvailability()) {
+				types.add(restaurant.getTypes().get(i).getName());
+			}
+		}
+		ObservableList<String> typesEnable = FXCollections.observableArrayList(types);
+		typeChooser.setItems(typesEnable);
+    }
+    
     @FXML
     public void showMenuPane(ActionEvent event) {
     	menuPane.setVisible(true);
@@ -232,6 +247,8 @@ public class EmployeeGUI {
     	tcOrderProductSize.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("size"));
     	tcOrderProductPrice.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("totalPrice"));
     	tcAmount.setCellValueFactory(new PropertyValueFactory<DetailProduct, String>("amountToString"));
+    	
+    	tvMenuProductsList.refresh();
     }
     
     @FXML
@@ -265,28 +282,51 @@ public class EmployeeGUI {
     @FXML
     public void addProductToList(ActionEvent event) {
     	//Searching the selected product in the List of Products of the Restaurant
-    	int indexProduct = restaurant.getProducts().indexOf(productChooser.getValue()); 
+    	
+    	int indexProduct = 0;
+    	boolean found = false;
+    	for(int i = 0; i<restaurant.getProducts().size() & !found; i++) {
+    		if(restaurant.getProducts().get(i).getName().equals(productChooser.getValue())) {
+    			indexProduct = i;
+    			found = true;
+    		}
+    	}
+    	
     	//Searching the selected size in the list of product selected's sizes
     	int indexSize = restaurant.getProducts().get(indexProduct).getSizes().indexOf(sizeChooser.getValue());
     	DetailProduct detailProduct = new DetailProduct(restaurant.getProducts().get(indexProduct), amountChooser.getValue(), restaurant.getProducts().get(indexProduct).getPricesBySizes().get(indexSize));
     	productsList.add(detailProduct);
+    	
     	detailProduct.getProduct().setCont(amountChooser.getValue());
     	detailProduct.getProduct().setTotal(Integer.parseInt(detailProduct.getTotalPrice()));
     	loadProductsList();
     }
     
     @FXML
+    public void productSelected(MouseEvent event) {
+    	bttDeleteProduct.setDisable(false);
+    }
+    
+    @FXML
     public void cleanProductsLists(ActionEvent event) {
-    	Alert alert = new Alert(AlertType.CONFIRMATION);
-    	alert.setTitle("Confirmación limpiar lista");
-    	alert.setHeaderText("Limpiar Lista de Productos");
-    	alert.setContentText("¿Estás seguro de limpiar toda la lista de productos?");
-
-    	Optional<ButtonType> result = alert.showAndWait();
-    	if (result.get() == ButtonType.OK){
-    		tvMenuProductsList.getItems().clear();
-    		tvMenuProductsList.refresh();
-    	}
+		if(!tvMenuProductsList.getItems().isEmpty())	{
+    		Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("Confirmación limpiar lista");
+			alert.setHeaderText("Limpiar Lista de Productos");
+			alert.setContentText("¿Estás seguro de limpiar toda la lista de productos?");
+		
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == ButtonType.OK){
+				tvMenuProductsList.getItems().clear();
+				tvMenuProductsList.refresh();
+			}
+		}else {
+			Alert alert = new Alert(AlertType.INFORMATION);
+	    	alert.setTitle("Limpiar lista");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("No hay productos en la lista por limpiar");
+	    	alert.showAndWait();
+		}
     }
     
   //BinarySearch Customer
@@ -302,10 +342,8 @@ public class EmployeeGUI {
         long end = System.currentTimeMillis();
          
         double tiempo = (double) (end - init);
-        
-        String searchTime = searchingTime.getText();
 
-        searchingTime.setText(searchTime + tiempo +" Milisegundos");
+        searchingTime.setText(tiempo +" Milisegundos");
 
         if (orderCustomer != null){
         	Alert alert = new Alert(AlertType.INFORMATION);
@@ -321,19 +359,36 @@ public class EmployeeGUI {
         	clientAddressTxt.setText(orderCustomer.getAddress());
         	clientCommentTxt.setText(orderCustomer.getComments());
         	
+        }else {
+        	Alert alert = new Alert(AlertType.INFORMATION);
+	    	alert.setTitle("Busqueda de cliente");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("El cliente " + searchCustomerName.getText() + " " + searchCustomerLastName.getText() + " no esta en el Sistema");
+	    	alert.showAndWait();
         }
 
     }
 
     @FXML
     public void createOrder(ActionEvent event) throws IOException {
-    	//Verifications of comboBox
-    	restaurant.addOrder("SOLICITADO", productsList, restaurant.getLoggedUser(), null, null, null, null, null, null, null);
+    	
+    	restaurant.addOrder("SOLICITADO", productsList, restaurant.getLoggedUser(), clientNameTxt.getText(), clientSurnameTxt.getText(), clientAddressTxt.getText(), clientPhoneTxt.getText(), orderCommentTxt.getText(), restaurant.getLoggedUser(), clientCommentTxt.getText());
     }
 
     @FXML
     public void deleteProduct(ActionEvent event) {
-
+    	boolean deleted = false;
+    	DetailProduct dp = tvMenuProductsList.getSelectionModel().getSelectedItem();
+    	deleted = productsList.remove(dp);
+    	if(deleted) {
+    		Alert alert = new Alert(AlertType.INFORMATION);
+	    	alert.setTitle("Eliminar producto");
+	    	alert.setHeaderText(null);
+	    	alert.setContentText("El producto ha sido borrado");
+	    	alert.showAndWait();
+	    	
+	    	loadProductsList();
+    	}
     }
     
     //ActionEvent methods of Orders AnchorPane
